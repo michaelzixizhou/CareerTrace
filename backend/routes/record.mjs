@@ -1,6 +1,6 @@
-import express, { Router } from "express";
+import express from "express";
 import db from "../db/conn.mjs";
-import { Collection, ObjectId } from "mongodb";
+import { ObjectId } from "mongodb";
 
 const router = express.Router();
 
@@ -28,7 +28,8 @@ router.post("/", async (req, res) => {
         status: req.body.status,
         assessment: req.body.assessment,
     };
-
+    console.log("testing");
+    console.log(JSON.stringify(req.body));
     let collection = await db.collection("records");
     let result = await collection.insertOne(newDocument);
     res.send(result).status(204);
@@ -61,6 +62,15 @@ router.delete("/:id", async (req, res) => {
 
     res.send(result).status(200);
 });
+
+// for testing
+router.delete("/", async (req, res) => {
+    const collection = db.collection("records");
+    let result = await collection.deleteMany({});
+    
+    console.log("deleted all")
+    res.send(result).status(200);
+})
 
 export default router;
 

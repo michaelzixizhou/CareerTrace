@@ -43,6 +43,19 @@ const DeleteChoiceButton = styled.button`
   }
 `;
 
+export const InterviewModal = ({ interviewData, onClose }) => {
+  return (
+    <ModalOverlay onClick={onClose}>
+      <ModalContent>
+        <h2>Interview Details</h2>
+        <p>Company: {interviewData.company}</p>
+        <p>Role: {interviewData.roleName}</p>
+        <p>Date: {interviewData.scheduledInterview}</p>
+      </ModalContent>
+    </ModalOverlay>
+  );
+};
+
 export const DeleteConfirmationModal = ({ onClose, onConfirm }) => {
     return (
       <ModalOverlay>

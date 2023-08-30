@@ -1,6 +1,9 @@
 import './App.css';
+import styled from 'styled-components';
 import JobTable from './components/Table';
 import AddJob from './components/AddJob';
+import TrackCalender from './components/Calender';
+import Stats from './components/Stats';
 
 const getRandomDate = (start, end) => {
   const startDate = new Date(start);
@@ -46,14 +49,35 @@ const generateSampleData = (count) => {
   return data;
 };
 
+const AppContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 20px;
+`;
+
+const LeftContainer = styled.div`
+  flex: 1;
+`;
+
+const RightContainer = styled.div`
+  flex: 1;
+`;
+
 const App = () => {
   const jobData = generateSampleData(341);
 
   return (
-    <>
-      <AddJob />
-      <JobTable data={jobData} />
-    </>
+    <AppContainer>
+      <LeftContainer>
+        <TrackCalender data={jobData} />
+        <Stats data={jobData} />
+        <AddJob />
+      </LeftContainer>
+      <RightContainer>
+        <JobTable data={jobData} />
+      </RightContainer>
+    </AppContainer>
   );
 };
 

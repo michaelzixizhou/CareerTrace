@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { ModalContent, ModalOverlay, DeleteConfirmationModal } from './Modals';
 import { PageNumber, PaginationContainer, PageNavigationButton } from './Pages';
+import { Button } from './Button';
 
 const TableContainer = styled.div`
   margin: 20px;
@@ -65,21 +66,6 @@ const StateBadge = styled.span`
   }};
 `;
 
-const DeleteButton = styled.button`
-  padding: 5px 10px;
-  border: none;
-  background-color: #dc3545;
-  color: #fff;
-  border-radius: 4px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #c82333;
-  }
-`
-
 const itemsPerPage = 10; // temporary
 
 const JobTable = ({ data }) => {
@@ -122,7 +108,7 @@ const JobTable = ({ data }) => {
   };
 
   const handleDeleteJob = () => {
-    // Implement delete logic here (update etc)
+    //  TODO: Implement delete logic here (update etc)
     setShowModal(false);
     setShowDeleteConfirmation(false);
   };
@@ -157,7 +143,7 @@ const JobTable = ({ data }) => {
                 </StateBadge>
               </TableCell>
               <TableCell>
-                <DeleteButton onClick={() => handleDeleteConfirmation(job)}>X</DeleteButton>
+                <Button className='red' onClick={() => handleDeleteConfirmation(job)}>X</Button>
               </TableCell>
             </TableRow>
           ))}

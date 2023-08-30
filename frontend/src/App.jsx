@@ -1,5 +1,6 @@
 import './App.css';
 import JobTable from './components/Table';
+import AddJob from './components/AddJob';
 
 const getRandomDate = (start, end) => {
   const startDate = new Date(start);
@@ -50,6 +51,7 @@ const App = () => {
 
   return (
     <>
+      <AddJob />
       <JobTable data={jobData} />
     </>
   );

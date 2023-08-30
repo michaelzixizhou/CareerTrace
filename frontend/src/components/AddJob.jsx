@@ -1,128 +1,173 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { ModalContent, ModalOverlay } from './Modals';
-import { Button } from './Button';
+import { Button, StyledCloseButton } from './Button';
+import Select from 'react-select';
+import Autosuggest from 'react-autosuggest';
 
 const AddJobButtonContainer = styled.div`
   text-align: center;
   margin-bottom: 20px;
 `;
 
-const totalSteps = 7;
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin: 0 -10px; 
+  position: relative; 
+`;
+
+const InputGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0 10vw;
+`;
+
+const Label = styled.label`
+  margin-bottom: 5px;
+`;
+
+const Input = styled.input`
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+`;
 
 const AddJobModal = ({ onClose }) => {
-    const [step, setStep] = useState(1);
-    const [jobInfo, setJobInfo] = useState({
-        company: '',
-        roleName: '',
-        dateApplied: '',
-        location: '',
-        duration: '',
-        anticipatedPay: '',
-        state: '',
-    });
+  const [locationSuggestions, setLocationSuggestions] = useState([]);
+  const [companySuggestions, setCompanySuggestions] = useState([]);
 
-    const handleNextStep = () => {
-      setStep(step + 1);
+  const [jobInfo, setJobInfo] = useState({
+    company: '',
+    roleName: '',
+    dateApplied: '',
+    location: '',
+    duration: '',
+    anticipatedPay: '',
+    state: '',
+  });
+
+  useEffect(() => {
+    const fetchLocationSuggestions = async (inputValue) => {
+      try {
+        const response = await fetch(`API_URL_FOR_LOCATIONS?query=${inputValue}`);
+        const data = await response.json();
+        setLocationSuggestions(data.results); 
+      } catch (error) {
+        console.error('Error fetching location suggestions:', error);
+      }
     };
-  
-    const handlePreviousStep = () => {
-      setStep(step - 1);
+
+    const fetchCompanySuggestions = async (inputValue) => {
+      try {
+        const response = await fetch(`API_URL_FOR_COMPANIES?query=${inputValue}`);
+        const data = await response.json();
+        setCompanySuggestions(data.results); 
+      } catch (error) {
+        console.error('Error fetching company suggestions:', error);
+      }
     };
-  
-    const handleSubmit = () => {
-      // TODO: Implement the submission logic
-      onClose();
-    };
-  
-    return (
-      <ModalOverlay>
-        <ModalContent>
-            {step === 1 && (
-            <div>
-                <label>Company</label>
-                <input
-                type="text"
-                value={jobInfo.company}
-                onChange={e => setJobInfo({ ...jobInfo, company: e.target.value })}
-                />
-            </div>
-            )}
 
-            {step === 2 && (
-            <div>
-                <label>Role Name</label>
-                <input
-                type="text"
-                value={jobInfo.roleName}
-                onChange={e => setJobInfo({ ...jobInfo, roleName: e.target.value })}
-                />
-            </div>
-            )}
+    fetchCompanySuggestions(jobInfo.company);
+    fetchLocationSuggestions(jobInfo.location);
+  }, [jobInfo.company, jobInfo.location]);
 
-            {step === 3 && (
-            <div>
-                <label>Date Applied</label>
-                <input
-                type="date"
-                value={jobInfo.dateApplied}
-                onChange={e => setJobInfo({ ...jobInfo, dateApplied: e.target.value })}
-                />
-            </div>
-            )}
+  const handleCompanyChange = (newValue) => {
+    setJobInfo({ ...jobInfo, company: newValue });
+  };
 
-            {step === 4 && (
-            <div>
-                <label>Location</label>
-                <input
-                type="text"
-                value={jobInfo.location}
-                onChange={e => setJobInfo({ ...jobInfo, location: e.target.value })}
-                />
-            </div>
-            )}
+  const handleLocationChange = (newValue) => {
+    setJobInfo({ ...jobInfo, location: newValue });
+  };
 
-            {step === 5 && (
-            <div>
-                <label>Duration</label>
-                <input
-                type="text"
-                value={jobInfo.duration}
-                onChange={e => setJobInfo({ ...jobInfo, duration: e.target.value })}
-                />
-            </div>
-            )}
+  const handleSubmit = () => {
+    // TODO: Implement the submission logic
+    onClose();
+  };
 
-            {step === 6 && (
-            <div>
-                <label>Anticipated Pay</label>
-                <input
-                type="text"
-                value={jobInfo.anticipatedPay}
-                onChange={e => setJobInfo({ ...jobInfo, anticipatedPay: e.target.value })}
-                />
-            </div>
-            )}
-
-            {step === 7 && (
-            <div>
-                <label>State</label>
-                <input
-                type="text"
-                value={jobInfo.state}
-                onChange={e => setJobInfo({ ...jobInfo, state: e.target.value })}
-                />
-            </div>
-            )}
-
-          {step > 1 && <Button className='blue' onClick={handlePreviousStep}>Previous</Button>}
-          {step < totalSteps && <Button className='blue' onClick={handleNextStep}>Next</Button>}
-          {step === totalSteps && <Button className='green' onClick={handleSubmit}>Submit</Button>}
-        </ModalContent>
-      </ModalOverlay>
-    );
+  return (
+    <ModalOverlay>
+      <ModalContent>
+        <StyledForm>
+          <InputGroup>
+            <StyledCloseButton onClick={onClose}>X</StyledCloseButton>
+          </InputGroup>
+          <InputGroup>
+            <Label>Company</Label>
+            <Autosuggest
+              suggestions={companySuggestions}
+              onSuggestionsFetchRequested={({ value }) => handleCompanyChange(value)}
+              onSuggestionsClearRequested={() => setCompanySuggestions([])}
+              getSuggestionValue={(suggestion) => suggestion.name}
+              renderSuggestion={(suggestion) => <div>{suggestion.name}</div>}
+              inputProps={{
+                value: jobInfo.company,
+                onChange: (_, { newValue }) => handleCompanyChange(newValue),
+              }}
+            />
+          </InputGroup>
+          <InputGroup>
+            <Label>Role Name</Label>
+            <Input
+              type="text"
+              value={jobInfo.roleName}
+              onChange={(e) => setJobInfo({ ...jobInfo, roleName: e.target.value })}
+            />
+          </InputGroup>
+          <InputGroup>
+            <Label>Date Applied</Label>
+            <Input
+              type="date"
+              value={jobInfo.dateApplied}
+              onChange={(e) => setJobInfo({ ...jobInfo, dateApplied: e.target.value })}
+            />
+          </InputGroup>
+          <InputGroup>
+            <Label>Location</Label>
+            <Select
+              value={{ label: jobInfo.location, value: jobInfo.location }}
+              onChange={(newValue) => handleLocationChange(newValue.label)}
+              options={locationSuggestions.map((suggestion) => ({
+                value: suggestion.name,
+                label: suggestion.name,
+              }))}
+            />
+          </InputGroup>
+          <InputGroup>
+            <Label>Duration</Label>
+            <Input
+              type="text"
+              value={jobInfo.duration}
+              onChange={(e) => setJobInfo({ ...jobInfo, duration: e.target.value })}
+            />
+          </InputGroup>
+          <InputGroup>
+            <Label>Anticipated Pay</Label>
+            <Input
+              type="text"
+              value={jobInfo.anticipatedPay}
+              onChange={(e) => setJobInfo({ ...jobInfo, anticipatedPay: e.target.value })}
+            />
+          </InputGroup>
+          <InputGroup>
+            <Label>State</Label>
+            <Input
+              type="text"
+              value={jobInfo.state}
+              onChange={(e) => setJobInfo({ ...jobInfo, state: e.target.value })}
+            />
+          </InputGroup>
+          <InputGroup>
+            <Button className='green' onClick={handleSubmit}>Submit</Button>
+          </InputGroup>
+        </StyledForm>
+      </ModalContent>
+    </ModalOverlay>
+  );
 };
-  
+
 const AddJob = () => {
   const [showModal, setShowModal] = useState(false);
 

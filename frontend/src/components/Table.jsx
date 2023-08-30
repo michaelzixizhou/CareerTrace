@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { ModalContent, ModalOverlay, DeleteConfirmationModal } from './Modals';
 import { PageNumber, PaginationContainer, PageNavigationButton } from './Pages';
 import { Button } from './Button';
+import { Icon } from '@iconify/react';
 
 const TableContainer = styled.div`
   margin: 20px;
@@ -66,6 +67,13 @@ const StateBadge = styled.span`
   }};
 `;
 
+const InfoIcon = styled(Icon)`
+  font-size: 30px; 
+  margin-left: 5px;
+  color: #6c757d;
+  cursor: pointer;
+`;
+
 const itemsPerPage = 10; // temporary
 
 const JobTable = ({ data }) => {
@@ -95,11 +103,9 @@ const JobTable = ({ data }) => {
     </PageNumber>
   ));
 
-  const handleBadgeClick = (state, date) => {
-    if (state === 'Interview' || state === 'Phone Screen' || state === 'Online Assessment') {
-      setModalData(date);
-      setShowModal(true);
-    }
+  const handleInfoClick = (state, date, pay) => {
+    setModalData([date, pay]);
+    setShowModal(true);
   };
 
   const handleDeleteConfirmation = jobData => {
@@ -123,7 +129,6 @@ const JobTable = ({ data }) => {
             <TableHeader>Date Applied</TableHeader>
             <TableHeader>Location</TableHeader>
             <TableHeader>Duration</TableHeader>
-            <TableHeader>Anticipated Pay</TableHeader>
             <TableHeader>State</TableHeader>
             <TableHeader/>
           </tr>
@@ -136,11 +141,11 @@ const JobTable = ({ data }) => {
               <TableCell>{job.dateApplied}</TableCell>
               <TableCell>{job.location}</TableCell>
               <TableCell>{job.duration}</TableCell>
-              <TableCell>{job.anticipatedPay}</TableCell>
-              <TableCell onClick={() => handleBadgeClick(job.state, job.scheduledInterview)}>
-                <StateBadge state={job.state} onClick={() => handleBadgeClick(job.state, job)}>
+              <TableCell>
+                <StateBadge state={job.state}>
                   {job.state}
                 </StateBadge>
+                <InfoIcon icon="clarity:info-solid" onClick={() => handleInfoClick(job.state, job.scheduledInterview, job.anticipatedPay)}/>
               </TableCell>
               <TableCell>
                 <Button className='red' onClick={() => handleDeleteConfirmation(job)}>X</Button>
@@ -163,7 +168,8 @@ const JobTable = ({ data }) => {
       {showModal && (
         <ModalOverlay onClick={() => setShowModal(false)}>
           <ModalContent>
-            {modalData}
+            <p>Interview Scheduled: {modalData[0]}</p>
+            <p>Anticipated Pay: {modalData[1]}</p>
           </ModalContent>
         </ModalOverlay>
       )}

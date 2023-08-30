@@ -28,3 +28,13 @@ export const Button = styled.button`
     color: #fff;
   }
 `;
+
+export const StyledCloseButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+`;

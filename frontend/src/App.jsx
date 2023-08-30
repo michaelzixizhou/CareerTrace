@@ -11,9 +11,9 @@ const getRandomDate = (start, end) => {
 const companies = ['TechCorp', 'InnovateTech', 'CodeGenius', 'DataTech', 'WebSolutions'];
 const roles = ['Frontend Developer', 'Backend Engineer', 'Data Scientist', 'UI/UX Designer', 'Product Manager'];
 const locations = ['New York, NY', 'Chicago, IL', 'San Francisco, CA', 'Los Angeles, CA', 'Seattle, WA'];
-const durations = ['Contract', 'Full-time', 'Part-time'];
+const durations = ['4-month', '8-month', '12-month'];
 const anticipatedPays = ['$75,000', '$90,000', '$110,000', '$120,000', '$150,000'];
-const states = ['Interview Scheduled', 'Phone Screen', 'On-site Interview', 'Offer Extended', 'Rejected'];
+const states = ['Interview', 'Phone Screen', 'Online Assessment', 'Offer', 'Rejected'];
 
 const generateRandomData = () => {
   const randomCompany = companies[Math.floor(Math.random() * companies.length)];
@@ -22,11 +22,13 @@ const generateRandomData = () => {
   const randomDuration = durations[Math.floor(Math.random() * durations.length)];
   const randomAnticipatedPay = anticipatedPays[Math.floor(Math.random() * anticipatedPays.length)];
   const randomScheduledInterview = getRandomDate('2023-09-01', '2023-09-30');
+  const dateApplied = getRandomDate('2023-09-01', '2023-09-30');
   const randomState = states[Math.floor(Math.random() * states.length)];
 
   return {
     company: randomCompany,
     roleName: randomRole,
+    dateApplied: dateApplied,
     location: randomLocation,
     duration: randomDuration,
     anticipatedPay: randomAnticipatedPay,

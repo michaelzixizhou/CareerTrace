@@ -70,6 +70,51 @@ const NavigationButton = styled.button`
   }
 `;
 
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ModalContent = styled.div`
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+`;
+
+const StateBadge = styled.span`
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+  background-color: ${props => {
+    switch (props.state) {
+      case 'Interview':
+        return '#007bff';
+      case 'Phone Screen':
+        return '#28a745';
+      case 'Online Assessment':
+        return '#ffc107';
+      case 'Offer':
+        return '#17a2b8';
+      case 'Rejected':
+        return '#dc3545';
+      default:
+        return '#6c757d';
+    }
+  }};
+`;
+
 const itemsPerPage = 10;
 
 const JobTable = ({ data }) => {
@@ -96,6 +141,16 @@ const JobTable = ({ data }) => {
     </PageNumber>
   ));
 
+  const [showModal, setShowModal] = useState(false);
+  const [modalData, setModalData] = useState(null);
+
+  const handleBadgeClick = (state, date) => {
+    if (state === 'Interview' || state === 'Phone Screen' || state === 'Online Assessment') {
+      setModalData(date);
+      setShowModal(true);
+    }
+  };
+
   return (
     <TableContainer>
       <StyledTable>
@@ -103,10 +158,10 @@ const JobTable = ({ data }) => {
           <tr>
             <TableHeader>Company</TableHeader>
             <TableHeader>Role Name</TableHeader>
+            <TableHeader>Date Applied</TableHeader>
             <TableHeader>Location</TableHeader>
             <TableHeader>Duration</TableHeader>
             <TableHeader>Anticipated Pay</TableHeader>
-            <TableHeader>Scheduled Interview/OA/etc</TableHeader>
             <TableHeader>State</TableHeader>
           </tr>
         </thead>
@@ -115,11 +170,15 @@ const JobTable = ({ data }) => {
             <TableRow key={index}>
               <TableCell>{job.company}</TableCell>
               <TableCell>{job.roleName}</TableCell>
+              <TableCell>{job.dateApplied}</TableCell>
               <TableCell>{job.location}</TableCell>
               <TableCell>{job.duration}</TableCell>
               <TableCell>{job.anticipatedPay}</TableCell>
-              <TableCell>{job.scheduledInterview}</TableCell>
-              <TableCell>{job.state}</TableCell>
+              <TableCell onClick={() => handleBadgeClick(job.state, job.scheduledInterview)}>
+                <StateBadge state={job.state} onClick={() => handleBadgeClick(job.state, job)}>
+                  {job.state}
+                </StateBadge>
+              </TableCell>
             </TableRow>
           ))}
         </tbody>
@@ -135,6 +194,13 @@ const JobTable = ({ data }) => {
           <NavigationButton onClick={() => setCurrentPage(lastPageInGroup + 1)}>Right</NavigationButton>
         )}
       </PaginationContainer>
+      {showModal && (
+        <ModalOverlay onClick={() => setShowModal(false)}>
+          <ModalContent>
+            {modalData}
+          </ModalContent>
+        </ModalOverlay>
+      )}
     </TableContainer>
   );
 };

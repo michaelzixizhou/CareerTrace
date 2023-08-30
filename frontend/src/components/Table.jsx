@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { ModalContent, ModalOverlay, DeleteConfirmationModal } from './Modals';
+import { PageNumber, PaginationContainer, PageNavigationButton } from './Pages';
 
 const TableContainer = styled.div`
   margin: 20px;
@@ -37,58 +39,6 @@ const TableCell = styled.td`
   border-bottom: 1px solid #dcdcdc;
 `;
 
-const PaginationContainer = styled.div`
-  margin-top: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const PageNumber = styled.span`
-  margin: 0 5px;
-  padding: 5px 10px;
-  border: 1px solid #dcdcdc;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #e0e0e0;
-  }
-`;
-
-const NavigationButton = styled.button`
-  margin: 0 5px;
-  padding: 5px 10px;
-  border: 1px solid #dcdcdc;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #e0e0e0;
-  }
-`;
-
-const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ModalContent = styled.div`
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-`;
-
 const StateBadge = styled.span`
   display: inline-block;
   padding: 5px 10px;
@@ -115,10 +65,28 @@ const StateBadge = styled.span`
   }};
 `;
 
-const itemsPerPage = 10;
+const DeleteButton = styled.button`
+  padding: 5px 10px;
+  border: none;
+  background-color: #dc3545;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #c82333;
+  }
+`
+
+const itemsPerPage = 10; // temporary
 
 const JobTable = ({ data }) => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [showModal, setShowModal] = useState(false);
+  const [modalData, setModalData] = useState(null);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   const totalPages = Math.ceil(data.length / itemsPerPage);
   const visibleData = data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
@@ -141,14 +109,22 @@ const JobTable = ({ data }) => {
     </PageNumber>
   ));
 
-  const [showModal, setShowModal] = useState(false);
-  const [modalData, setModalData] = useState(null);
-
   const handleBadgeClick = (state, date) => {
     if (state === 'Interview' || state === 'Phone Screen' || state === 'Online Assessment') {
       setModalData(date);
       setShowModal(true);
     }
+  };
+
+  const handleDeleteConfirmation = jobData => {
+    setModalData(jobData);
+    setShowDeleteConfirmation(true);
+  };
+
+  const handleDeleteJob = () => {
+    // Implement delete logic here (update etc)
+    setShowModal(false);
+    setShowDeleteConfirmation(false);
   };
 
   return (
@@ -163,6 +139,7 @@ const JobTable = ({ data }) => {
             <TableHeader>Duration</TableHeader>
             <TableHeader>Anticipated Pay</TableHeader>
             <TableHeader>State</TableHeader>
+            <TableHeader/>
           </tr>
         </thead>
         <tbody>
@@ -179,25 +156,42 @@ const JobTable = ({ data }) => {
                   {job.state}
                 </StateBadge>
               </TableCell>
+              <TableCell>
+                <DeleteButton onClick={() => handleDeleteConfirmation(job)}>X</DeleteButton>
+              </TableCell>
             </TableRow>
           ))}
         </tbody>
       </StyledTable>
       <PaginationContainer>
         {currentGroup > 1 && (
-          <NavigationButton onClick={() => setCurrentPage(firstPageInGroup - pagesPerGroup)}>
+          <PageNavigationButton onClick={() => setCurrentPage(firstPageInGroup - pagesPerGroup)}>
             Left
-          </NavigationButton>
+          </PageNavigationButton>
         )}
         {visiblePages}
         {lastPageInGroup < totalPages && (
-          <NavigationButton onClick={() => setCurrentPage(lastPageInGroup + 1)}>Right</NavigationButton>
+          <PageNavigationButton onClick={() => setCurrentPage(lastPageInGroup + 1)}>Right</PageNavigationButton>
         )}
       </PaginationContainer>
       {showModal && (
         <ModalOverlay onClick={() => setShowModal(false)}>
           <ModalContent>
             {modalData}
+          </ModalContent>
+        </ModalOverlay>
+      )}
+      {showDeleteConfirmation && (
+        <ModalOverlay onClick={() => setShowModal(false)}>
+          <ModalContent>
+            {showDeleteConfirmation ? (
+              <DeleteConfirmationModal
+                onClose={() => setShowDeleteConfirmation(false)}
+                onConfirm={handleDeleteJob}
+              />
+            ) : (
+              <p>{modalData}</p>
+            )}
           </ModalContent>
         </ModalOverlay>
       )}

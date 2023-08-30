@@ -1,25 +1,43 @@
-import logo from './logo.svg';
 import './App.css';
+import JobTable from './components/Table';
 
-function App() {
+const App = () => {
+  const jobData = [
+    {
+      company: 'Example Inc',
+      roleName: 'Software Engineer',
+      location: 'San Francisco, CA',
+      duration: 'Full-time',
+      anticipatedPay: '$100,000',
+      scheduledInterview: '2023-09-10',
+      state: 'Applied',
+    },
+    {
+      company: 'TechCorp',
+      roleName: 'Frontend Developer',
+      location: 'New York, NY',
+      duration: 'Contract',
+      anticipatedPay: '$85,000',
+      scheduledInterview: '2023-09-15',
+      state: 'Interview Scheduled',
+    },
+    {
+      company: 'InnovateTech',
+      roleName: 'Data Scientist',
+      location: 'Chicago, IL',
+      duration: 'Full-time',
+      anticipatedPay: '$110,000',
+      scheduledInterview: '2023-09-20',
+      state: 'Phone Screen',
+    },
+  ];
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Job Search Dashboard</h1>
+      <JobTable data={jobData} />
     </div>
   );
-}
+};
 
 export default App;

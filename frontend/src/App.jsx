@@ -1,7 +1,7 @@
 import './App.css';
 import styled from 'styled-components';
 import JobTable from './components/Table';
-import AddJob from './components/AddJob';
+import AddJob from './components/Add';
 import TrackCalender from './components/Calender';
 import Stats from './components/Stats';
 
@@ -17,7 +17,7 @@ const roles = ['Frontend Developer', 'Backend Engineer', 'Data Scientist', 'UI/U
 const locations = ['New York, NY', 'Chicago, IL', 'San Francisco, CA', 'Los Angeles, CA', 'Seattle, WA'];
 const durations = ['4-month', '8-month', '12-month'];
 const anticipatedPays = ['$75,000', '$90,000', '$110,000', '$120,000', '$150,000'];
-const states = ['Interview', 'Phone Screen', 'Online Assessment', 'Offer', 'Rejected'];
+const statuses = ['Interview', 'Phone Screen', 'Online Assessment', 'Offer', 'Rejected'];
 
 const generateRandomData = () => {
   const randomCompany = companies[Math.floor(Math.random() * companies.length)];
@@ -27,7 +27,7 @@ const generateRandomData = () => {
   const randomAnticipatedPay = anticipatedPays[Math.floor(Math.random() * anticipatedPays.length)];
   const randomScheduledInterview = getRandomDate('2023-09-01', '2023-09-30');
   const dateApplied = getRandomDate('2023-09-01', '2023-09-30');
-  const randomState = states[Math.floor(Math.random() * states.length)];
+  const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
 
   return {
     company: randomCompany,
@@ -37,7 +37,7 @@ const generateRandomData = () => {
     duration: randomDuration,
     anticipatedPay: randomAnticipatedPay,
     scheduledInterview: randomScheduledInterview,
-    state: randomState,
+    status: randomStatus,
   };
 };
 

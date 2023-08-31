@@ -4,7 +4,8 @@ import { ModalContent, ModalOverlay } from './Modals';
 import { PageNumber, PaginationContainer, PageNavigationButton } from './Pages';
 import { Button } from './Button';
 import { Icon } from '@iconify/react';
-import { ModifyModal } from './ModifyDelete';
+import { ModifyModal } from './Modify';
+import { DeleteConfirmationModal } from './Delete';
 
 const TableContainer = styled.div`
   margin: 20px;
@@ -42,7 +43,7 @@ const TableCell = styled.td`
   border-bottom: 1px solid #dcdcdc;
 `;
 
-const StateBadge = styled.span`
+const StatusBadge = styled.span`
   display: inline-block;
   padding: 5px 10px;
   border-radius: 4px;
@@ -50,7 +51,7 @@ const StateBadge = styled.span`
   font-weight: bold;
   color: #fff;
   background-color: ${props => {
-    switch (props.state) {
+    switch (props.status) {
       case 'Interview':
         return '#007bff';
       case 'Phone Screen':
@@ -81,7 +82,8 @@ const JobTable = ({ data }) => {
   const [showInformationModal, setShowInformationModal] = useState(false);
   const [currentJobData, setCurrentJobData] = useState(null);
   const [showModifyModal, setShowModifyModal] = useState(false);
-
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  
   const totalPages = Math.ceil(data.length / itemsPerPage);
   const visibleData = data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
   
@@ -123,7 +125,7 @@ const JobTable = ({ data }) => {
             <TableHeader>Date Applied</TableHeader>
             <TableHeader>Location</TableHeader>
             <TableHeader>Duration</TableHeader>
-            <TableHeader>State</TableHeader>
+            <TableHeader>Status</TableHeader>
             <TableHeader/>
           </tr>
         </thead>
@@ -136,13 +138,13 @@ const JobTable = ({ data }) => {
               <TableCell>{job.location}</TableCell>
               <TableCell>{job.duration}</TableCell>
               <TableCell>
-                <StateBadge state={job.state}>
-                  {job.state}
-                </StateBadge>
+                <StatusBadge status={job.status}>
+                  {job.status}
+                </StatusBadge>
                 <InfoIcon icon="clarity:info-solid" onClick={() => handleInfoClick(job)}/>
               </TableCell>
               <TableCell>
-                <Button className='gray' onClick={() => handleModifyClick(job)}>
+                <Button className='gray' type="button" onClick={() => handleModifyClick(job)}>
                   <Icon icon="streamline:interface-edit-write-2-change-document-edit-modify-paper-pencil-write-writing" />
                 </Button>
               </TableCell>
@@ -172,7 +174,14 @@ const JobTable = ({ data }) => {
       {showModifyModal && (
         <ModifyModal 
           onClose={() => setShowModifyModal(false)}
-          job={currentJobData}
+          currentJobData={currentJobData}
+          setShowDeleteConfirmation={setShowDeleteConfirmation}
+        />
+      )}
+      {showDeleteConfirmation && (
+        <DeleteConfirmationModal
+          onClose={() => setShowDeleteConfirmation(false)}
+          setShowModifyModal={setShowModifyModal}
         />
       )}
     </TableContainer>

@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Button } from './Button';
 
 export const ModalOverlay = styled.div`
   position: fixed;
@@ -31,16 +30,4 @@ export const InterviewModal = ({ interviewData, onClose }) => {
       </ModalContent>
     </ModalOverlay>
   );
-};
-
-export const DeleteConfirmationModal = ({ onClose, onConfirm }) => {
-    return (
-      <ModalOverlay>
-        <ModalContent>
-          <p>Are you sure you want to delete this job?</p>
-          <Button className="blue" onClick={onConfirm}>Yes</Button>
-          <Button className="gray" onClick={onClose}>No</Button>
-        </ModalContent>
-      </ModalOverlay>
-    );
 };

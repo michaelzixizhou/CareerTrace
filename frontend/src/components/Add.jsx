@@ -1,27 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { ModalContent, ModalOverlay, DeleteConfirmationModal } from './Modals';
+import styled from 'styled-components';
+import { ModalContent, ModalOverlay } from './Modals';
 import { Button, StyledCloseButton } from './Button';
+import { StyledForm, InputGroup, Label, Input } from './Input';
 import Select from 'react-select';
 import Autosuggest from 'react-autosuggest';
-import { StyledForm, InputGroup, Label, Input } from './Input';
 
-export const ModifyModal = ({ onClose, job }) => {
+const AddJobButtonContainer = styled.div`
+  text-align: center;
+  margin-bottom: 20px;
+`;
+
+const AddJobModal = ({ onClose }) => {
   const [locationSuggestions, setLocationSuggestions] = useState([]);
   const [companySuggestions, setCompanySuggestions] = useState([]);
 
-  const [jobInfo, setJobInfo] = useState(job);
-  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  
-  const handleDelete = () => {
-    // TODO: Implement delete logic here (update etc)
-    setShowDeleteConfirmation(false);
-    onClose();
-  };
-  
-  const handleUpdate = () => {
-    // TODO: Implement the submission logic
-    onClose();
-  };
+  const [jobInfo, setJobInfo] = useState({
+    company: '',
+    roleName: '',
+    dateApplied: '',
+    location: '',
+    duration: '',
+    anticipatedPay: '',
+    status: '',
+  });
 
   useEffect(() => {
     const fetchLocationSuggestions = async (inputValue) => {
@@ -56,6 +58,11 @@ export const ModifyModal = ({ onClose, job }) => {
     setJobInfo({ ...jobInfo, location: newValue });
   };
 
+  const handleSubmit = () => {
+    // TODO: Implement the submission logic
+    onClose();
+  };
+
   return (
     <ModalOverlay>
       <ModalContent>
@@ -65,7 +72,7 @@ export const ModifyModal = ({ onClose, job }) => {
           </InputGroup>
           <InputGroup>
             <Label>Company</Label>
-            {/* <Autosuggest
+            <Autosuggest
               suggestions={companySuggestions}
               onSuggestionsFetchRequested={({ value }) => handleCompanyChange(value)}
               onSuggestionsClearRequested={() => setCompanySuggestions([])}
@@ -75,11 +82,6 @@ export const ModifyModal = ({ onClose, job }) => {
                 value: jobInfo.company,
                 onChange: (_, { newValue }) => handleCompanyChange(newValue),
               }}
-            /> */}
-            <Input
-              type="text"
-              value={jobInfo.roleName}
-              onChange={(e) => setJobInfo({ ...jobInfo, roleName: e.target.value })}
             />
           </InputGroup>
           <InputGroup>
@@ -126,25 +128,39 @@ export const ModifyModal = ({ onClose, job }) => {
             />
           </InputGroup>
           <InputGroup>
-            <Label>State</Label>
+            <Label>Status</Label>
             <Input
               type="text"
-              value={jobInfo.state}
-              onChange={(e) => setJobInfo({ ...jobInfo, state: e.target.value })}
+              value={jobInfo.status}
+              onChange={(e) => setJobInfo({ ...jobInfo, status: e.target.value })}
             />
           </InputGroup>
           <InputGroup>
-            <Button className='blue' onClick={handleUpdate}>Update</Button>
-            <Button className='red' onClick={() => setShowDeleteConfirmation(true)}>Delete</Button>
+            <Button className='green' onClick={handleSubmit}>Submit</Button>
           </InputGroup>
         </StyledForm>
       </ModalContent>
-      {showDeleteConfirmation && (
-        <DeleteConfirmationModal
-          onClose={() => setShowDeleteConfirmation(false)}
-          onConfirm={handleDelete}
-        />
-      )}
     </ModalOverlay>
   );
 };
+
+const AddJob = () => {
+  const [showModal, setShowModal] = useState(false);
+
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  return (
+    <AddJobButtonContainer>
+      <Button className='blue' onClick={handleOpenModal}>Add Job</Button>
+      {showModal && <AddJobModal onClose={handleCloseModal} />}
+    </AddJobButtonContainer>
+  );
+};
+
+export default AddJob;

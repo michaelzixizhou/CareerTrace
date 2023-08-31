@@ -1,29 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { ModalContent, ModalOverlay } from './Modals';
+import { ModalContent, ModalOverlay, DeleteConfirmationModal } from './Modals';
 import { Button, StyledCloseButton } from './Button';
-import { StyledForm, InputGroup, Label, Input } from './Input';
 import Select from 'react-select';
 import Autosuggest from 'react-autosuggest';
+import { StyledForm, InputGroup, Label, Input } from './Input';
 
-const AddJobButtonContainer = styled.div`
-  text-align: center;
-  margin-bottom: 20px;
-`;
-
-const AddJobModal = ({ onClose }) => {
+export const ModifyModal = ({ onClose, job }) => {
   const [locationSuggestions, setLocationSuggestions] = useState([]);
   const [companySuggestions, setCompanySuggestions] = useState([]);
 
-  const [jobInfo, setJobInfo] = useState({
-    company: '',
-    roleName: '',
-    dateApplied: '',
-    location: '',
-    duration: '',
-    anticipatedPay: '',
-    state: '',
-  });
+  const [jobInfo, setJobInfo] = useState(job);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  
+  const handleDelete = () => {
+    // TODO: Implement delete logic here (update etc)
+    setShowDeleteConfirmation(false);
+    onClose();
+  };
+  
+  const handleUpdate = () => {
+    // TODO: Implement the submission logic
+    onClose();
+  };
 
   useEffect(() => {
     const fetchLocationSuggestions = async (inputValue) => {
@@ -58,11 +56,6 @@ const AddJobModal = ({ onClose }) => {
     setJobInfo({ ...jobInfo, location: newValue });
   };
 
-  const handleSubmit = () => {
-    // TODO: Implement the submission logic
-    onClose();
-  };
-
   return (
     <ModalOverlay>
       <ModalContent>
@@ -72,7 +65,7 @@ const AddJobModal = ({ onClose }) => {
           </InputGroup>
           <InputGroup>
             <Label>Company</Label>
-            <Autosuggest
+            {/* <Autosuggest
               suggestions={companySuggestions}
               onSuggestionsFetchRequested={({ value }) => handleCompanyChange(value)}
               onSuggestionsClearRequested={() => setCompanySuggestions([])}
@@ -82,6 +75,11 @@ const AddJobModal = ({ onClose }) => {
                 value: jobInfo.company,
                 onChange: (_, { newValue }) => handleCompanyChange(newValue),
               }}
+            /> */}
+            <Input
+              type="text"
+              value={jobInfo.roleName}
+              onChange={(e) => setJobInfo({ ...jobInfo, roleName: e.target.value })}
             />
           </InputGroup>
           <InputGroup>
@@ -136,31 +134,17 @@ const AddJobModal = ({ onClose }) => {
             />
           </InputGroup>
           <InputGroup>
-            <Button className='green' onClick={handleSubmit}>Submit</Button>
+            <Button className='blue' onClick={handleUpdate}>Update</Button>
+            <Button className='red' onClick={() => setShowDeleteConfirmation(true)}>Delete</Button>
           </InputGroup>
         </StyledForm>
       </ModalContent>
+      {showDeleteConfirmation && (
+        <DeleteConfirmationModal
+          onClose={() => setShowDeleteConfirmation(false)}
+          onConfirm={handleDelete}
+        />
+      )}
     </ModalOverlay>
   );
 };
-
-const AddJob = () => {
-  const [showModal, setShowModal] = useState(false);
-
-  const handleOpenModal = () => {
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
-  return (
-    <AddJobButtonContainer>
-      <Button className='blue' onClick={handleOpenModal}>Add Job</Button>
-      {showModal && <AddJobModal onClose={handleCloseModal} />}
-    </AddJobButtonContainer>
-  );
-};
-
-export default AddJob;

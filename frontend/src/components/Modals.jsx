@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Button } from './Button';
 
 export const ModalOverlay = styled.div`
   position: fixed;
@@ -19,30 +20,6 @@ export const ModalContent = styled.div`
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 `;
 
-const DeleteChoiceButton = styled.button`
-  padding: 10px 20px;
-  margin: 5px;
-  border: none;
-  border-radius: 4px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #e0e0e0;
-  }
-
-  &.confirm {
-    background-color: #dc3545;
-    color: #fff;
-  }
-
-  &.cancel {
-    background-color: #6c757d;
-    color: #fff;
-  }
-`;
-
 export const InterviewModal = ({ interviewData, onClose }) => {
   return (
     <ModalOverlay onClick={onClose}>
@@ -61,8 +38,8 @@ export const DeleteConfirmationModal = ({ onClose, onConfirm }) => {
       <ModalOverlay>
         <ModalContent>
           <p>Are you sure you want to delete this job?</p>
-          <DeleteChoiceButton className="confirm" onClick={onConfirm}>Yes</DeleteChoiceButton>
-          <DeleteChoiceButton className="cancel" onClick={onClose}>No</DeleteChoiceButton>
+          <Button className="blue" onClick={onConfirm}>Yes</Button>
+          <Button className="gray" onClick={onClose}>No</Button>
         </ModalContent>
       </ModalOverlay>
     );

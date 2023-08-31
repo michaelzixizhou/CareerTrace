@@ -27,6 +27,11 @@ export const Button = styled.button`
     background-color: #28a745;
     color: #fff;
   }
+
+  &.gray {
+    background-color: #777777;
+    color: #fff;
+  }
 `;
 
 export const StyledCloseButton = styled.button`

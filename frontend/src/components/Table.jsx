@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { ModalContent, ModalOverlay, DeleteConfirmationModal } from './Modals';
+import { ModalContent, ModalOverlay } from './Modals';
 import { PageNumber, PaginationContainer, PageNavigationButton } from './Pages';
 import { Button } from './Button';
 import { Icon } from '@iconify/react';
+import { ModifyModal } from './ModifyDelete';
 
 const TableContainer = styled.div`
   margin: 20px;
@@ -48,7 +49,6 @@ const StateBadge = styled.span`
   font-size: 12px;
   font-weight: bold;
   color: #fff;
-  cursor: pointer;
   background-color: ${props => {
     switch (props.state) {
       case 'Interview':
@@ -78,9 +78,9 @@ const itemsPerPage = 10; // temporary
 
 const JobTable = ({ data }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [showModal, setShowModal] = useState(false);
-  const [modalData, setModalData] = useState(null);
-  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [showInformationModal, setShowInformationModal] = useState(false);
+  const [currentJobData, setCurrentJobData] = useState(null);
+  const [showModifyModal, setShowModifyModal] = useState(false);
 
   const totalPages = Math.ceil(data.length / itemsPerPage);
   const visibleData = data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
@@ -103,20 +103,14 @@ const JobTable = ({ data }) => {
     </PageNumber>
   ));
 
-  const handleInfoClick = (state, date, pay) => {
-    setModalData([date, pay]);
-    setShowModal(true);
+  const handleInfoClick = (job) => {
+    setCurrentJobData(job);
+    setShowInformationModal(true);
   };
 
-  const handleDeleteConfirmation = jobData => {
-    setModalData(jobData);
-    setShowDeleteConfirmation(true);
-  };
-
-  const handleDeleteJob = () => {
-    //  TODO: Implement delete logic here (update etc)
-    setShowModal(false);
-    setShowDeleteConfirmation(false);
+  const handleModifyClick = (job) => {
+    setCurrentJobData(job);
+    setShowModifyModal(true);
   };
 
   return (
@@ -145,10 +139,12 @@ const JobTable = ({ data }) => {
                 <StateBadge state={job.state}>
                   {job.state}
                 </StateBadge>
-                <InfoIcon icon="clarity:info-solid" onClick={() => handleInfoClick(job.state, job.scheduledInterview, job.anticipatedPay)}/>
+                <InfoIcon icon="clarity:info-solid" onClick={() => handleInfoClick(job)}/>
               </TableCell>
               <TableCell>
-                <Button className='red' onClick={() => handleDeleteConfirmation(job)}>X</Button>
+                <Button className='gray' onClick={() => handleModifyClick(job)}>
+                  <Icon icon="streamline:interface-edit-write-2-change-document-edit-modify-paper-pencil-write-writing" />
+                </Button>
               </TableCell>
             </TableRow>
           ))}
@@ -165,27 +161,19 @@ const JobTable = ({ data }) => {
           <PageNavigationButton onClick={() => setCurrentPage(lastPageInGroup + 1)}>Right</PageNavigationButton>
         )}
       </PaginationContainer>
-      {showModal && (
-        <ModalOverlay onClick={() => setShowModal(false)}>
+      {showInformationModal && (
+        <ModalOverlay onClick={() => setShowInformationModal(false)}>
           <ModalContent>
-            <p>Interview Scheduled: {modalData[0]}</p>
-            <p>Anticipated Pay: {modalData[1]}</p>
+            <p>Interview Scheduled: {currentJobData.dateApplied}</p>
+            <p>Anticipated Pay: {currentJobData.pay}</p>
           </ModalContent>
         </ModalOverlay>
       )}
-      {showDeleteConfirmation && (
-        <ModalOverlay onClick={() => setShowModal(false)}>
-          <ModalContent>
-            {showDeleteConfirmation ? (
-              <DeleteConfirmationModal
-                onClose={() => setShowDeleteConfirmation(false)}
-                onConfirm={handleDeleteJob}
-              />
-            ) : (
-              <p>{modalData}</p>
-            )}
-          </ModalContent>
-        </ModalOverlay>
+      {showModifyModal && (
+        <ModifyModal 
+          onClose={() => setShowModifyModal(false)}
+          job={currentJobData}
+        />
       )}
     </TableContainer>
   );

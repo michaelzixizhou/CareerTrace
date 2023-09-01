@@ -15,8 +15,8 @@ const StatItem = styled.div`
 
 const Stats = ({ data }) => {
   const totalApplications = data.length;
-  const totalInterviewsAndOffers = data.filter(item => item.state === 'Interview' || item.state === 'Offer').length;
-  const totalOffers = data.filter(item => item.state === 'Offer').length;
+  const totalInterviewsAndOffers = data.filter(item => item.status === 'Interview' || item.status === 'Offer').length;
+  const totalOffers = data.filter(item => item.status === 'Offer').length;
 
   const interviewRate = (totalInterviewsAndOffers / totalApplications) * 100;
   const offerRate = (totalOffers / totalApplications) * 100;

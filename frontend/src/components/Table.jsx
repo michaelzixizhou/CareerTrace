@@ -13,6 +13,15 @@ const TableContainer = styled.div`
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   background-color: #f9f9f9;
+
+  @media (max-width: 800px) {
+    padding: 0;
+    margin: 0;
+    width: 80%;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+  }
 `;
 
 const StyledTable = styled.table`
@@ -31,6 +40,10 @@ const TableHeader = styled.th`
   text-align: left;
   cursor: pointer;
   transition: background-color 0.3s ease;
+
+  @media (max-width: 800px) {
+    width: 100%;
+  }
 `;
 
 const TableRow = styled.tr`

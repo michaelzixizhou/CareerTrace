@@ -54,14 +54,34 @@ const AppContainer = styled.div`
   flex-direction: row;
   gap: 20px;
   padding: 20px;
+
+  @media (max-width: 800px) {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0;
+    padding: 0;
+  }
 `;
 
 const LeftContainer = styled.div`
   flex: 1;
+
+  @media(max-width: 800px) {
+    align-items: center;
+    padding: 0;
+    margin: 0;
+  }
 `;
 
 const RightContainer = styled.div`
   flex: 1;
+
+  @media(max-width: 800px) {
+    width: fit-content;
+    margin: 0;
+    padding: 0;
+  }
 `;
 
 const App = () => {

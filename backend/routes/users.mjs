@@ -10,19 +10,15 @@ router.get(
 );
 
 router.get(
-    '/test',
-    (req, res) => {
-        res.send("hi");
-    }
-)
-
-router.get(
     '/auth/google/callback',
-    passport.authenticate('google', { failureRedirect: '/' }),
-    (req, res) => {
-        res.redirect('/profile');
-    }
+    passport.authenticate('google', 
+        { 
+            failureRedirect: '/',
+            successRedirect: '/profile',
+        })
 );
+
+router.get("/test", (req, res) => {res.send("hi")});
 
 router.get(
     '/logout', (req, res) => {

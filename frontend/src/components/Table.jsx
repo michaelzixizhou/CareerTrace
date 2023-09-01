@@ -8,19 +8,21 @@ import { ModifyModal } from './Modify';
 import { DeleteConfirmationModal } from './Delete';
 
 const TableContainer = styled.div`
-  margin: min(5vw, 5rem);
+  margin: 0;
   padding: min(2vw, 3rem);
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   background-color: #f9f9f9;
 
   @media (max-width: 800px) {
-    padding: 0;
+    padding: min(5vw, 1rem);
     margin: 0;
-    width: 80%;
+    width: 100%;
     align-items: center;
-    margin: 0;
-    padding: 0;
+    text-align: center;
+    border-radius: 0;
+    box-shadow: none;
+    background-color: transparent;
   }
 `;
 
@@ -68,6 +70,7 @@ const StatusBadge = styled.span`
   margin-top: 0;
   font-weight: bold;
   color: #fff;
+  text-align: left;
   background-color: ${props => {
     switch (props.status) {
       case 'Interview':

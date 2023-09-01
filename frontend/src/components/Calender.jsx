@@ -6,8 +6,14 @@ import { Button } from './ButtonStyles';
 import 'react-calendar/dist/Calendar.css';
 
 const CalendarContainer = styled.div`
-  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
   padding: 20px;
+  align-items: center;
+  text-align: center;
+  align-self: center;
+  align-content: center;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   background-color: #f9f9f9;

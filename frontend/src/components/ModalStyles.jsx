@@ -18,16 +18,3 @@ export const ModalContent = styled.div`
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 `;
-
-export const InterviewModal = ({ interviewData, onClose }) => {
-  return (
-    <ModalOverlay onClick={onClose}>
-      <ModalContent>
-        <h2>Interview Details</h2>
-        <p>Company: {interviewData.company}</p>
-        <p>Role: {interviewData.roleName}</p>
-        <p>Date: {interviewData.scheduledInterview}</p>
-      </ModalContent>
-    </ModalOverlay>
-  );
-};

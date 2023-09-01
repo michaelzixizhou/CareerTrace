@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { ModalContent, ModalOverlay } from './Modals';
-import { PageNumber, PaginationContainer, PageNavigationButton } from './Pages';
-import { Button } from './Button';
+import { ModalContent, ModalOverlay } from './ModalStyles';
+import { PageNumber, PaginationContainer, PageNavigationButton } from './PageStyles';
+import { Button } from './ButtonStyles';
 import { Icon } from '@iconify/react';
 import { ModifyModal } from './Modify';
 import { DeleteConfirmationModal } from './Delete';
@@ -167,7 +167,7 @@ const JobTable = ({ data }) => {
         <ModalOverlay onClick={() => setShowInformationModal(false)}>
           <ModalContent>
             <p>Interview Scheduled: {currentJobData.dateApplied}</p>
-            <p>Anticipated Pay: {currentJobData.pay}</p>
+            <p>Anticipated Pay: {currentJobData.anticipatedPay}</p>
           </ModalContent>
         </ModalOverlay>
       )}

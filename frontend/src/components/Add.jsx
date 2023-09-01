@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { ModalContent, ModalOverlay } from './Modals';
-import { Button, StyledCloseButton } from './Button';
-import { StyledForm, InputGroup, Label, Input } from './Input';
+import { ModalContent, ModalOverlay } from './ModalStyles';
+import { Button, StyledCloseButton } from './ButtonStyles';
+import { StyledForm, InputGroup, Label, Input } from './InputStyles';
 import Select from 'react-select';
 import Autosuggest from 'react-autosuggest';
 

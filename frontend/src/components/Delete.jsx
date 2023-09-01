@@ -1,5 +1,5 @@
-import { ModalOverlay, ModalContent } from "./Modals";
-import { Button } from "./Button";
+import { ModalOverlay, ModalContent } from "./ModalStyles";
+import { Button } from "./ButtonStyles";
 
 export const DeleteConfirmationModal = ({ onClose, setShowModifyModal }) => {
     const handleDelete = () => {

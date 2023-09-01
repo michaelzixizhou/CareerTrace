@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Calendar from 'react-calendar';
-import { InterviewModal } from './Modals';
+import { ModalContent, ModalOverlay } from './ModalStyles';
 import 'react-calendar/dist/Calendar.css';
 
 const CalendarContainer = styled.div`
@@ -24,6 +24,19 @@ const EventLabel = styled.div`
   display: flex;
   align-items: center;
 `;
+
+export const InterviewModal = ({ interviewData, onClose }) => {
+  return (
+    <ModalOverlay onClick={onClose}>
+      <ModalContent>
+        <h2>Interview Details</h2>
+        <p>Company: {interviewData.company}</p>
+        <p>Role: {interviewData.roleName}</p>
+        <p>Date: {interviewData.scheduledInterview}</p>
+      </ModalContent>
+    </ModalOverlay>
+  );
+};
 
 const TrackCalender = ({ data, selectedDate, handleDateChange }) => {
     const [showInterviewModal, setShowInterviewModal] = useState(false);

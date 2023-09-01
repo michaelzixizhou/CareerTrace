@@ -33,8 +33,14 @@ const EventDot = styled.div`
   justify-content: center;
   align-items: center;
   font-weight: bold;
-  font-size: 14px;
+  font-size: var(--font-size__text);
   color: #fff;
+`;
+
+const CalendarHeader = styled.div`
+  font-size: var(--font-size__header);
+  font-weight: 800;
+  margin-bottom: min(1vw, 1rem);
 `;
 
 const EventLabel = styled.div`
@@ -184,7 +190,7 @@ const TrackCalender = ({ data, selectedDate, handleDateChange }) => {
 
   return (
     <CalendarContainer>
-      <h2>Interview and Application Calendar</h2>
+      <CalendarHeader>Interview and Application Calendar</CalendarHeader>
       <Calendar onChange={handleDateChange} value={selectedDate} tileContent={tileContent} onClickDay={handleTileClick} />
       {showInterviewModal && (
         <InterviewApplicationModal 

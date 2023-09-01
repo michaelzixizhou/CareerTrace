@@ -40,6 +40,6 @@ export const StyledCloseButton = styled.button`
   right: 10px;
   background: none;
   border: none;
-  font-size: 18px;
+  font-size: var(--font-size__button);
   cursor: pointer;
 `;

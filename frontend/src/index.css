@@ -4,6 +4,7 @@
 }
 
 :root {
+  --font-size__title: min(13vw, 3rem);
   --font-size__header: min(12vw, 1.2rem);
   --font-size__text: min(8vw, 0.6rem);
   --font-size__icon: min(10vw, 1.5rem);

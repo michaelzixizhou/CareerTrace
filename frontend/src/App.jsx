@@ -61,6 +61,7 @@ const AppContainer = styled.div`
     text-align: center;
     gap: 0;
     padding: 0;
+    padding-top: min(10vw, 3rem);
   }
 `;
 
@@ -84,20 +85,30 @@ const RightContainer = styled.div`
   }
 `;
 
+const Title = styled.div`
+  font-size: var(--font-size__title);
+  text-align: center;
+  font-weight: 1000;
+`;
+
 const App = () => {
   const jobData = generateSampleData(341);
 
   return (
-    <AppContainer>
-      <LeftContainer>
-        <TrackCalender data={jobData} />
-        <Stats data={jobData} />
-        <AddJob />
-      </LeftContainer>
-      <RightContainer>
-        <JobTable data={jobData} />
-      </RightContainer>
-    </AppContainer>
+    <>
+      <Title>Job Tracker</Title>
+      <AppContainer>
+        <LeftContainer>
+          <TrackCalender data={jobData} />
+          <Stats data={jobData} />
+          <AddJob />
+        </LeftContainer>
+        <RightContainer>
+          <JobTable data={jobData} />
+        </RightContainer>
+      </AppContainer>
+    </>
+
   );
 };
 

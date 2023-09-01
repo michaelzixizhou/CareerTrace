@@ -8,8 +8,8 @@ import { ModifyModal } from './Modify';
 import { DeleteConfirmationModal } from './Delete';
 
 const TableContainer = styled.div`
-  margin: 20px;
-  padding: 20px;
+  margin: min(5vw, 5rem);
+  padding: min(2vw, 3rem);
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   background-color: #f9f9f9;
@@ -26,7 +26,8 @@ const TableHeader = styled.th`
   padding: 12px 16px;
   background-color: #f1f1f1;
   border-bottom: 1px solid #dcdcdc;
-  font-weight: bold;
+  font-weight: 800;
+  font-size: var(--font-size__header);
   text-align: left;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -39,15 +40,19 @@ const TableRow = styled.tr`
 `;
 
 const TableCell = styled.td`
-  padding: 12px 16px;
+  padding: min(1vw, 2rem);
   border-bottom: 1px solid #dcdcdc;
 `;
 
 const StatusBadge = styled.span`
   display: inline-block;
-  padding: 5px 10px;
+  padding: min(1vw, 0.3rem) min(1vw, 0.5rem);
   border-radius: 4px;
-  font-size: 12px;
+  font-size: var(--font-size__text);
+  line-height: normal;
+  vertical-align: middle;
+  margin-bottom: 0;
+  margin-top: 0;
   font-weight: bold;
   color: #fff;
   background-color: ${props => {
@@ -69,8 +74,11 @@ const StatusBadge = styled.span`
 `;
 
 const InfoIcon = styled(Icon)`
-  font-size: 30px; 
-  margin-left: 5px;
+  font-size: var(--font-size__icon); 
+  margin-left: min(0.5vw, 0.3rem);
+  margin-top: 0;
+  margin-bottom: 0;
+  vertical-align: middle;
   color: #6c757d;
   cursor: pointer;
 `;

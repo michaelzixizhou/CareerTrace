@@ -3,6 +3,12 @@
 	src: url('../assets/DMSans-VariableFont_opsz\,wght.ttf');
 }
 
+:root {
+  --font-size__header: min(12vw, 1.2rem);
+  --font-size__text: min(8vw, 0.6rem);
+  --font-size__icon: min(10vw, 1.5rem);
+}
+
 body {
   margin: 0;
   font-family: "DM Sans", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

@@ -6,6 +6,7 @@ import { Button } from './ButtonStyles';
 import { Icon } from '@iconify/react';
 import { ModifyModal } from './Modify';
 import { DeleteConfirmationModal } from './Delete';
+import { MobileTable, MobileTitle, MobileButton } from './MobileTable';
 
 const TableContainer = styled.div`
   margin: 0;
@@ -15,14 +16,7 @@ const TableContainer = styled.div`
   background-color: #f9f9f9;
 
   @media (max-width: 800px) {
-    padding: min(5vw, 1rem);
-    margin: 0;
-    width: 100%;
-    align-items: center;
-    text-align: center;
-    border-radius: 0;
-    box-shadow: none;
-    background-color: transparent;
+    display: none;
   }
 `;
 
@@ -42,10 +36,6 @@ const TableHeader = styled.th`
   text-align: left;
   cursor: pointer;
   transition: background-color 0.3s ease;
-
-  @media (max-width: 800px) {
-    width: 100%;
-  }
 `;
 
 const TableRow = styled.tr`
@@ -107,6 +97,7 @@ const JobTable = ({ data }) => {
   const [currentJobData, setCurrentJobData] = useState(null);
   const [showModifyModal, setShowModifyModal] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [showMobileInfo, setShowMobileInfo] = useState(false);
   
   const totalPages = Math.ceil(data.length / itemsPerPage);
   const visibleData = data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
@@ -140,75 +131,99 @@ const JobTable = ({ data }) => {
   };
 
   return (
-    <TableContainer>
-      <StyledTable>
-        <thead>
-          <tr>
-            <TableHeader>Company</TableHeader>
-            <TableHeader>Role Name</TableHeader>
-            <TableHeader>Date Applied</TableHeader>
-            <TableHeader>Location</TableHeader>
-            <TableHeader>Duration</TableHeader>
-            <TableHeader>Status</TableHeader>
-            <TableHeader/>
-          </tr>
-        </thead>
-        <tbody>
-          {visibleData.map((job, index) => (
-            <TableRow key={index}>
-              <TableCell>{job.company}</TableCell>
-              <TableCell>{job.roleName}</TableCell>
-              <TableCell>{job.dateApplied}</TableCell>
-              <TableCell>{job.location}</TableCell>
-              <TableCell>{job.duration}</TableCell>
-              <TableCell>
-                <StatusBadge status={job.status}>
-                  {job.status}
-                </StatusBadge>
-                <InfoIcon icon="clarity:info-solid" onClick={() => handleInfoClick(job)}/>
-              </TableCell>
-              <TableCell>
-                <Button className='gray' type="button" onClick={() => handleModifyClick(job)}>
-                  <Icon icon="streamline:interface-edit-write-2-change-document-edit-modify-paper-pencil-write-writing" />
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </tbody>
-      </StyledTable>
-      <PaginationContainer>
-        {currentGroup > 1 && (
-          <PageNavigationButton onClick={() => setCurrentPage(firstPageInGroup - pagesPerGroup)}>
-            Left
-          </PageNavigationButton>
+    <>
+      <TableContainer>
+        <StyledTable>
+          <thead>
+            <tr>
+              <TableHeader>Company</TableHeader>
+              <TableHeader>Role Name</TableHeader>
+              <TableHeader>Date Applied</TableHeader>
+              <TableHeader>Location</TableHeader>
+              <TableHeader>Duration</TableHeader>
+              <TableHeader>Status</TableHeader>
+              <TableHeader/>
+            </tr>
+          </thead>
+          <tbody>
+            {visibleData.map((job, index) => (
+              <TableRow key={index}>
+                <TableCell>{job.company}</TableCell>
+                <TableCell>{job.roleName}</TableCell>
+                <TableCell>{job.dateApplied}</TableCell>
+                <TableCell>{job.location}</TableCell>
+                <TableCell>{job.duration}</TableCell>
+                <TableCell>
+                  <StatusBadge status={job.status}>
+                    {job.status}
+                  </StatusBadge>
+                  <InfoIcon icon="clarity:info-solid" onClick={() => handleInfoClick(job)}/>
+                </TableCell>
+                <TableCell>
+                  <Button className='gray' type="button" onClick={() => handleModifyClick(job)}>
+                    <Icon icon="streamline:interface-edit-write-2-change-document-edit-modify-paper-pencil-write-writing" />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </tbody>
+        </StyledTable>
+        <PaginationContainer>
+          {currentGroup > 1 && (
+            <PageNavigationButton onClick={() => setCurrentPage(firstPageInGroup - pagesPerGroup)}>
+              Left
+            </PageNavigationButton>
+          )}
+          {visiblePages}
+          {lastPageInGroup < totalPages && (
+            <PageNavigationButton onClick={() => setCurrentPage(lastPageInGroup + 1)}>Right</PageNavigationButton>
+          )}
+        </PaginationContainer>
+        {showInformationModal && (
+          <ModalOverlay onClick={() => setShowInformationModal(false)}>
+            <ModalContent>
+              <p>Interview Scheduled: {currentJobData.dateApplied}</p>
+              <p>Anticipated Pay: {currentJobData.anticipatedPay}</p>
+            </ModalContent>
+          </ModalOverlay>
         )}
-        {visiblePages}
-        {lastPageInGroup < totalPages && (
-          <PageNavigationButton onClick={() => setCurrentPage(lastPageInGroup + 1)}>Right</PageNavigationButton>
+        {showModifyModal && (
+          <ModifyModal 
+            onClose={() => setShowModifyModal(false)}
+            currentJobData={currentJobData}
+            setShowDeleteConfirmation={setShowDeleteConfirmation}
+          />
         )}
-      </PaginationContainer>
-      {showInformationModal && (
-        <ModalOverlay onClick={() => setShowInformationModal(false)}>
-          <ModalContent>
-            <p>Interview Scheduled: {currentJobData.dateApplied}</p>
-            <p>Anticipated Pay: {currentJobData.anticipatedPay}</p>
-          </ModalContent>
-        </ModalOverlay>
-      )}
-      {showModifyModal && (
-        <ModifyModal 
-          onClose={() => setShowModifyModal(false)}
-          currentJobData={currentJobData}
-          setShowDeleteConfirmation={setShowDeleteConfirmation}
-        />
-      )}
-      {showDeleteConfirmation && (
-        <DeleteConfirmationModal
-          onClose={() => setShowDeleteConfirmation(false)}
-          setShowModifyModal={setShowModifyModal}
-        />
-      )}
-    </TableContainer>
+        {showDeleteConfirmation && (
+          <DeleteConfirmationModal
+            onClose={() => setShowDeleteConfirmation(false)}
+            setShowModifyModal={setShowModifyModal}
+          />
+        )}
+      </TableContainer>
+
+      <MobileTable>
+        {visibleData.map((job, index) => (
+          <>
+            <MobileTitle key={index}>
+              {job.company}
+                <MobileButton onClick={() => setShowMobileInfo(true)}>Click to Show more</MobileButton>
+
+              {showMobileInfo && (
+                <ModalOverlay onClick={() => setShowMobileInfo(false)}>
+                  <ModalContent>
+                    <p>Unimplemented</p>
+                  </ModalContent>
+                </ModalOverlay>
+              )}
+            </MobileTitle>
+
+          </>
+          
+        ))}
+
+      </MobileTable>
+    </>
   );
 };
 

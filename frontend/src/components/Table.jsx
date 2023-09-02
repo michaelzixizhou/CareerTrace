@@ -6,7 +6,7 @@ import { Button } from './ButtonStyles';
 import { Icon } from '@iconify/react';
 import { ModifyModal } from './Modify';
 import { DeleteConfirmationModal } from './Delete';
-import { MobileTable, MobileTitle, MobileButton } from './MobileTable';
+import { MobileTable, MobileTitle, MobileButton, ModalHeader, ModalText } from './MobileTable';
 
 const TableContainer = styled.div`
   margin: 0;
@@ -212,7 +212,13 @@ const JobTable = ({ data }) => {
               {showMobileInfo && (
                 <ModalOverlay onClick={() => setShowMobileInfo(false)}>
                   <ModalContent>
-                    <p>Unimplemented</p>
+                    <ModalHeader>Company <ModalText>: {job.company}</ModalText></ModalHeader>
+                    <ModalHeader>Role Name <ModalText>: {job.roleName}</ModalText></ModalHeader>
+                    <ModalHeader>Date Applied <ModalText>: {job.dateApplied}</ModalText></ModalHeader>
+                    <ModalHeader>Location <ModalText>: {job.location}</ModalText></ModalHeader>
+                    <ModalHeader>Duration <ModalText>: {job.duration}</ModalText></ModalHeader>
+                    <ModalHeader>Interview Scheduled: <ModalText>: {job.dateApplied}</ModalText></ModalHeader>
+                    <ModalHeader>Anticipated Pay: <ModalText>: {job.anticipatedPay}</ModalText></ModalHeader>
                   </ModalContent>
                 </ModalOverlay>
               )}

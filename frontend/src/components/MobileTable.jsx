@@ -34,3 +34,15 @@ export const MobileButton = styled.div`
         cursor: pointer;
     }
 `;
+
+export const ModalHeader = styled.div`
+    font-size: var(--font-size__button);
+    font-weight: 800;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: min(5vw, 2rem);
+`;
+
+export const ModalText = styled.div`
+    font-weight: 500;
+`;

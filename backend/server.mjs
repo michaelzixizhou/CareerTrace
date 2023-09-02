@@ -7,33 +7,49 @@ import bodyParser from "body-parser";
 import passport from "passport";
 import session from "express-session";
 import initializePassport from "./auth.mjs";
-
+import csrf from "csurf";
+import createError from "http-errors";
+import cookieParser from "cookie-parser";
 
 const PORT = process.env.PORT || 5050;
 const app = express();
 
 
-app.use(session({
-    secret: "test",
-    resave: false,
-    saveUninitialized: true,
-}))
-
-app.use(passport.initialize());
-app.use(passport.session());
-
-initializePassport(passport);
-
+app.use(cors());
+app.use(express.json());
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-app.use(cors());
-app.use(express.json());
+app.use(cookieParser());
+
+app.use(session({
+    secret: "test",
+    resave: false,
+    saveUninitialized: false,
+}))
+
+initializePassport(passport);
+app.use(csrf());
+app.use(passport.authenticate('session'))
+app.use(function(req, res, next) {
+  var msgs = req.session.messages || [];
+  res.locals.messages = msgs;
+  res.locals.hasMessages = !! msgs.length;
+  req.session.messages = [];
+  next();
+});
+app.use(function(req, res, next) {
+  res.locals.csrfToken = req.csrfToken();
+  next();
+});
 
 app.use("/record", records);
 app.use("/user", users);
-
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
+});
 app.listen(PORT, () => {
     console.log(`Server is running on port: ${PORT}`);
     console.log(`http://localhost:${PORT}/`)

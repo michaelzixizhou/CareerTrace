@@ -1,4 +1,4 @@
-import GoogleStrategy from "passport-google-oauth20";
+import GoogleStrategy from "passport-google-oidc";
 import db from "./db/conn.mjs";
 
 
@@ -6,29 +6,28 @@ function initializePassport(passport) {
     passport.use(
         new GoogleStrategy(
             {
-                clientID: '187418418847-v40m3gjec6iv7070da636liv0asub8vj.apps.googleusercontent.com',
-                clientSecret: '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',
+                clientID: process.env['GOOGLE_CLIENT_ID'],
+                clientSecret: process.env['GOOGLE_CLIENT_SECRET'],
                 callbackURL: '/user/auth/google/callback',
                 scope: ['profile'],
-                state: true,
             }
             ,
-            async (accessToken, refreshToken, profile, done) => {
+            function verify(issuer, profile, done) {
                 try {
                     console.log(profile);
-                    // const users = db.collection("users");
-                    //
-                    // const existingUser = await users.findOne({ googleId: profile.id });
-                    // if (existingUser) {
-                    //     return done(null, existingUser);
-                    // }
-                    //
-                    // const newUser = {
-                    //     googleId: profile.id,
-                    //     username: profile.displayName
-                    // }
-                    // await users.insertOne(newUser);
-                    // done(null, profile);
+                    const users = db.collection("users");
+
+                    const existingUser = users.findOne({ googleId: profile.id });
+                    if (existingUser) {
+                        return done(null, existingUser);
+                    }
+
+                    const newUser = {
+                        googleId: profile.id,
+                        username: profile.displayName
+                    }
+                    users.insertOne(newUser);
+                    return done(null, profile);
                 } catch (error) {
                     console.log("Error with Google sign-in");
                 }
@@ -36,13 +35,17 @@ function initializePassport(passport) {
         )
     )
 
-    passport.serializeUser((user, done) => {
-        done(null, user);
-    })
+    passport.serializeUser(function(user, cb) {
+        process.nextTick(function() {
+            cb(null, { id: user.id, username: user.username, name: user.name });
+        });
+    });
 
-    passport.deserializeUser((user, done) => {
-        done(null, user);
-    })
+    passport.deserializeUser(function(user, cb) {
+        process.nextTick(function() {
+            return cb(null, user);
+        });
+    });
 }
 
 

@@ -4,9 +4,7 @@ const router = express.Router();
 
 router.get(
     '/auth/google',
-    passport.authenticate("google", {
-        scope: ['profile'],
-    })
+    passport.authenticate("google")
 );
 
 router.get(
@@ -14,11 +12,9 @@ router.get(
     passport.authenticate('google', 
         { 
             failureRedirect: '/',
-            successRedirect: '/profile',
+            successRedirect: '/user/profile',
         })
 );
-
-router.get("/test", (req, res) => {res.send("hi")});
 
 router.get(
     '/logout', (req, res) => {
@@ -31,7 +27,7 @@ router.get('/profile', (req, res) => {
     if (!req.user) {
         return res.redirect('/');
     }
-    res.send(`Welcome, ${req.user.username}!`);
+    res.send(`Welcome, ${req.user.displayName}!`);
 });
 
 export default router;

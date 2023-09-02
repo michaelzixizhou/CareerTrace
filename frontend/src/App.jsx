@@ -35,7 +35,7 @@ const generateRandomData = () => {
     dateApplied: dateApplied,
     location: randomLocation,
     duration: randomDuration,
-    anticipatedPay: randomAnticipatedPay,
+    pay: randomAnticipatedPay,
     scheduledInterview: randomScheduledInterview,
     status: randomStatus,
     maxStatus: randomStatus,

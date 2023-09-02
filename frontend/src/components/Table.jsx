@@ -137,6 +137,10 @@ const JobTable = ({ data }) => {
     </PageNumber>
   ));
 
+  const handleOverlayClick = event => {
+    event.stopPropagation(); // Prevent the click event from reaching the overlay element
+  };
+
   const handleInfoClick = (job) => {
     setCurrentJobData(job);
     setShowInformationModal(true);
@@ -229,8 +233,8 @@ const JobTable = ({ data }) => {
         )}
       </PaginationContainer>
       {showInformationModal && (
-        <ModalOverlay>
-          <ModalContent>
+        <ModalOverlay onClick={() => setShowInformationModal(false)}>
+          <ModalContent onClick={handleOverlayClick}>
             <ModalHeader>Company<ModalText>: {currentJobData.company}</ModalText></ModalHeader>
             <ModalHeader>Role Name<ModalText>: {currentJobData.role}</ModalText></ModalHeader>
             <ModalHeader>Date Applied<ModalText>: {currentJobData.dateApplied}</ModalText></ModalHeader>
@@ -250,10 +254,6 @@ const JobTable = ({ data }) => {
             </ModalHeader>
             <ModalHeader>Interview Scheduled<ModalText>: {currentJobData.dateApplied}</ModalText></ModalHeader>
             <ModalHeader>Anticipated Pay<ModalText>: {currentJobData.pay}</ModalText></ModalHeader>
-
-            <Button className='red' type="button" onClick={() => setShowInformationModal(false)}>
-              Close
-            </Button>
           </ModalContent>
         </ModalOverlay>
       )}

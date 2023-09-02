@@ -101,7 +101,7 @@ export const ModifyModal = ({ onClose, currentJobData, setShowDeleteConfirmation
           <InputGroup>
             <Label>Current Status</Label>
             <Select
-              options={statusOptions}
+              options={statusOptions.filter((option) => option.value !== 'Offer')}
               value={statusOptions.find((option) => option.value === currentJobInfo.status)}
               onChange={(selectedOption) =>
                 setCurrentJobInfo({ ...currentJobInfo, status: selectedOption.value, maxStatus: selectedOption.value })

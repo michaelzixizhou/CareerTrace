@@ -124,7 +124,7 @@ const AddJobModal = ({ onClose }) => {
               <>
                 <Label>Max Status</Label>
                 <Select
-                  options={statusOptions}
+                  options={statusOptions.filter((option) => option.value !== 'Offer')}
                   value={statusOptions.find((option) => option.value === currentJobInfo.maxStatus)}
                   onChange={(selectedOption) =>
                     setCurrentJobInfo({ ...currentJobInfo, maxStatus: selectedOption.value })

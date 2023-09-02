@@ -150,7 +150,7 @@ const JobTable = ({ data }) => {
               <TableHeader>Date Applied</TableHeader>
               <TableHeader>Location</TableHeader>
               <TableHeader>Duration</TableHeader>
-              <TableHeader>Status</TableHeader>
+              <TableHeader>Current Status</TableHeader>
               <TableHeader/>
             </tr>
           </thead>
@@ -184,7 +184,7 @@ const JobTable = ({ data }) => {
               <tr>
                 <TableHeader>Company</TableHeader>
                 <TableHeader>Role</TableHeader>
-                <TableHeader>Status</TableHeader>
+                <TableHeader>Current Status</TableHeader>
                 <TableHeader/>
               </tr>
             </thead>
@@ -222,7 +222,7 @@ const JobTable = ({ data }) => {
                   <ModalHeader>Location <ModalText>: {job.location}</ModalText></ModalHeader>
                   <ModalHeader>Duration <ModalText>: {job.duration}</ModalText></ModalHeader>
                   <ModalHeader>Interview Scheduled: <ModalText>: {job.dateApplied}</ModalText></ModalHeader>
-                  <ModalHeader>Anticipated Pay: <ModalText>: {job.anticipatedPay}</ModalText></ModalHeader>
+                  <ModalHeader>Anticipated Pay: <ModalText>: {job.pay}</ModalText></ModalHeader>
                 </ModalContent>
               </ModalOverlay>
             )}
@@ -249,13 +249,19 @@ const JobTable = ({ data }) => {
             <p>Location: {currentJobData.location}</p>
             <p>Duration: {currentJobData.duration}</p>
             <p>
-              Status:            
+              Current Status:            
               <StatusBadge status={currentJobData.status}>
                   {currentJobData.status}
               </StatusBadge>
             </p>
+            <p>
+              Maximum Achieved:            
+              <StatusBadge status={currentJobData.maxStatus}>
+                  {currentJobData.maxStatus}
+              </StatusBadge>
+            </p>
             <p>Interview Scheduled: {currentJobData.dateApplied}</p>
-            <p>Anticipated Pay: {currentJobData.anticipatedPay}</p>
+            <p>Anticipated Pay: {currentJobData.pay}</p>
           </ModalContent>
         </ModalOverlay>
       )}

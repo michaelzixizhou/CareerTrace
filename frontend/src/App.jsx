@@ -38,6 +38,7 @@ const generateRandomData = () => {
     anticipatedPay: randomAnticipatedPay,
     scheduledInterview: randomScheduledInterview,
     status: randomStatus,
+    maxStatus: randomStatus,
   };
 };
 

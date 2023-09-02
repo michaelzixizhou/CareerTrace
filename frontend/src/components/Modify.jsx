@@ -14,6 +14,7 @@ export const ModifyModal = ({ onClose, currentJobData, setShowDeleteConfirmation
     // TODO: Implement the submission logic
     onClose();
   };
+  
 
   useEffect(() => {
     const fetchLocationSuggestions = async (inputValue) => {
@@ -78,8 +79,8 @@ export const ModifyModal = ({ onClose, currentJobData, setShowDeleteConfirmation
             <Label>Role Name</Label>
             <Input
               type="text"
-              value={currentJobInfo.roleName}
-              onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, roleName: e.target.value })}
+              value={currentJobInfo.role}
+              onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, role: e.target.value })}
             />
           </InputGroup>
           <InputGroup>
@@ -118,8 +119,8 @@ export const ModifyModal = ({ onClose, currentJobData, setShowDeleteConfirmation
             <Label>Anticipated Pay</Label>
             <Input
               type="text"
-              value={currentJobInfo.anticipatedPay}
-              onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, anticipatedPay: e.target.value })}
+              value={currentJobInfo.pay}
+              onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, pay: e.target.value })}
             />
           </InputGroup>
           <InputGroup>

@@ -17,11 +17,11 @@ const AddJobModal = ({ onClose }) => {
 
   const [jobInfo, setJobInfo] = useState({
     company: '',
-    roleName: '',
+    role: '',
     dateApplied: '',
     location: '',
     duration: '',
-    anticipatedPay: '',
+    pay: '',
     status: '',
   });
 
@@ -88,8 +88,8 @@ const AddJobModal = ({ onClose }) => {
             <Label>Role Name</Label>
             <Input
               type="text"
-              value={jobInfo.roleName}
-              onChange={(e) => setJobInfo({ ...jobInfo, roleName: e.target.value })}
+              value={jobInfo.role}
+              onChange={(e) => setJobInfo({ ...jobInfo, role: e.target.value })}
             />
           </InputGroup>
           <InputGroup>
@@ -123,8 +123,8 @@ const AddJobModal = ({ onClose }) => {
             <Label>Anticipated Pay</Label>
             <Input
               type="text"
-              value={jobInfo.anticipatedPay}
-              onChange={(e) => setJobInfo({ ...jobInfo, anticipatedPay: e.target.value })}
+              value={jobInfo.pay}
+              onChange={(e) => setJobInfo({ ...jobInfo, pay: e.target.value })}
             />
           </InputGroup>
           <InputGroup>

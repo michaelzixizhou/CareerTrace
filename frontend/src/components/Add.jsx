@@ -23,6 +23,7 @@ const AddJobModal = ({ onClose }) => {
     duration: '',
     pay: '',
     status: '',
+    maxStatus: '',
   });
 
   const statusOptions = [
@@ -31,7 +32,6 @@ const AddJobModal = ({ onClose }) => {
     { value: 'Online Assessment', label: 'Online Assessment' },
     { value: 'Offer', label: 'Offer' },
     { value: 'Rejected', label: 'Rejected' },
-    { value: 'Other', label: 'Other' },
   ];
 
   useEffect(() => {
@@ -115,31 +115,34 @@ const AddJobModal = ({ onClose }) => {
               options={statusOptions}
               value={statusOptions.find((option) => option.value === currentJobInfo.status)}
               onChange={(selectedOption) =>
-                setCurrentJobInfo({ ...currentJobInfo, status: selectedOption.value })
+                setCurrentJobInfo({ ...currentJobInfo, status: selectedOption.value, maxStatus: selectedOption.value })
               }
-              styles={{
-                control: (styles) => ({
-                  ...styles,
-                  backgroundColor: 'white',
-                }),
-              }}
             />
           </InputGroup>
           <InputGroup>
-            <Label>Max Status</Label>
-            <Select
-              options={statusOptions}
-              value={statusOptions.find((option) => option.value === currentJobInfo.maxStatus)}
-              onChange={(selectedOption) =>
-                setCurrentJobInfo({ ...currentJobInfo, maxStatus: selectedOption.value })
-              }
-              styles={{
-                control: (styles) => ({
-                  ...styles,
-                  backgroundColor: 'white',
-                }),
-              }}
-            />
+            {currentJobInfo.status === 'Rejected' ? (
+              <>
+                <Label>Max Status</Label>
+                <Select
+                  options={statusOptions}
+                  value={statusOptions.find((option) => option.value === currentJobInfo.maxStatus)}
+                  onChange={(selectedOption) =>
+                    setCurrentJobInfo({ ...currentJobInfo, maxStatus: selectedOption.value })
+                  }
+                />
+              </>
+            ) : (
+              <>
+                <Label>Max Status</Label>
+                <Select
+                  options={statusOptions.filter((option) => option.value === currentJobInfo.status)}
+                  value={statusOptions.find((option) => option.value === currentJobInfo.maxStatus)}
+                  onChange={(selectedOption) =>
+                    setCurrentJobInfo({ ...currentJobInfo, maxStatus: selectedOption.value })
+                  }
+                />
+              </>
+            )}
           </InputGroup>
           <InputGroup>
             <Label>Location</Label>

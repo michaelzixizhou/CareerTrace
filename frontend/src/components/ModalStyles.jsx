@@ -12,7 +12,7 @@ export const ModalOverlay = styled.div`
   align-items: center;
 
   @media (max-width: 800px) {
-    background-color: rgb(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.1);
   }
 `;
 
@@ -25,4 +25,7 @@ export const ModalContent = styled.div`
   @media (max-width: 800px) {
     text-align: left;
   }
+
+  max-height: 90vh;
+  overflow-y: auto; /* Add vertical scroll if content overflows */
 `;

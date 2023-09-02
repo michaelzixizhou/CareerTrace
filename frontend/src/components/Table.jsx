@@ -6,7 +6,7 @@ import { Button } from './ButtonStyles';
 import { Icon } from '@iconify/react';
 import { ModifyModal } from './Modify';
 import { DeleteConfirmationModal } from './Delete';
-import { MobileTable, MobileTitle, MobileButton, ModalHeader, ModalText } from './MobileTableStyles';
+import { ModalHeader, ModalText } from './MobileTableStyles';
 
 const MobileMode = styled.span`
   display: none;
@@ -86,6 +86,15 @@ const StatusBadge = styled.span`
         return '#6c757d';
     }
   }};
+
+  margin-left: ${props => {
+    switch (props.margin) {
+      case 'N/A':
+        return '0';
+      default:
+        return 'min(2vw, 0.3rem)';
+    }
+  }};
 `;
 
 const InfoIcon = styled(Icon)`
@@ -106,7 +115,6 @@ const JobTable = ({ data }) => {
   const [currentJobData, setCurrentJobData] = useState(null);
   const [showModifyModal, setShowModifyModal] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const [showMobileInformationModal, setShowMobileInformationModal] = useState(false);
   
   const totalPages = Math.ceil(data.length / itemsPerPage);
   const visibleData = data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
@@ -163,7 +171,7 @@ const JobTable = ({ data }) => {
                 <TableCell>{job.location}</TableCell>
                 <TableCell>{job.duration}</TableCell>
                 <TableCell>
-                  <StatusBadge status={job.status}>
+                  <StatusBadge status={job.status} margin={'N/A'}>
                     {job.status}
                   </StatusBadge>
                   <InfoIcon icon="clarity:info-solid" onClick={() => handleInfoClick(job)}/>
@@ -194,7 +202,7 @@ const JobTable = ({ data }) => {
                   <TableCell>{job.company}</TableCell>
                   <TableCell>{job.role}</TableCell>
                   <TableCell>
-                    <StatusBadge status={job.status}>
+                    <StatusBadge status={job.status} margin='N/A'>
                       {job.status}
                     </StatusBadge>
                     <InfoIcon icon="clarity:info-solid" onClick={() => handleInfoClick(job)}/>
@@ -208,26 +216,6 @@ const JobTable = ({ data }) => {
               ))}
             </tbody>
           </StyledTable>
-        {/* {visibleData.map((job, index) => (
-          <MobileTitle key={index}>
-            {job.company}
-            <MobileButton onClick={() => setShowMobileInfo(true)}>Click to Show more</MobileButton>
-
-            {showMobileInfo && (
-              <ModalOverlay onClick={() => setShowMobileInfo(false)}>
-                <ModalContent>
-                  <ModalHeader>Company <ModalText>: {job.company}</ModalText></ModalHeader>
-                  <ModalHeader>Role Name <ModalText>: {job.role}</ModalText></ModalHeader>
-                  <ModalHeader>Date Applied <ModalText>: {job.dateApplied}</ModalText></ModalHeader>
-                  <ModalHeader>Location <ModalText>: {job.location}</ModalText></ModalHeader>
-                  <ModalHeader>Duration <ModalText>: {job.duration}</ModalText></ModalHeader>
-                  <ModalHeader>Interview Scheduled: <ModalText>: {job.dateApplied}</ModalText></ModalHeader>
-                  <ModalHeader>Anticipated Pay: <ModalText>: {job.pay}</ModalText></ModalHeader>
-                </ModalContent>
-              </ModalOverlay>
-            )}
-          </MobileTitle>
-        ))} */}
       </MobileMode>
       <PaginationContainer>
         {currentGroup > 1 && (
@@ -241,27 +229,31 @@ const JobTable = ({ data }) => {
         )}
       </PaginationContainer>
       {showInformationModal && (
-        <ModalOverlay onClick={() => setShowInformationModal(false)}>
+        <ModalOverlay>
           <ModalContent>
-            <p>Company: {currentJobData.company}</p>
-            <p>Role: {currentJobData.role}</p>
-            <p>Date Applied: {currentJobData.dateApplied}</p>
-            <p>Location: {currentJobData.location}</p>
-            <p>Duration: {currentJobData.duration}</p>
-            <p>
-              Current Status:            
-              <StatusBadge status={currentJobData.status}>
+            <ModalHeader>Company<ModalText>: {currentJobData.company}</ModalText></ModalHeader>
+            <ModalHeader>Role Name<ModalText>: {currentJobData.role}</ModalText></ModalHeader>
+            <ModalHeader>Date Applied<ModalText>: {currentJobData.dateApplied}</ModalText></ModalHeader>
+            <ModalHeader>Location<ModalText>: {currentJobData.location}</ModalText></ModalHeader>
+            <ModalHeader>Duration<ModalText>: {currentJobData.duration}</ModalText></ModalHeader>
+            <ModalHeader>
+              Current Status <ModalText>:</ModalText>            
+              <StatusBadge status={currentJobData.status} margin='Yes'>
                   {currentJobData.status}
               </StatusBadge>
-            </p>
-            <p>
-              Maximum Achieved:            
-              <StatusBadge status={currentJobData.maxStatus}>
+            </ModalHeader>
+            <ModalHeader>
+              Maximum Achieved <ModalText>:</ModalText>               
+              <StatusBadge status={currentJobData.maxStatus} margin='Yes'>
                   {currentJobData.maxStatus}
               </StatusBadge>
-            </p>
-            <p>Interview Scheduled: {currentJobData.dateApplied}</p>
-            <p>Anticipated Pay: {currentJobData.pay}</p>
+            </ModalHeader>
+            <ModalHeader>Interview Scheduled<ModalText>: {currentJobData.dateApplied}</ModalText></ModalHeader>
+            <ModalHeader>Anticipated Pay<ModalText>: {currentJobData.pay}</ModalText></ModalHeader>
+
+            <Button className='red' type="button" onClick={() => setShowInformationModal(false)}>
+              Close
+            </Button>
           </ModalContent>
         </ModalOverlay>
       )}

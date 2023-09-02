@@ -158,7 +158,7 @@ const JobTable = ({ data }) => {
             {visibleData.map((job, index) => (
               <TableRow key={index}>
                 <TableCell>{job.company}</TableCell>
-                <TableCell>{job.roleName}</TableCell>
+                <TableCell>{job.role}</TableCell>
                 <TableCell>{job.dateApplied}</TableCell>
                 <TableCell>{job.location}</TableCell>
                 <TableCell>{job.duration}</TableCell>
@@ -192,7 +192,7 @@ const JobTable = ({ data }) => {
               {visibleData.map((job, index) => (
                 <TableRow key={index}>
                   <TableCell>{job.company}</TableCell>
-                  <TableCell>{job.roleName}</TableCell>
+                  <TableCell>{job.role}</TableCell>
                   <TableCell>
                     <StatusBadge status={job.status}>
                       {job.status}
@@ -217,7 +217,7 @@ const JobTable = ({ data }) => {
               <ModalOverlay onClick={() => setShowMobileInfo(false)}>
                 <ModalContent>
                   <ModalHeader>Company <ModalText>: {job.company}</ModalText></ModalHeader>
-                  <ModalHeader>Role Name <ModalText>: {job.roleName}</ModalText></ModalHeader>
+                  <ModalHeader>Role Name <ModalText>: {job.role}</ModalText></ModalHeader>
                   <ModalHeader>Date Applied <ModalText>: {job.dateApplied}</ModalText></ModalHeader>
                   <ModalHeader>Location <ModalText>: {job.location}</ModalText></ModalHeader>
                   <ModalHeader>Duration <ModalText>: {job.duration}</ModalText></ModalHeader>
@@ -244,7 +244,7 @@ const JobTable = ({ data }) => {
         <ModalOverlay onClick={() => setShowInformationModal(false)}>
           <ModalContent>
             <p>Company: {currentJobData.company}</p>
-            <p>Role: {currentJobData.roleName}</p>
+            <p>Role: {currentJobData.role}</p>
             <p>Date Applied: {currentJobData.dateApplied}</p>
             <p>Location: {currentJobData.location}</p>
             <p>Duration: {currentJobData.duration}</p>

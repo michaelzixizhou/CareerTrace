@@ -15,7 +15,7 @@ const AddJobModal = ({ onClose }) => {
   const [locationSuggestions, setLocationSuggestions] = useState([]);
   const [companySuggestions, setCompanySuggestions] = useState([]);
 
-  const [jobInfo, setJobInfo] = useState({
+  const [currentJobInfo, setCurrentJobInfo] = useState({
     company: '',
     role: '',
     dateApplied: '',
@@ -24,6 +24,15 @@ const AddJobModal = ({ onClose }) => {
     pay: '',
     status: '',
   });
+
+  const statusOptions = [
+    { value: 'Interview', label: 'Interview' },
+    { value: 'Phone Screen', label: 'Phone Screen' },
+    { value: 'Online Assessment', label: 'Online Assessment' },
+    { value: 'Offer', label: 'Offer' },
+    { value: 'Rejected', label: 'Rejected' },
+    { value: 'Other', label: 'Other' },
+  ];
 
   useEffect(() => {
     const fetchLocationSuggestions = async (inputValue) => {
@@ -46,16 +55,16 @@ const AddJobModal = ({ onClose }) => {
       }
     };
 
-    fetchCompanySuggestions(jobInfo.company);
-    fetchLocationSuggestions(jobInfo.location);
-  }, [jobInfo.company, jobInfo.location]);
+    fetchCompanySuggestions(currentJobInfo.company);
+    fetchLocationSuggestions(currentJobInfo.location);
+  }, [currentJobInfo.company, currentJobInfo.location]);
 
   const handleCompanyChange = (newValue) => {
-    setJobInfo({ ...jobInfo, company: newValue });
+    setCurrentJobInfo({ ...currentJobInfo, company: newValue });
   };
 
   const handleLocationChange = (newValue) => {
-    setJobInfo({ ...jobInfo, location: newValue });
+    setCurrentJobInfo({ ...currentJobInfo, location: newValue });
   };
 
   const handleSubmit = () => {
@@ -79,31 +88,63 @@ const AddJobModal = ({ onClose }) => {
               getSuggestionValue={(suggestion) => suggestion.name}
               renderSuggestion={(suggestion) => <div>{suggestion.name}</div>}
               inputProps={{
-                value: jobInfo.company,
+                value: currentJobInfo.company,
                 onChange: (_, { newValue }) => handleCompanyChange(newValue),
               }}
             />
           </InputGroup>
           <InputGroup>
-            <Label>Role Name</Label>
+            <Label>Role</Label>
             <Input
               type="text"
-              value={jobInfo.role}
-              onChange={(e) => setJobInfo({ ...jobInfo, role: e.target.value })}
+              value={currentJobInfo.role}
+              onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, role: e.target.value })}
             />
           </InputGroup>
           <InputGroup>
             <Label>Date Applied</Label>
             <Input
               type="date"
-              value={jobInfo.dateApplied}
-              onChange={(e) => setJobInfo({ ...jobInfo, dateApplied: e.target.value })}
+              value={currentJobInfo.dateApplied}
+              onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, dateApplied: e.target.value })}
+            />
+          </InputGroup>
+          <InputGroup>
+            <Label>Current Status</Label>
+            <Select
+              options={statusOptions}
+              value={statusOptions.find((option) => option.value === currentJobInfo.status)}
+              onChange={(selectedOption) =>
+                setCurrentJobInfo({ ...currentJobInfo, status: selectedOption.value })
+              }
+              styles={{
+                control: (styles) => ({
+                  ...styles,
+                  backgroundColor: 'white',
+                }),
+              }}
+            />
+          </InputGroup>
+          <InputGroup>
+            <Label>Max Status</Label>
+            <Select
+              options={statusOptions}
+              value={statusOptions.find((option) => option.value === currentJobInfo.maxStatus)}
+              onChange={(selectedOption) =>
+                setCurrentJobInfo({ ...currentJobInfo, maxStatus: selectedOption.value })
+              }
+              styles={{
+                control: (styles) => ({
+                  ...styles,
+                  backgroundColor: 'white',
+                }),
+              }}
             />
           </InputGroup>
           <InputGroup>
             <Label>Location</Label>
             <Select
-              value={{ label: jobInfo.location, value: jobInfo.location }}
+              value={{ label: currentJobInfo.location, value: currentJobInfo.location }}
               onChange={(newValue) => handleLocationChange(newValue.label)}
               options={locationSuggestions.map((suggestion) => ({
                 value: suggestion.name,
@@ -115,24 +156,16 @@ const AddJobModal = ({ onClose }) => {
             <Label>Duration</Label>
             <Input
               type="text"
-              value={jobInfo.duration}
-              onChange={(e) => setJobInfo({ ...jobInfo, duration: e.target.value })}
+              value={currentJobInfo.duration}
+              onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, duration: e.target.value })}
             />
           </InputGroup>
           <InputGroup>
             <Label>Anticipated Pay</Label>
             <Input
               type="text"
-              value={jobInfo.pay}
-              onChange={(e) => setJobInfo({ ...jobInfo, pay: e.target.value })}
-            />
-          </InputGroup>
-          <InputGroup>
-            <Label>Status</Label>
-            <Input
-              type="text"
-              value={jobInfo.status}
-              onChange={(e) => setJobInfo({ ...jobInfo, status: e.target.value })}
+              value={currentJobInfo.pay}
+              onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, pay: e.target.value })}
             />
           </InputGroup>
           <InputGroup>

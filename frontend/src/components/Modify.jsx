@@ -14,8 +14,16 @@ export const ModifyModal = ({ onClose, currentJobData, setShowDeleteConfirmation
     // TODO: Implement the submission logic
     onClose();
   };
-  
 
+  const statusOptions = [
+    { value: 'Interview', label: 'Interview' },
+    { value: 'Phone Screen', label: 'Phone Screen' },
+    { value: 'Online Assessment', label: 'Online Assessment' },
+    { value: 'Offer', label: 'Offer' },
+    { value: 'Rejected', label: 'Rejected' },
+    { value: 'Other', label: 'Other' },
+  ];
+  
   useEffect(() => {
     const fetchLocationSuggestions = async (inputValue) => {
       try {
@@ -76,7 +84,7 @@ export const ModifyModal = ({ onClose, currentJobData, setShowDeleteConfirmation
             />
           </InputGroup>
           <InputGroup>
-            <Label>Role Name</Label>
+            <Label>Role</Label>
             <Input
               type="text"
               value={currentJobInfo.role}
@@ -89,6 +97,38 @@ export const ModifyModal = ({ onClose, currentJobData, setShowDeleteConfirmation
               type="date"
               value={currentJobInfo.dateApplied}
               onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, dateApplied: e.target.value })}
+            />
+          </InputGroup>
+          <InputGroup>
+            <Label>Current Status</Label>
+            <Select
+              options={statusOptions}
+              value={statusOptions.find((option) => option.value === currentJobInfo.status)}
+              onChange={(selectedOption) =>
+                setCurrentJobInfo({ ...currentJobInfo, status: selectedOption.value })
+              }
+              styles={{
+                control: (styles) => ({
+                  ...styles,
+                  backgroundColor: 'white',
+                }),
+              }}
+            />
+          </InputGroup>
+          <InputGroup>
+            <Label>Max Status</Label>
+            <Select
+              options={statusOptions}
+              value={statusOptions.find((option) => option.value === currentJobInfo.maxStatus)}
+              onChange={(selectedOption) =>
+                setCurrentJobInfo({ ...currentJobInfo, maxStatus: selectedOption.value })
+              }
+              styles={{
+                control: (styles) => ({
+                  ...styles,
+                  backgroundColor: 'white',
+                }),
+              }}
             />
           </InputGroup>
           <InputGroup>
@@ -121,14 +161,6 @@ export const ModifyModal = ({ onClose, currentJobData, setShowDeleteConfirmation
               type="text"
               value={currentJobInfo.pay}
               onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, pay: e.target.value })}
-            />
-          </InputGroup>
-          <InputGroup>
-            <Label>Status</Label>
-            <Input
-              type="text"
-              value={currentJobInfo.status}
-              onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, status: e.target.value })}
             />
           </InputGroup>
           <InputGroup>

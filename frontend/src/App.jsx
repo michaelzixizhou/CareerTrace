@@ -68,7 +68,7 @@ const AppContainer = styled.div`
 const LeftContainer = styled.div`
   flex: 1;
 
-  @media(max-width: 800px) {
+  @media (max-width: 800px){
     align-items: center;
     padding: 0;
     margin: 0;

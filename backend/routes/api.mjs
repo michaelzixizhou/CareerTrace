@@ -4,8 +4,6 @@ import { ObjectId } from "mongodb";
 
 const router = express.Router();
 
-
-
 // Debugging, gets a JSON with all users
 router.get('/userdata', async (req, res) => {
     let collection = await db.collection("users");
@@ -15,8 +13,8 @@ router.get('/userdata', async (req, res) => {
 
 // Debugging, removes given user based on ID from the database
 router.delete("/:id", async (req, res) => {
-    const query = { _id: new ObjectId(req.params.id) };
-    const collection = db.collection("users");
+    let query = { _id: new ObjectId(req.params.id) };
+    let collection = db.collection("users");
 
     let result = await collection.deleteOne(query);
 
@@ -25,7 +23,7 @@ router.delete("/:id", async (req, res) => {
 
 // Debugging, removes all users from the database
 router.delete("/", async (req, res) => {
-    const collection = db.collection("users");
+    let collection = db.collection("users");
     let result = await collection.deleteMany({});
 
     console.log("deleted all")
@@ -35,8 +33,8 @@ router.delete("/", async (req, res) => {
 // Gives unique job ids
 async function getNextJobId(userId) {
     // Find and update the counter
-    const counterCollection = db.collection("users");
-    const result = await counterCollection.findOneAndUpdate(
+    let counterCollection = db.collection("users");
+    let result = await counterCollection.findOneAndUpdate(
         { _id: userId },
         { $inc: { jobCounter: 1 } },
         { upsert: true, returnOriginal: false }
@@ -67,7 +65,7 @@ router.get('/profile', async (req, res) => {
             name: req.user.name,
             email: req.user.email,
             jobapps: [],
-            jobCounter: 0
+            jobCounter: -1
         }
         collection.insertOne(newUser);
         console.log("New user saved");
@@ -81,7 +79,6 @@ router.get("/jobs", async (req, res) => {
     if (!user) {
         res.redirect('/');
     }
-    console.log("Jobs");
     console.log(req.user.name);
 });
 
@@ -96,10 +93,11 @@ router.post("/:id/jobs", async (req, res) => {
         company: req.body.company,
         role: req.body.role,
         dateapplied: req.body.dateapplied,
-        currstatus: req.body.currstatus,
-        maxstatus: req.body.maxstatus,
+        applicationstage: req.body.applicationstage,
+        status: req.body.status,
+        eventdate: req.body.eventdate,
         location: req.body.location,
-        duration: req.body.location,
+        duration: req.body.duration,
         pay: req.body.pay
     };
 
@@ -116,7 +114,6 @@ router.post("/:id/jobs", async (req, res) => {
 });
 
 
-
 router.post("/jobs", async (req, res) => {
     if (!req.user) {
         res.redirect('/');
@@ -126,15 +123,18 @@ router.post("/jobs", async (req, res) => {
     let collection = await db.collection("users");
 
 
+    let newJobID = await getNextJobId(currUserID)
+
     let newJob = {
-        jobid: getNextJobId(currUserID),
+        jobid: newJobID,
         company: req.body.company,
         role: req.body.role,
         dateapplied: req.body.dateapplied,
-        currstatus: req.body.currstatus,
-        maxstatus: req.body.maxstatus,
+        applicationstage: req.body.applicationstage,
+        status: req.body.status,
+        eventdate: req.body.eventdate,
         location: req.body.location,
-        duration: req.body.location,
+        duration: req.body.duration,
         pay: req.body.pay
     };
 
@@ -165,35 +165,57 @@ router.get("/", (req, res) => {
     res.send("API Home Page")
 });
 
-
-router.patch("/:id/jobs", async (req, res) => {
-    const query = { _id: req.params.id };
-    const updates = {
-        company: req.body.company,
-        role: req.body.role,
-        dateapplied: req.body.dateapplied,
-        currstatus: req.body.currstatus,
-        maxstatus: req.body.maxstatus,
-        location: req.body.location,
-        duration: req.body.location,
-        pay: req.body.pay
-    };
-
-    Object.key(updates).forEach((key) => {
+function removeUndefinedValues(obj) {
+    Object.keys(obj).forEach((key) => {
         if (obj[key] === undefined) {
             delete obj[key];
         }
     });
+}
+
+router.patch("/:id/jobs/:jobid", async (req, res) => {
+    let query = { _id: req.params.id, "jobapps.jobid": parseInt(req.params.jobid) };
+    let reqBody = req.body
+    let updates = {
+        "jobapps.$.company": reqBody.company,
+        "jobapps.$.role": reqBody.role,
+        "jobapps.$.dateapplied": reqBody.dateapplied,
+        "jobapps.$.applicationstage": reqBody.applicationstage,
+        "jobapps.$.status": reqBody.status,
+        "jobapps.$.eventdate": reqBody.eventdate,
+        "jobapps.$.location": reqBody.location,
+        "jobapps.$.duration": reqBody.duration,
+        "jobapps.$.pay": reqBody.pay,
+    };
+
+    removeUndefinedValues(updates)
     console.log(updates)
 
+    let setUpdates = {
+        "$set": updates
+    }
     let collection = await db.collection("users");
-    let result = await collection.updateOne(query, updates);
+    let result = await collection.updateOne(query, setUpdates);
 
     res.send(result).status(200);
 });
 
+router.delete("/:id/jobs/:jobid", async (req, res) => {
+    let currJobID = parseInt(req.params.jobid)
+    let query = { _id: req.params.id, "jobapps.jobid": currJobID }
+    let updates = {
+        "$pull": {
+            "jobapps": {
+                "jobid": currJobID
+            }
+        }
+    }
 
+    let collection = await db.collection("users");
+    let result = collection.updateOne(query, updates);
 
+    res.send(result).status(200);
+})
 
 
 

@@ -43,6 +43,8 @@ function initializePassport(passport) {
             return cb(null, user);
         });
     });
+
+    
 }
 
 

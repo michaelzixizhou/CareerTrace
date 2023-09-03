@@ -1,8 +1,6 @@
 import passport from "passport";
 import express from "express";
 const router = express.Router();
-import db from "../db/conn.mjs";
-
 
 router.get(
     '/google',

@@ -137,6 +137,7 @@ const Title = styled.div`
   font-size: var(--font-size__title);
   text-align: center;
   font-weight: 1000;
+  border-radius:50%;
 `;
 
 const App = () => {

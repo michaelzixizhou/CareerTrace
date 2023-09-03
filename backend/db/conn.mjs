@@ -12,7 +12,7 @@ try {
     console.error(e);
 }
 
-let db = conn.db("sample_training");
+let db = conn.db("jobtrackrdb");
 
 
 export default db;

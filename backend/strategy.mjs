@@ -8,28 +8,23 @@ function initializePassport(passport) {
             {
                 clientID: process.env['GOOGLE_CLIENT_ID'],
                 clientSecret: process.env['GOOGLE_CLIENT_SECRET'],
-                callbackURL: '/user/auth/google/callback',
-                scope: ['profile'],
+                callbackURL: '/auth/google/callback',
+                scope: ['profile', 'email'],
             }
             ,
             function verify(issuer, profile, done) {
                 try {
                     console.log(profile);
-                    const users = db.collection("users");
-                    //
-                    // const existingUser = users.findOne({ googleId: profile.id });
-                    // if (existingUser) {
-                    //     return done(null, existingUser);
-                    // }
 
-                    const newUser = {
-                        googleId: profile.id,
-                        username: profile.displayName
+                    let newUser = {
+                        id: profile.id,
+                        name: profile.displayName,
+                        email: profile.emails[0].value,
                     }
-
+            
                     console.log("user is logged");
-                    users.insertOne(newUser);
-                    return done(null, profile);
+                    // users.insertOne(newUser);
+                    return done(null, newUser);
                 } catch (error) {
                     console.log("Error with Google sign-in");
                 }
@@ -39,7 +34,7 @@ function initializePassport(passport) {
 
     passport.serializeUser(function(user, cb) {
         process.nextTick(function() {
-            cb(null, { id: user.id, username: user.username, name: user.name });
+            cb(null, { id: user.id, name: user.name, email: user.email});
         });
     });
 

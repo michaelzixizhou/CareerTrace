@@ -117,7 +117,8 @@ const LeftContainer = styled.div`
   @media (max-width: 800px) {
     align-items: center;
     padding: 0;
-    margin: 0;
+    margin: 0;    
+    max-width: 97vw;
   }
 `;
 
@@ -128,6 +129,7 @@ const RightContainer = styled.div`
     width: fit-content;
     margin: 0;
     padding: 0;
+    max-width: 97vw;
   }
 `;
 

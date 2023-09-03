@@ -117,7 +117,8 @@ const LeftContainer = styled.div`
   @media (max-width: 800px) {
     align-items: center;
     padding: 0;
-    margin: 0;
+    margin: 0;    
+    max-width: 97vw;
   }
 `;
 

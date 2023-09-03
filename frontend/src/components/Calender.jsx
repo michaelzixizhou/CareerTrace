@@ -192,7 +192,14 @@ const TrackCalender = ({ data, selectedDate, handleDateChange }) => {
   return (
     <CalendarContainer>
       <CalendarHeader>Interview and Application Calendar</CalendarHeader>
-      <Calendar onChange={handleDateChange} value={selectedDate} tileContent={tileContent} onClickDay={handleTileClick} />
+      <Calendar 
+        onChange={handleDateChange} 
+        value={selectedDate} 
+        tileContent={tileContent}
+        onClickDay={handleTileClick} 
+        minDetail="month"
+        calendarType='US'
+      />
       {showInterviewModal && (
         <InterviewApplicationModal 
           interviewData={selectedInterviewData} 

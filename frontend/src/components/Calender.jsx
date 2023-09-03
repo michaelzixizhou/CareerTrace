@@ -25,8 +25,8 @@ const CalendarContainer = styled.div`
 `;
 
 const EventDot = styled.div`
-  width: 20px;
-  height: 20px;
+  width: 50%;
+  height: auto;
   border-radius: 50%;
   background-color: ${props => (props.type === 'interviews' ? '#28a745' : '#007bff')};
   margin-right: 4px;

@@ -10,7 +10,7 @@ export const StyledForm = styled.form`
 export const InputGroup = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0 10vw;
+  margin: 0 min(10vw, 5rem);
 `;
 
 export const Label = styled.label`

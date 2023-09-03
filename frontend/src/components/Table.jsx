@@ -72,7 +72,7 @@ const StatusBadge = styled.span`
   margin-top: 0;
   font-weight: bold;
   color: #fff;
-  text-align: left;
+  text-align: center;
   background-color: ${props => {
     switch (props.status) {
       case 'Interview':

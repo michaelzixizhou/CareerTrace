@@ -74,29 +74,15 @@ const StatusBadge = styled.span`
   color: #fff;
   text-align: center;
   background-color: ${props => {
-    switch (props.status) {
-      case 'Interview':
-        return '#007bff';
-      case 'Phone Screen':
-        return '#28a745';
-      case 'Online Assessment':
-        return '#ffc107';
-      case 'Offer':
-        return '#17a2b8';
-      case 'Rejected':
-        return '#dc3545';
-      default:
-        return '#6c757d';
+    if (props.stage === 'Offer'){
+      return 'green';
+    } else {
+      return props.rejected ? '#dc3545' : '#ffc107';
     }
   }};
 
   margin-left: ${props => {
-    switch (props.margin) {
-      case 'N/A':
-        return '0';
-      default:
-        return 'min(2vw, 0.3rem)';
-    }
+    return props.margin ? 'min(2vw, 0.3rem)' : '0';
   }};
 `;
 
@@ -156,7 +142,7 @@ const JobTable = ({ data }) => {
     setShowModifyModal(true);
   };
 
-  const customStatusOrder = ['Rejected', 'Phone Screen', 'Online Assessment', 'Interview', 'Offer'];
+  const customStatusOrder = ['No Response', 'Phone Screen', 'Online Assessment', 'Interview', 'Offer'];
 
   const handleSort = (column) => {
     const sorted = [...sortedData].sort((a, b) => {
@@ -164,7 +150,7 @@ const JobTable = ({ data }) => {
         const dateA = new Date(a[column]);
         const dateB = new Date(b[column]);
         return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
-      } else if (column === 'status') {
+      } else if (column === 'applicationStage') {
         const statusA = customStatusOrder.indexOf(a[column]);
         const statusB = customStatusOrder.indexOf(b[column]);
         return sortOrder === 'asc' ? statusA - statusB : statusB - statusA;
@@ -188,7 +174,7 @@ const JobTable = ({ data }) => {
               <TableHeader onClick={() => handleSort('dateApplied')}>Date Applied &#9660;</TableHeader>
               <TableHeader onClick={() => handleSort('location')}>Location &#9660;</TableHeader>
               <TableHeader onClick={() => handleSort('duration')}>Duration &#9660;</TableHeader>
-              <TableHeader onClick={() => handleSort('status')}>Status &#9660;</TableHeader>
+              <TableHeader onClick={() => handleSort('applicationStage')}>Application Stage &#9660;</TableHeader>
               <TableHeader/>
             </tr>
           </thead>
@@ -201,8 +187,8 @@ const JobTable = ({ data }) => {
                 <TableCell>{job.location}</TableCell>
                 <TableCell>{job.duration}</TableCell>
                 <TableCell>
-                  <StatusBadge status={job.status} margin={'N/A'}>
-                    {job.status}
+                  <StatusBadge stage={job.applicationStage} rejected={+job.rejected} margin={+false}>
+                    {job.applicationStage}
                   </StatusBadge>
                   <InfoIcon icon="clarity:info-solid" onClick={() => handleInfoClick(job)}/>
                 </TableCell>
@@ -222,7 +208,7 @@ const JobTable = ({ data }) => {
               <tr>
                 <TableHeader onClick={() => handleSort('company')}>Company &#9660;</TableHeader>
                 <TableHeader onClick={() => handleSort('role')}>Role &#9660;</TableHeader>
-                <TableHeader onClick={() => handleSort('status')}>Status &#9660;</TableHeader>
+                <TableHeader onClick={() => handleSort('applicationStage')}>Application Stage &#9660;</TableHeader>
                 <TableHeader/>
               </tr>
             </thead>
@@ -232,8 +218,8 @@ const JobTable = ({ data }) => {
                   <TableCell>{job.company}</TableCell>
                   <TableCell>{job.role}</TableCell>
                   <TableCell>
-                    <StatusBadge status={job.status} margin='N/A'>
-                      {job.status}
+                    <StatusBadge stage={job.applicationStage} rejected={+job.rejected} margin={+false}>
+                      {job.applicationStage}
                     </StatusBadge>
                     <InfoIcon icon="clarity:info-solid" onClick={() => handleInfoClick(job)}/>
                   </TableCell>
@@ -267,15 +253,9 @@ const JobTable = ({ data }) => {
             <ModalHeader>Location<ModalText>: {currentJobData.location}</ModalText></ModalHeader>
             <ModalHeader>Duration<ModalText>: {currentJobData.duration}</ModalText></ModalHeader>
             <ModalHeader>
-              Current Status <ModalText>:</ModalText>            
-              <StatusBadge status={currentJobData.status} margin='Yes'>
-                  {currentJobData.status}
-              </StatusBadge>
-            </ModalHeader>
-            <ModalHeader>
-              Maximum Achieved <ModalText>:</ModalText>               
-              <StatusBadge status={currentJobData.maxStatus} margin='Yes'>
-                  {currentJobData.maxStatus}
+              Application Stage <ModalText>:</ModalText>            
+              <StatusBadge stage={currentJobData.applicationStage} rejected={+currentJobData.rejected} margin={+true}>
+                  {currentJobData.applicationStage}
               </StatusBadge>
             </ModalHeader>
             <ModalHeader>Interview Scheduled<ModalText>: {currentJobData.dateApplied}</ModalText></ModalHeader>

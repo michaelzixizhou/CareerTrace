@@ -60,7 +60,7 @@ const roles = ['Frontend Developer', 'Backend Engineer', 'Data Scientist', 'UI/U
 const locations = ['New York, NY', 'Chicago, IL', 'San Francisco, CA', 'Los Angeles, CA', 'Seattle, WA'];
 const durations = ['4-month', '8-month', '12-month'];
 const anticipatedPays = ['$75,000', '$90,000', '$110,000', '$120,000', '$150,000'];
-const statuses = ['Interview', 'Phone Screen', 'Online Assessment', 'Offer', 'Rejected'];
+const statuses = ['Interview', 'Phone Screen', 'Online Assessment', 'Offer', 'No Response'];
 
 const generateRandomData = () => {
   const randomCompany = companies[Math.floor(Math.random() * companies.length)];
@@ -68,9 +68,10 @@ const generateRandomData = () => {
   const randomLocation = locations[Math.floor(Math.random() * locations.length)];
   const randomDuration = durations[Math.floor(Math.random() * durations.length)];
   const randomAnticipatedPay = anticipatedPays[Math.floor(Math.random() * anticipatedPays.length)];
-  const randomScheduledInterview = getRandomDate('2023-09-01', '2023-09-30');
-  const dateApplied = getRandomDate('2023-09-01', '2023-09-30');
+  const randomScheduledInterview = getRandomDate('2023-09-01', '2024-09-30');
+  const dateApplied = getRandomDate('2023-09-01', '2024-09-30');
   const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+  const randomrejected = Math.random() < 0.5;
 
   return {
     company: randomCompany,
@@ -80,8 +81,8 @@ const generateRandomData = () => {
     duration: randomDuration,
     pay: randomAnticipatedPay,
     scheduledInterview: randomScheduledInterview,
-    status: randomStatus,
-    maxStatus: randomStatus,
+    applicationStage: randomStatus,
+    rejected: randomStatus === "Offer" ? false : randomrejected,
   };
 };
 
@@ -142,10 +143,10 @@ const Title = styled.div`
 
 const App = () => {
   const jobData = generateSampleData(341);
-  const [showCalenderStats, setshowCalenderStats] = useState(false);
+  const [showCalenderStats, setShowCalenderStats] = useState(false);
 
   const toggleLeftContainer = () => {
-    setshowCalenderStats(!showCalenderStats);
+    setShowCalenderStats(!showCalenderStats);
   };
 
   return (

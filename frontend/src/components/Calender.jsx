@@ -82,7 +82,7 @@ export const InterviewApplicationModal = ({ interviewData, applicationData, onCl
           <>
             <div>
               <p>Company: {currentData[currentPage].company}</p>
-              <p>Role: {currentData[currentPage].roleName}</p>
+              <p>Role: {currentData[currentPage].role}</p>
               <p>Location: {currentData[currentPage].location}</p>
               {currentDataType === 'interview' ? (
                 <p>Interview Date: {currentData[currentPage].scheduledInterview}</p>
@@ -138,7 +138,7 @@ const TrackCalender = ({ data, selectedDate, handleDateChange }) => {
     
     const interviewsOnSelectedDate = data.filter(
       item =>
-        item.status === 'Interview' &&
+        item.applicationStage === 'Interview' &&
         new Date(item.scheduledInterview).toDateString() === formattedDate
     );
   
@@ -164,7 +164,7 @@ const TrackCalender = ({ data, selectedDate, handleDateChange }) => {
 
     const interviewsOnSelectedDate = data.filter(
       item =>
-        item.status === 'Interview' &&
+        item.applicationStage === 'Interview' &&
         new Date(item.scheduledInterview).toDateString() === formattedDate
     );
   
@@ -198,7 +198,7 @@ const TrackCalender = ({ data, selectedDate, handleDateChange }) => {
         tileContent={tileContent}
         onClickDay={handleTileClick} 
         minDetail="month"
-        calendarType='US'
+        calendarType='gregory'
       />
       {showInterviewModal && (
         <InterviewApplicationModal 

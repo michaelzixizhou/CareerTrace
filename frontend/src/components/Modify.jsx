@@ -3,6 +3,7 @@ import { ModalContent, ModalOverlay } from './ModalStyles';
 import { Button, StyledCloseButton } from './ButtonStyles';
 import Select from 'react-select';
 import { StyledForm, InputGroup, Label, Input } from './InputStyles';
+import { StyledCheckbox, CheckboxContainer } from './CheckBoxStyles';
 
 export const ModifyModal = ({ onClose, currentJobData, setShowDeleteConfirmation }) => {
   const [currentJobInfo, setCurrentJobInfo] = useState(currentJobData);
@@ -12,12 +13,12 @@ export const ModifyModal = ({ onClose, currentJobData, setShowDeleteConfirmation
     onClose();
   };
 
-  const statusOptions = [
-    { value: 'Interview', label: 'Interview' },
+  const applicationStageOptions = [
+    { value: 'No Response', label: 'No Response' },
     { value: 'Phone Screen', label: 'Phone Screen' },
     { value: 'Online Assessment', label: 'Online Assessment' },
+    { value: 'Interview', label: 'Interview' },
     { value: 'Offer', label: 'Offer' },
-    { value: 'Rejected', label: 'Rejected' },
   ];
 
   return (
@@ -52,39 +53,36 @@ export const ModifyModal = ({ onClose, currentJobData, setShowDeleteConfirmation
             />
           </InputGroup>
           <InputGroup>
-            <Label>Current Status</Label>
+            <Label>Application Stage</Label>
             <Select
-              options={statusOptions.filter((option) => option.value !== 'Offer')}
-              value={statusOptions.find((option) => option.value === currentJobInfo.status)}
-              onChange={(selectedOption) =>
-                setCurrentJobInfo({ ...currentJobInfo, status: selectedOption.value, maxStatus: selectedOption.value })
-              }
+              options={applicationStageOptions}
+              value={applicationStageOptions.find((option) => option.value === currentJobInfo.applicationStage)}
+              onChange={(selectedOption) => {
+                setCurrentJobInfo({ 
+                  ...currentJobInfo, 
+                  applicationStage: selectedOption.value, 
+                  rejected: selectedOption.value === 'Offer' ? false : currentJobInfo.rejected
+                });
+              }}
             />
           </InputGroup>
           <InputGroup>
-            {currentJobInfo.status === 'Rejected' ? (
-              <>
-                <Label>Max Status</Label>
-                <Select
-                  options={statusOptions}
-                  value={statusOptions.find((option) => option.value === currentJobInfo.maxStatus)}
-                  onChange={(selectedOption) =>
-                    setCurrentJobInfo({ ...currentJobInfo, maxStatus: selectedOption.value })
+            <Label>Rejected in the Above Stage?</Label>
+            <CheckboxContainer>
+              <StyledCheckbox
+                type="checkbox"
+                id="rejectedCheckbox"
+                checked={currentJobInfo.rejected}
+                onChange={(e) => {
+                  if (currentJobInfo.applicationStage === 'Offer') {
+                    e.preventDefault();
+                  } else {
+                    setCurrentJobInfo({ ...currentJobInfo, rejected: e.target.checked });
                   }
-                />
-              </>
-            ) : (
-              <>
-                <Label>Max Status</Label>
-                <Select
-                  options={statusOptions.filter((option) => option.value === currentJobInfo.status)}
-                  value={statusOptions.find((option) => option.value === currentJobInfo.maxStatus)}
-                  onChange={(selectedOption) =>
-                    setCurrentJobInfo({ ...currentJobInfo, maxStatus: selectedOption.value })
-                  }
-                />
-              </>
-            )}
+                }}
+                disabled={currentJobInfo.applicationStage === 'Offer'}
+              />
+            </CheckboxContainer>
           </InputGroup>
           <InputGroup>
             <Label>Location</Label>

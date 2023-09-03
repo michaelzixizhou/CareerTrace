@@ -108,6 +108,8 @@ const AppContainer = styled.div`
     width: 100vw;
     padding-top: min(10vw, 3rem);
   }
+
+  margin: 1rem 0;
 `;
 
 const LeftContainer = styled.div`

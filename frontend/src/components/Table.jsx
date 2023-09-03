@@ -45,6 +45,9 @@ const TableHeader = styled.th`
   text-align: left;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  &:hover {
+    background-color: #e0e0e0; 
+  }
 `;
 
 const TableRow = styled.tr`
@@ -115,15 +118,17 @@ const JobTable = ({ data }) => {
   const [currentJobData, setCurrentJobData] = useState(null);
   const [showModifyModal, setShowModifyModal] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  
+  const [sortedData, setSortedData] = useState([...data]);
+  const [sortOrder, setSortOrder] = useState('asc');
+
   const totalPages = Math.ceil(data.length / itemsPerPage);
-  const visibleData = data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const visibleData = sortedData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
   
   const pagesPerGroup = 5;
   const currentGroup = Math.ceil(currentPage / pagesPerGroup);
   const firstPageInGroup = (currentGroup - 1) * pagesPerGroup + 1;
   const lastPageInGroup = Math.min(firstPageInGroup + 4, totalPages);
-  
+
   const visiblePages = Array.from({ length: lastPageInGroup - firstPageInGroup + 1 }).map((_, index) => (
     <PageNumber
       key={index}
@@ -151,18 +156,39 @@ const JobTable = ({ data }) => {
     setShowModifyModal(true);
   };
 
+  const customStatusOrder = ['Rejected', 'Phone Screen', 'Online Assessment', 'Interview', 'Offer'];
+
+  const handleSort = (column) => {
+    const sorted = [...sortedData].sort((a, b) => {
+      if (column === 'dateApplied') {
+        const dateA = new Date(a[column]);
+        const dateB = new Date(b[column]);
+        return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+      } else if (column === 'status') {
+        const statusA = customStatusOrder.indexOf(a[column]);
+        const statusB = customStatusOrder.indexOf(b[column]);
+        return sortOrder === 'asc' ? statusA - statusB : statusB - statusA;
+      } else {
+        return sortOrder === 'asc' ? a[column].localeCompare(b[column]) : b[column].localeCompare(a[column]);
+      }
+    });
+  
+    setSortedData(sorted);
+    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+  };
+
   return (
     <TableContainer>
       <DesktopMode>
         <StyledTable>
           <thead>
             <tr>
-              <TableHeader>Company</TableHeader>
-              <TableHeader>Role</TableHeader>
-              <TableHeader>Date Applied</TableHeader>
-              <TableHeader>Location</TableHeader>
-              <TableHeader>Duration</TableHeader>
-              <TableHeader>Current Status</TableHeader>
+              <TableHeader onClick={() => handleSort('company')}>Company &#9660;</TableHeader>
+              <TableHeader onClick={() => handleSort('role')}>Role &#9660;</TableHeader>
+              <TableHeader onClick={() => handleSort('dateApplied')}>Date Applied &#9660;</TableHeader>
+              <TableHeader onClick={() => handleSort('location')}>Location &#9660;</TableHeader>
+              <TableHeader onClick={() => handleSort('duration')}>Duration &#9660;</TableHeader>
+              <TableHeader onClick={() => handleSort('status')}>Status &#9660;</TableHeader>
               <TableHeader/>
             </tr>
           </thead>
@@ -194,9 +220,9 @@ const JobTable = ({ data }) => {
         <StyledTable>
             <thead>
               <tr>
-                <TableHeader>Company</TableHeader>
-                <TableHeader>Role</TableHeader>
-                <TableHeader>Current Status</TableHeader>
+                <TableHeader onClick={() => handleSort('company')}>Company &#9660;</TableHeader>
+                <TableHeader onClick={() => handleSort('role')}>Role &#9660;</TableHeader>
+                <TableHeader onClick={() => handleSort('status')}>Status &#9660;</TableHeader>
                 <TableHeader/>
               </tr>
             </thead>

@@ -16,16 +16,18 @@ function initializePassport(passport) {
                 try {
                     console.log(profile);
                     const users = db.collection("users");
-
-                    const existingUser = users.findOne({ googleId: profile.id });
-                    if (existingUser) {
-                        return done(null, existingUser);
-                    }
+                    //
+                    // const existingUser = users.findOne({ googleId: profile.id });
+                    // if (existingUser) {
+                    //     return done(null, existingUser);
+                    // }
 
                     const newUser = {
                         googleId: profile.id,
                         username: profile.displayName
                     }
+
+                    console.log("user is logged");
                     users.insertOne(newUser);
                     return done(null, profile);
                 } catch (error) {

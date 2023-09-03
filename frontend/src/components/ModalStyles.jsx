@@ -10,6 +10,7 @@ export const ModalOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  align-self: center;
   z-index: 100;
   
   @media (max-width: 800px) {

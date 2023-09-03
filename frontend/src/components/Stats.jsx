@@ -34,8 +34,8 @@ const Stats = ({ data }) => {
     <StatsContainer>
       <Header>Application Statistics</Header>
       <StatItem>Total Applications: {totalApplications}</StatItem>
-      <StatItem>Interview Rate: {interviewRate.toFixed(2)}%</StatItem>
-      <StatItem>Offer Rate: {offerRate.toFixed(2)}%</StatItem>
+      <StatItem>Total Interviews: {totalInterviewsAndOffers} ({interviewRate.toFixed(2)}%)</StatItem>
+      <StatItem>Total Offers: {totalOffers} ({offerRate.toFixed(2)}%)</StatItem>
     </StatsContainer>
   );
 };

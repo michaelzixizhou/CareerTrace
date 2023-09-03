@@ -32,6 +32,11 @@ export const Button = styled.button`
     background-color: #777777;
     color: #fff;
   }
+
+  &:hover {
+    background-color: black;
+    color: white;
+  }
 `;
 
 export const StyledCloseButton = styled.button`
@@ -42,4 +47,8 @@ export const StyledCloseButton = styled.button`
   border: none;
   font-size: var(--font-size__button);
   cursor: pointer;
+
+  &:hover {
+    color: red;
+  }
 `;

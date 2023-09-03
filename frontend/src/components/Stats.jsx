@@ -2,11 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 
 const StatsContainer = styled.div`
-  margin: min(3vw, 3rem);
-  padding: min(2vw, 1.3rem);
+  margin: 1rem 0;
+  padding: 1rem;
+  flex-grow: 1; 
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   background-color: #f9f9f9;
+  text-align: center;
 `;
 
 const Header = styled.div`

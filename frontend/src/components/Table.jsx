@@ -6,24 +6,27 @@ import { Button } from './ButtonStyles';
 import { Icon } from '@iconify/react';
 import { ModifyModal } from './Modify';
 import { DeleteConfirmationModal } from './Delete';
+import { ModalHeader, ModalText } from './MobileTableStyles';
 
+const MobileMode = styled.span`
+  display: none;
+
+  @media (max-width: 800px) {
+    display: flex;
+    flex-direction: column;
+  }
+`
+const DesktopMode = styled.span`
+  @media (max-width: 800px) {
+    display: none;
+  }
+`
 const TableContainer = styled.div`
   margin: 0;
   padding: min(2vw, 3rem);
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   background-color: #f9f9f9;
-
-  @media (max-width: 800px) {
-    padding: min(5vw, 1rem);
-    margin: 0;
-    width: 100%;
-    align-items: center;
-    text-align: center;
-    border-radius: 0;
-    box-shadow: none;
-    background-color: transparent;
-  }
 `;
 
 const StyledTable = styled.table`
@@ -42,9 +45,8 @@ const TableHeader = styled.th`
   text-align: left;
   cursor: pointer;
   transition: background-color 0.3s ease;
-
-  @media (max-width: 800px) {
-    width: 100%;
+  &:hover {
+    background-color: #e0e0e0; 
   }
 `;
 
@@ -87,6 +89,15 @@ const StatusBadge = styled.span`
         return '#6c757d';
     }
   }};
+
+  margin-left: ${props => {
+    switch (props.margin) {
+      case 'N/A':
+        return '0';
+      default:
+        return 'min(2vw, 0.3rem)';
+    }
+  }};
 `;
 
 const InfoIcon = styled(Icon)`
@@ -107,15 +118,17 @@ const JobTable = ({ data }) => {
   const [currentJobData, setCurrentJobData] = useState(null);
   const [showModifyModal, setShowModifyModal] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  
+  const [sortedData, setSortedData] = useState([...data]);
+  const [sortOrder, setSortOrder] = useState('asc');
+
   const totalPages = Math.ceil(data.length / itemsPerPage);
-  const visibleData = data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const visibleData = sortedData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
   
   const pagesPerGroup = 5;
   const currentGroup = Math.ceil(currentPage / pagesPerGroup);
   const firstPageInGroup = (currentGroup - 1) * pagesPerGroup + 1;
   const lastPageInGroup = Math.min(firstPageInGroup + 4, totalPages);
-  
+
   const visiblePages = Array.from({ length: lastPageInGroup - firstPageInGroup + 1 }).map((_, index) => (
     <PageNumber
       key={index}
@@ -129,6 +142,10 @@ const JobTable = ({ data }) => {
     </PageNumber>
   ));
 
+  const handleOverlayClick = event => {
+    event.stopPropagation(); // Prevent the click event from reaching the overlay element
+  };
+
   const handleInfoClick = (job) => {
     setCurrentJobData(job);
     setShowInformationModal(true);
@@ -139,43 +156,97 @@ const JobTable = ({ data }) => {
     setShowModifyModal(true);
   };
 
+  const customStatusOrder = ['Rejected', 'Phone Screen', 'Online Assessment', 'Interview', 'Offer'];
+
+  const handleSort = (column) => {
+    const sorted = [...sortedData].sort((a, b) => {
+      if (column === 'dateApplied') {
+        const dateA = new Date(a[column]);
+        const dateB = new Date(b[column]);
+        return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+      } else if (column === 'status') {
+        const statusA = customStatusOrder.indexOf(a[column]);
+        const statusB = customStatusOrder.indexOf(b[column]);
+        return sortOrder === 'asc' ? statusA - statusB : statusB - statusA;
+      } else {
+        return sortOrder === 'asc' ? a[column].localeCompare(b[column]) : b[column].localeCompare(a[column]);
+      }
+    });
+  
+    setSortedData(sorted);
+    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+  };
+
   return (
     <TableContainer>
-      <StyledTable>
-        <thead>
-          <tr>
-            <TableHeader>Company</TableHeader>
-            <TableHeader>Role Name</TableHeader>
-            <TableHeader>Date Applied</TableHeader>
-            <TableHeader>Location</TableHeader>
-            <TableHeader>Duration</TableHeader>
-            <TableHeader>Status</TableHeader>
-            <TableHeader/>
-          </tr>
-        </thead>
-        <tbody>
-          {visibleData.map((job, index) => (
-            <TableRow key={index}>
-              <TableCell>{job.company}</TableCell>
-              <TableCell>{job.roleName}</TableCell>
-              <TableCell>{job.dateApplied}</TableCell>
-              <TableCell>{job.location}</TableCell>
-              <TableCell>{job.duration}</TableCell>
-              <TableCell>
-                <StatusBadge status={job.status}>
-                  {job.status}
-                </StatusBadge>
-                <InfoIcon icon="clarity:info-solid" onClick={() => handleInfoClick(job)}/>
-              </TableCell>
-              <TableCell>
-                <Button className='gray' type="button" onClick={() => handleModifyClick(job)}>
-                  <Icon icon="streamline:interface-edit-write-2-change-document-edit-modify-paper-pencil-write-writing" />
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </tbody>
-      </StyledTable>
+      <DesktopMode>
+        <StyledTable>
+          <thead>
+            <tr>
+              <TableHeader onClick={() => handleSort('company')}>Company &#9660;</TableHeader>
+              <TableHeader onClick={() => handleSort('role')}>Role &#9660;</TableHeader>
+              <TableHeader onClick={() => handleSort('dateApplied')}>Date Applied &#9660;</TableHeader>
+              <TableHeader onClick={() => handleSort('location')}>Location &#9660;</TableHeader>
+              <TableHeader onClick={() => handleSort('duration')}>Duration &#9660;</TableHeader>
+              <TableHeader onClick={() => handleSort('status')}>Status &#9660;</TableHeader>
+              <TableHeader/>
+            </tr>
+          </thead>
+          <tbody>
+            {visibleData.map((job, index) => (
+              <TableRow key={index}>
+                <TableCell>{job.company}</TableCell>
+                <TableCell>{job.role}</TableCell>
+                <TableCell>{job.dateApplied}</TableCell>
+                <TableCell>{job.location}</TableCell>
+                <TableCell>{job.duration}</TableCell>
+                <TableCell>
+                  <StatusBadge status={job.status} margin={'N/A'}>
+                    {job.status}
+                  </StatusBadge>
+                  <InfoIcon icon="clarity:info-solid" onClick={() => handleInfoClick(job)}/>
+                </TableCell>
+                <TableCell>
+                  <Button className='gray' type="button" onClick={() => handleModifyClick(job)}>
+                    <Icon icon="streamline:interface-edit-write-2-change-document-edit-modify-paper-pencil-write-writing" />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </tbody>
+        </StyledTable>
+      </DesktopMode>   
+      <MobileMode>
+        <StyledTable>
+            <thead>
+              <tr>
+                <TableHeader onClick={() => handleSort('company')}>Company &#9660;</TableHeader>
+                <TableHeader onClick={() => handleSort('role')}>Role &#9660;</TableHeader>
+                <TableHeader onClick={() => handleSort('status')}>Status &#9660;</TableHeader>
+                <TableHeader/>
+              </tr>
+            </thead>
+            <tbody>
+              {visibleData.map((job, index) => (
+                <TableRow key={index}>
+                  <TableCell>{job.company}</TableCell>
+                  <TableCell>{job.role}</TableCell>
+                  <TableCell>
+                    <StatusBadge status={job.status} margin='N/A'>
+                      {job.status}
+                    </StatusBadge>
+                    <InfoIcon icon="clarity:info-solid" onClick={() => handleInfoClick(job)}/>
+                  </TableCell>
+                  <TableCell>
+                    <Button className='gray' type="button" onClick={() => handleModifyClick(job)}>
+                      <Icon icon="streamline:interface-edit-write-2-change-document-edit-modify-paper-pencil-write-writing" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </tbody>
+          </StyledTable>
+      </MobileMode>
       <PaginationContainer>
         {currentGroup > 1 && (
           <PageNavigationButton onClick={() => setCurrentPage(firstPageInGroup - pagesPerGroup)}>
@@ -189,9 +260,26 @@ const JobTable = ({ data }) => {
       </PaginationContainer>
       {showInformationModal && (
         <ModalOverlay onClick={() => setShowInformationModal(false)}>
-          <ModalContent>
-            <p>Interview Scheduled: {currentJobData.dateApplied}</p>
-            <p>Anticipated Pay: {currentJobData.anticipatedPay}</p>
+          <ModalContent onClick={handleOverlayClick}>
+            <ModalHeader>Company<ModalText>: {currentJobData.company}</ModalText></ModalHeader>
+            <ModalHeader>Role Name<ModalText>: {currentJobData.role}</ModalText></ModalHeader>
+            <ModalHeader>Date Applied<ModalText>: {currentJobData.dateApplied}</ModalText></ModalHeader>
+            <ModalHeader>Location<ModalText>: {currentJobData.location}</ModalText></ModalHeader>
+            <ModalHeader>Duration<ModalText>: {currentJobData.duration}</ModalText></ModalHeader>
+            <ModalHeader>
+              Current Status <ModalText>:</ModalText>            
+              <StatusBadge status={currentJobData.status} margin='Yes'>
+                  {currentJobData.status}
+              </StatusBadge>
+            </ModalHeader>
+            <ModalHeader>
+              Maximum Achieved <ModalText>:</ModalText>               
+              <StatusBadge status={currentJobData.maxStatus} margin='Yes'>
+                  {currentJobData.maxStatus}
+              </StatusBadge>
+            </ModalHeader>
+            <ModalHeader>Interview Scheduled<ModalText>: {currentJobData.dateApplied}</ModalText></ModalHeader>
+            <ModalHeader>Anticipated Pay<ModalText>: {currentJobData.pay}</ModalText></ModalHeader>
           </ModalContent>
         </ModalOverlay>
       )}

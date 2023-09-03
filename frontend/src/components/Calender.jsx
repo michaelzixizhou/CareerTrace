@@ -6,6 +6,7 @@ import { Button } from './ButtonStyles';
 import 'react-calendar/dist/Calendar.css';
 
 const CalendarContainer = styled.div`
+  flex-grow: 1; 
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -40,7 +41,7 @@ const EventDot = styled.div`
 const CalendarHeader = styled.div`
   font-size: var(--font-size__header);
   font-weight: 800;
-  margin-bottom: min(1vw, 1rem);
+  margin-bottom: 1.2rem;
 `;
 
 const EventLabel = styled.div`

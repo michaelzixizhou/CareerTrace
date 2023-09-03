@@ -1,9 +1,52 @@
 import './App.css';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import JobTable from './components/Table';
 import AddJob from './components/Add';
 import TrackCalender from './components/Calender';
 import Stats from './components/Stats';
+import { Icon } from '@iconify/react';
+
+const MobileMode = styled.span`
+  display: none;
+  
+  @media (max-width: 800px) {
+    display: flex;
+    flex-direction: column;
+  }
+`
+const DesktopMode = styled.span`
+  @media (max-width: 800px) {
+    display: none;
+  }
+`
+const SemiCircleButton = styled.button`
+  width: 100px;
+  height: 130px;
+  background-color: #777;
+  border-radius: 60%;
+  position: fixed;
+  left: 0%;
+  top: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transform: translateX(-50%);
+  border: 2px solid #777;
+`;
+
+const LeftRightArrowIcon = styled(Icon)`
+  vertical-align: middle;
+  color: #fff;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  position: fixed;
+  cursor: pointer;
+`;
 
 const getRandomDate = (start, end) => {
   const startDate = new Date(start);
@@ -31,13 +74,14 @@ const generateRandomData = () => {
 
   return {
     company: randomCompany,
-    roleName: randomRole,
+    role: randomRole,
     dateApplied: dateApplied,
     location: randomLocation,
     duration: randomDuration,
-    anticipatedPay: randomAnticipatedPay,
+    pay: randomAnticipatedPay,
     scheduledInterview: randomScheduledInterview,
     status: randomStatus,
+    maxStatus: randomStatus,
   };
 };
 
@@ -61,14 +105,16 @@ const AppContainer = styled.div`
     text-align: center;
     gap: 0;
     padding: 0;
+    width: 100vw;
     padding-top: min(10vw, 3rem);
   }
+
+  margin: 1rem 0;
 `;
 
 const LeftContainer = styled.div`
-  flex: 1;
-
-  @media(max-width: 800px) {
+  flex: 1;  
+  @media (max-width: 800px) {
     align-items: center;
     padding: 0;
     margin: 0;
@@ -77,8 +123,8 @@ const LeftContainer = styled.div`
 
 const RightContainer = styled.div`
   flex: 1;
-
-  @media(max-width: 800px) {
+  display: flex;
+  @media (max-width: 800px) {
     width: fit-content;
     margin: 0;
     padding: 0;
@@ -93,22 +139,54 @@ const Title = styled.div`
 
 const App = () => {
   const jobData = generateSampleData(341);
+  const [showCalenderStats, setshowCalenderStats] = useState(false);
+
+  const toggleLeftContainer = () => {
+    setshowCalenderStats(!showCalenderStats);
+  };
 
   return (
     <>
       <Title>Job Tracker</Title>
       <AppContainer>
-        <LeftContainer>
-          <TrackCalender data={jobData} />
-          <Stats data={jobData} />
-          <AddJob />
-        </LeftContainer>
-        <RightContainer>
-          <JobTable data={jobData} />
-        </RightContainer>
+        <MobileMode>    
+          {showCalenderStats ? (
+            <LeftContainer>
+              <TrackCalender data={jobData} />
+              <Stats data={jobData} />
+              <AddJob />
+            </LeftContainer>
+          ) : (
+            <SemiCircleButton onClick={toggleLeftContainer}>
+              <LeftRightArrowIcon icon="teenyicons:left-outline" />
+            </SemiCircleButton>
+          )}
+        </MobileMode>
+        <DesktopMode>
+          <LeftContainer>
+            <TrackCalender data={jobData} />
+            <Stats data={jobData} />
+            <AddJob />
+          </LeftContainer>
+        </DesktopMode>
+        <MobileMode>   
+        {showCalenderStats ? (
+            <SemiCircleButton onClick={toggleLeftContainer}>
+              <LeftRightArrowIcon icon="teenyicons:right-outline" />
+            </SemiCircleButton>
+          ) : (        
+            <RightContainer>
+              <JobTable data={jobData} />
+            </RightContainer>
+        )}
+        </MobileMode>
+        <DesktopMode>
+          <RightContainer>
+            <JobTable data={jobData} />
+          </RightContainer>
+        </DesktopMode>
       </AppContainer>
     </>
-
   );
 };
 

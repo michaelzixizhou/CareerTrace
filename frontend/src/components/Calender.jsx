@@ -28,7 +28,7 @@ const EventDot = styled.div`
   width: 50%;
   height: auto;
   border-radius: 50%;
-  background-color: ${props => (props.type === 'interviews' ? '#28a745' : '#007bff')};
+  background-color: #28a745;
   margin-right: 4px;
   display: flex;
   justify-content: center;
@@ -49,81 +49,54 @@ const EventLabel = styled.div`
   align-items: center;
 `;
 
-export const InterviewApplicationModal = ({ interviewData, applicationData, onClose }) => {
+export const EventModal = ({ eventData, onClose }) => {
   const [currentPage, setCurrentPage] = useState(0);
-  const [currentDataType, setCurrentDataType] = useState('interview'); // interview or application
 
   const handleNext = () => {
-    // Calculate the next page, and if it goes beyond the last page, loop back to the first page
-    setCurrentPage((currentPage + 1) % currentData.length);
+    setCurrentPage((currentPage + 1) % eventData.length);
   };
 
   const handlePrev = () => {
-    // Calculate the previous page, and if it goes below the first page, loop to the last page
-    setCurrentPage((currentPage - 1 + currentData.length) % currentData.length);
+    setCurrentPage((currentPage - 1 + eventData.length) % eventData.length);
   };
 
   const handleOverlayClick = event => {
     event.stopPropagation(); // Prevent the click event from reaching the overlay element
   };
 
-  const handleDataSwitch = dataType => {
-    setCurrentDataType(dataType);
-    setCurrentPage(0);
-  };
-
-  const currentData = currentDataType === 'interview' ? interviewData : applicationData;
-
   return (
     <ModalOverlay onClick={onClose}>
       <ModalContent onClick={handleOverlayClick}>
-        <h2>{currentDataType === 'interview' ? 'Assessment Details' : 'Application Details'}</h2>
-        {currentData && currentData.length > 0 ? (
+        <h2>Event Details</h2>
+        {eventData && eventData.length > 0 ? (
           <>
             <div>
-              {currentDataType === 'interview' && (<p>Type: {currentData[currentPage].applicationStage}</p>)}
-              {currentDataType !== 'interview' && (<p>Status: {currentData[currentPage].rejected === false ? 'Pending Response' : 'Rejected'}</p>)}
-              {(currentDataType !== 'interview' && currentData[currentPage].rejected === false) && (<p>Application Status: {currentData[currentPage].applicationStage}</p>)}
-              <p>Company: {currentData[currentPage].company}</p>
-              <p>Role: {currentData[currentPage].role}</p>
-              <p>Location: {currentData[currentPage].location}</p>
-              {currentDataType === 'interview' ? (
-                <p>Interview Date: {currentData[currentPage].scheduledInterview}</p>
-              ) : (
-                <p>Date Applied: {currentData[currentPage].jobCycle}</p>
-              )}
+              <p>Type: {
+                eventData[currentPage].applicationStage && eventData[currentPage].applicationStage !== "No Response" 
+                ? eventData[currentPage].applicationStage
+                : eventData[currentPage].applicationStage
+                  ? "Application"
+                  : "Not Specified"
+                }
+              </p>
+              <p>Company: {eventData[currentPage].company}</p>
+              <p>Role: {eventData[currentPage].role}</p>
+              <p>Location: {eventData[currentPage].location}</p>
+              <p>Date: {eventData[currentPage].dateEvent}</p>
             </div>
             <div>
-              <h3>{currentPage + 1}/{currentData.length}</h3>
-              <Button className='gray' type="button" onClick={handlePrev}>Previous</Button>
-              <Button className='gray' type="button" onClick={handleNext}>Next</Button>
-              <Button
-                className='blue'
-                type="button"
-                onClick={() =>
-                  handleDataSwitch(
-                    currentDataType === 'application' ? 'interview' : 'application'
-                  )
-                }
-              >
-                {currentDataType === 'interview' ? 'Switch to Applications' : 'Switch to Interviews'}
+              <h3>{currentPage + 1}/{eventData.length}</h3>
+              <Button className='gray' type="button" onClick={handlePrev}>
+                Previous
+              </Button>
+              <Button className='gray' type="button" onClick={handleNext}>
+                Next
               </Button>
             </div>
           </>
         ) : (
           <div>
-            <p>No {currentDataType === 'interview' ? 'interview' : 'application'} on this day.</p>
-            <Button
-                className='blue'
-                type="button"
-                onClick={() =>
-                  handleDataSwitch(
-                    currentDataType === 'application' ? 'interview' : 'application'
-                  )
-                }
-              >
-                {currentDataType === 'interview' ? 'Switch to Applications' : 'Switch to Interviews'}
-            </Button>
+            <p>No events available.</p>
           </div>
         )}
       </ModalContent>
@@ -132,36 +105,24 @@ export const InterviewApplicationModal = ({ interviewData, applicationData, onCl
 };
 
 const TrackCalender = ({ data, selectedDate, handleDateChange }) => {
-  const [showInterviewModal, setShowInterviewModal] = useState(false);
-  const [selectedInterviewData, setSelectedInterviewData] = useState(null);
-  const [selectedApplicationData, setSelectedApplicationData] = useState(null);
+  const [showEventModal, setShowEventModal] = useState(false);
+  const [eventData, setEventData] = useState(null);
 
   const tileContent = ({ date }) => {
     const year = date.getFullYear();
     const month = date.getMonth();
     const day = date.getDate();
-
-    const newDate = new Date(year, month, day); // Define formattedDate here
-    const formattedDate = newDate.toDateString();
-    
-    const interviewsOnSelectedDate = data.filter(
-      item =>
-        ((item.applicationStage === 'Interview' || item.applicationStage === 'Phone Screen' || item.applicationStage === 'Online Assessment') && item.rejected === false) &&
-        new Date(item.dateEvent).toDateString() === formattedDate
-    );
+    const formattedDate = new Date(Date.UTC(year, month, day)).toDateString();
   
-    const applicationsOnSelectedDate = data.filter(
+    const eventsOnSelectedDate = data.filter(
       item =>
         new Date(item.dateEvent).toDateString() === formattedDate
     );
 
     return (
       <EventLabel>
-        {interviewsOnSelectedDate && (
-          <EventDot type="interviews">{interviewsOnSelectedDate.length}</EventDot>
-        )}
-        {applicationsOnSelectedDate && (
-          <EventDot type="applications">{applicationsOnSelectedDate.length}</EventDot>
+        {eventsOnSelectedDate && (
+          <EventDot>{eventsOnSelectedDate.length}</EventDot>
         )}
       </EventLabel>
     );
@@ -172,40 +133,27 @@ const TrackCalender = ({ data, selectedDate, handleDateChange }) => {
     const month = date.getMonth();
     const day = date.getDate();
 
-    const newDate = new Date(year, month, day); // Define formattedDate here
-    const formattedDate = newDate.toDateString();
+    const formattedDate = new Date(Date.UTC(year, month, day)).toDateString();
 
-    const interviewsOnSelectedDate = data.filter(
-      item =>
-      ((item.applicationStage === 'Interview' || item.applicationStage === 'Phone Screen' || item.applicationStage === 'Online Assessment') && item.rejected === false) &&
-        new Date(item.dateEvent).toDateString() === formattedDate
-    );
-  
-    const applicationsOnSelectedDate = data.filter(
-      item =>
-        new Date(item.dateEvent).toDateString() === formattedDate
+    const eventsOnSelectDate = data.filter(
+      item => new Date(item.dateEvent).toDateString() === formattedDate
     );
 
-    if (interviewsOnSelectedDate){
-      setSelectedInterviewData(interviewsOnSelectedDate);
-      setShowInterviewModal(true);
-    }
-
-    if (applicationsOnSelectedDate){
-      setSelectedApplicationData(applicationsOnSelectedDate);
-      setShowInterviewModal(true);
+    if (eventsOnSelectDate){
+      setEventData(eventsOnSelectDate);
+      setShowEventModal(true);
     }
   };
 
   const closeModal = () => {
-    setShowInterviewModal(false);
-    setSelectedInterviewData(null);
+    setShowEventModal(false);
+    setEventData(null);
   };
 
   return (
     <>
       <CalendarContainer>
-        <CalendarHeader>Interview and Application Calendar</CalendarHeader>
+        <CalendarHeader>Event Tracking Calendar</CalendarHeader>
         <Calendar 
           onChange={handleDateChange} 
           value={selectedDate} 
@@ -214,10 +162,9 @@ const TrackCalender = ({ data, selectedDate, handleDateChange }) => {
           minDetail="month"
           calendarType='gregory'
         />
-        {showInterviewModal && (
-          <InterviewApplicationModal 
-            interviewData={selectedInterviewData} 
-            applicationData={selectedApplicationData} 
+        {showEventModal && (
+          <EventModal 
+            eventData={eventData} 
             onClose={closeModal} 
           />
         )}

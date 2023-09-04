@@ -9,6 +9,8 @@
   --font-size__text: 0.95rem;
   --font-size__icon: 1.2rem;
   --font-size__button: 1rem;
+  --font-size__badge_x: 0.3rem;
+  --font-size__badge_y: 0.5rem;
 }
 
 @media (max-width: 1200px) {
@@ -48,6 +50,7 @@
     --font-size__text: 0.6rem;
     --font-size__icon: 1.5rem;
     --font-size__button: 1rem;
+    --font-size__badge_x: 0.5rem;
   }
 }
 

@@ -64,7 +64,7 @@ const TableCell = styled.td`
 
 const StatusBadge = styled.span`
   display: inline-block;
-  padding: min(1vw, 0.3rem) min(1vw, 0.5rem);
+  padding: var(--font-size__badge_x) var(--font-size__badge_y);
   border-radius: 4px;
   font-size: var(--font-size__text);
   line-height: normal;

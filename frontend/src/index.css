@@ -7,7 +7,7 @@
   --font-size__title: 2.5rem;
   --font-size__header: 1rem;
   --font-size__text: 0.7rem;
-  --font-size__icon: 1rem;
+  --font-size__icon: 1.2rem;
   --font-size__button: 0.8rem;
 }
 
@@ -16,7 +16,7 @@
     --font-size__title: 2rem;
     --font-size__header: 1rem;
     --font-size__text: 0.7rem;
-    --font-size__icon: 0.9rem;
+    --font-size__icon: 1.3rem;
     --font-size__button: 0.8rem;
   }
 }
@@ -26,7 +26,7 @@
     --font-size__title: 1.5rem;
     --font-size__header: 0.9rem;
     --font-size__text: 0.6rem;
-    --font-size__icon: 0.7rem;
+    --font-size__icon: 1.4rem;
     --font-size__button: 0.7rem;
   }
 }
@@ -36,7 +36,7 @@
     --font-size__title: 1.2rem;
     --font-size__header: 0.7rem;
     --font-size__text: 0.4rem;
-    --font-size__icon: 0.5rem;
+    --font-size__icon: 1.5rem;
     --font-size__button: 0.5rem;
   }
 }

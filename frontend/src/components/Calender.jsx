@@ -137,7 +137,12 @@ const TrackCalender = ({ data, selectedDate, handleDateChange }) => {
   const [selectedApplicationData, setSelectedApplicationData] = useState(null);
 
   const tileContent = ({ date }) => {
-    const formattedDate = date.toDateString(); // Define formattedDate here
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const day = date.getDate();
+
+    const newDate = new Date(year, month, day - 1); // Define formattedDate here
+    const formattedDate = newDate.toDateString();
     
     const interviewsOnSelectedDate = data.filter(
       item =>
@@ -163,12 +168,17 @@ const TrackCalender = ({ data, selectedDate, handleDateChange }) => {
   };
     
   const handleTileClick = date => {
-    const formattedDate = date.toDateString(); // Define formattedDate here
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const day = date.getDate();
+
+    const newDate = new Date(year, month, day - 1); // Define formattedDate here
+    const formattedDate = newDate.toDateString();
 
     const interviewsOnSelectedDate = data.filter(
       item =>
-        item.applicationStage === 'Interview' &&
-        new Date(item.scheduledInterview).toDateString() === formattedDate
+      ((item.applicationStage === 'Interview' || item.applicationStage === 'Phone Screen' || item.applicationStage === 'Online Assessment') && item.rejected === false) &&
+        new Date(item.scheduledInterview.dateApplied).toDateString() === formattedDate
     );
   
     const applicationsOnSelectedDate = data.filter(
@@ -176,12 +186,12 @@ const TrackCalender = ({ data, selectedDate, handleDateChange }) => {
         new Date(item.jobCycle).toDateString() === formattedDate
     );
 
-    if (interviewsOnSelectedDate && interviewsOnSelectedDate.length > 0){
+    if (interviewsOnSelectedDate){
       setSelectedInterviewData(interviewsOnSelectedDate);
       setShowInterviewModal(true);
     }
 
-    if (applicationsOnSelectedDate && applicationsOnSelectedDate.length > 0){
+    if (applicationsOnSelectedDate){
       setSelectedApplicationData(applicationsOnSelectedDate);
       setShowInterviewModal(true);
     }
@@ -193,24 +203,26 @@ const TrackCalender = ({ data, selectedDate, handleDateChange }) => {
   };
 
   return (
-    <CalendarContainer>
-      <CalendarHeader>Interview and Application Calendar</CalendarHeader>
-      <Calendar 
-        onChange={handleDateChange} 
-        value={selectedDate} 
-        tileContent={tileContent}
-        onClickDay={handleTileClick} 
-        minDetail="month"
-        calendarType='gregory'
-      />
-      {showInterviewModal && (
-        <InterviewApplicationModal 
-          interviewData={selectedInterviewData} 
-          applicationData={selectedApplicationData} 
-          onClose={closeModal} 
+    <>
+      <CalendarContainer>
+        <CalendarHeader>Interview and Application Calendar</CalendarHeader>
+        <Calendar 
+          onChange={handleDateChange} 
+          value={selectedDate} 
+          tileContent={tileContent}
+          onClickDay={handleTileClick} 
+          minDetail="month"
+          calendarType='gregory'
         />
-      )}
-    </CalendarContainer>
+        {showInterviewModal && (
+          <InterviewApplicationModal 
+            interviewData={selectedInterviewData} 
+            applicationData={selectedApplicationData} 
+            onClose={closeModal} 
+          />
+        )}
+      </CalendarContainer>
+    </>
   );
 };
 

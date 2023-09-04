@@ -141,18 +141,18 @@ const TrackCalender = ({ data, selectedDate, handleDateChange }) => {
     const month = date.getMonth();
     const day = date.getDate();
 
-    const newDate = new Date(year, month, day - 1); // Define formattedDate here
+    const newDate = new Date(year, month, day); // Define formattedDate here
     const formattedDate = newDate.toDateString();
     
     const interviewsOnSelectedDate = data.filter(
       item =>
         ((item.applicationStage === 'Interview' || item.applicationStage === 'Phone Screen' || item.applicationStage === 'Online Assessment') && item.rejected === false) &&
-        new Date(item.scheduledInterview).toDateString() === formattedDate
+        new Date(item.dateEvent).toDateString() === formattedDate
     );
   
     const applicationsOnSelectedDate = data.filter(
       item =>
-        new Date(item.jobCycle).toDateString() === formattedDate
+        new Date(item.dateEvent).toDateString() === formattedDate
     );
 
     return (
@@ -172,18 +172,18 @@ const TrackCalender = ({ data, selectedDate, handleDateChange }) => {
     const month = date.getMonth();
     const day = date.getDate();
 
-    const newDate = new Date(year, month, day - 1); // Define formattedDate here
+    const newDate = new Date(year, month, day); // Define formattedDate here
     const formattedDate = newDate.toDateString();
 
     const interviewsOnSelectedDate = data.filter(
       item =>
       ((item.applicationStage === 'Interview' || item.applicationStage === 'Phone Screen' || item.applicationStage === 'Online Assessment') && item.rejected === false) &&
-        new Date(item.scheduledInterview.dateApplied).toDateString() === formattedDate
+        new Date(item.dateEvent).toDateString() === formattedDate
     );
   
     const applicationsOnSelectedDate = data.filter(
       item =>
-        new Date(item.jobCycle).toDateString() === formattedDate
+        new Date(item.dateEvent).toDateString() === formattedDate
     );
 
     if (interviewsOnSelectedDate){

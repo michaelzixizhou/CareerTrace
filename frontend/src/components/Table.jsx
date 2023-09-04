@@ -33,15 +33,17 @@ const StyledTable = styled.table`
   border-collapse: collapse;
   border: 1px solid #e4e5f1;
   background-color: #ffffff;
+  table-layout: fixed;
+  width: 100%;
 `;
 
 const TableHeader = styled.th`
-  padding: 12px 16px;
+  padding: min(3vw, 2rem) min(3vw, 1rem);
   background-color: #777777;
   color: #fff;
   border-bottom: 1px solid #dcdcdc;
   font-weight: 800;
-  font-size: var(--font-size__header);
+  font-size: var(--font-size__text);
   text-align: left;
   cursor: ${props => (props.hover ? 'pointer' : 'default')};
   transition: background-color 0.5s ease;
@@ -57,7 +59,8 @@ const TableRow = styled.tr`
 `;
 
 const TableCell = styled.td`
-  padding: 0.8rem;
+  padding: min(2vw, 0.8rem);
+  font-size: var(--font-size__text);
   border-bottom: 1px solid #dcdcdc;
 `;
 
@@ -87,7 +90,8 @@ const StatusBadge = styled.span`
 `;
 
 const InfoIcon = styled(Icon)`
-  font-size: var(--font-size__icon); 
+  font-size: var(--font-size__icon);
+  padding: 0; 
   margin-left: min(0.5vw, 0.3rem);
   margin-top: 0;
   margin-bottom: 0;

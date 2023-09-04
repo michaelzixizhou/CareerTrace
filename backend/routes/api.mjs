@@ -92,13 +92,13 @@ router.post("/:id/jobs", async (req, res) => {
         jobid: newJobID,
         company: req.body.company,
         role: req.body.role,
-        dateapplied: req.body.dateapplied,
-        applicationstage: req.body.applicationstage,
-        status: req.body.status,
-        eventdate: req.body.eventdate,
+        jobCycle: req.body.jobCycle,
+        applicationStage: req.body.applicationStage,
+        dateEvent: req.body.dateEvent,
         location: req.body.location,
         duration: req.body.duration,
-        pay: req.body.pay
+        pay: req.body.pay,
+        rejected: req.body.rejected,
     };
 
     let result = await collection.updateOne(
@@ -129,13 +129,13 @@ router.post("/jobs", async (req, res) => {
         jobid: newJobID,
         company: req.body.company,
         role: req.body.role,
-        dateapplied: req.body.dateapplied,
-        applicationstage: req.body.applicationstage,
-        status: req.body.status,
-        eventdate: req.body.eventdate,
+        jobCycle: req.body.jobCycle,
+        applicationStage: req.body.applicationStage,
+        dateEvent: req.body.dateEvent,
         location: req.body.location,
         duration: req.body.duration,
-        pay: req.body.pay
+        pay: req.body.pay,
+        rejected: req.body.rejected,
     };
 
     let result = await collection.updateOne(
@@ -179,13 +179,13 @@ router.patch("/:id/jobs/:jobid", async (req, res) => {
     let updates = {
         "jobapps.$.company": reqBody.company,
         "jobapps.$.role": reqBody.role,
-        "jobapps.$.dateapplied": reqBody.dateapplied,
-        "jobapps.$.applicationstage": reqBody.applicationstage,
-        "jobapps.$.status": reqBody.status,
-        "jobapps.$.eventdate": reqBody.eventdate,
+        "jobapps.$.applicationStage": reqBody.applicationStage,
+        "jobapps.$.jobCycle": reqBody.jobCycle,
+        "jobapps.$.dateEvent": reqBody.dateEvent,
         "jobapps.$.location": reqBody.location,
         "jobapps.$.duration": reqBody.duration,
         "jobapps.$.pay": reqBody.pay,
+        "jobapps.$.rejected": reqBody.rejected,
     };
 
     removeUndefinedValues(updates)

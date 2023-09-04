@@ -22,7 +22,7 @@ export const ModalContent = styled.div`
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
-  width: 400px;
+  width: min(300px, 90vw);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 
   @media (max-width: 1200px) {

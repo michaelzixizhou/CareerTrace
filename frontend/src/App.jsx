@@ -166,7 +166,7 @@ const RightContainer = styled.div`
     width: fit-content;
     margin: 0;
     padding: 0;
-    max-width: 90vw;
+    max-width: 97vw;
   }
 `;
 
@@ -194,11 +194,11 @@ const App = () => {
     setShowCalenderStats(!showCalenderStats);
   };  
 
-  useEffect(() => {
-    fetch("http://localhost:5050")
-    .then((res) => {res.json(); console.log(res.json())})
-    .then((data) => setData(data));
-  }, []);
+  // useEffect(() => {
+  //   fetch("http://localhost:5050")
+  //   .then((res) => {res.json(); console.log(res.json())})
+  //   .then((data) => setData(data));
+  // }, []);
 
   console.log(data);
 

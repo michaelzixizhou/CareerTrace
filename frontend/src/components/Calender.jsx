@@ -77,10 +77,13 @@ export const InterviewApplicationModal = ({ interviewData, applicationData, onCl
   return (
     <ModalOverlay onClick={onClose}>
       <ModalContent onClick={handleOverlayClick}>
-        <h2>{currentDataType === 'interview' ? 'Interview Details' : 'Application Details'}</h2>
+        <h2>{currentDataType === 'interview' ? 'Assessment Details' : 'Application Details'}</h2>
         {currentData && currentData.length > 0 ? (
           <>
             <div>
+              {currentDataType === 'interview' && (<p>Assessment Type: {currentData[currentPage].applicationStage}</p>)}
+              {currentDataType !== 'interview' && (<p>Status: {currentData[currentPage].rejected === false ? 'Pending Response' : 'Rejected'}</p>)}
+              {(currentDataType !== 'interview' && currentData[currentPage].rejected === false) && (<p>Application Status: {currentData[currentPage].applicationStage}</p>)}
               <p>Company: {currentData[currentPage].company}</p>
               <p>Role: {currentData[currentPage].role}</p>
               <p>Location: {currentData[currentPage].location}</p>

@@ -81,7 +81,7 @@ export const InterviewApplicationModal = ({ interviewData, applicationData, onCl
         {currentData && currentData.length > 0 ? (
           <>
             <div>
-              {currentDataType === 'interview' && (<p>Assessment Type: {currentData[currentPage].applicationStage}</p>)}
+              {currentDataType === 'interview' && (<p>Type: {currentData[currentPage].applicationStage}</p>)}
               {currentDataType !== 'interview' && (<p>Status: {currentData[currentPage].rejected === false ? 'Pending Response' : 'Rejected'}</p>)}
               {(currentDataType !== 'interview' && currentData[currentPage].rejected === false) && (<p>Application Status: {currentData[currentPage].applicationStage}</p>)}
               <p>Company: {currentData[currentPage].company}</p>
@@ -141,7 +141,7 @@ const TrackCalender = ({ data, selectedDate, handleDateChange }) => {
     
     const interviewsOnSelectedDate = data.filter(
       item =>
-        item.applicationStage === 'Interview' &&
+        ((item.applicationStage === 'Interview' || item.applicationStage === 'Phone Screen' || item.applicationStage === 'Online Assessment') && item.rejected === false) &&
         new Date(item.scheduledInterview).toDateString() === formattedDate
     );
   

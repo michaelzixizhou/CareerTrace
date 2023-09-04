@@ -29,6 +29,6 @@ export const ModalContent = styled.div`
     text-align: left;
   }
 
-  max-height: 90vh;
+  max-height: 70vh;
   overflow-y: auto; /* Add vertical scroll if content overflows */
 `;

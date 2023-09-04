@@ -58,7 +58,7 @@ const TableRow = styled.tr`
 `;
 
 const TableCell = styled.td`
-  padding: min(1vw, 2rem);
+  padding: 0.8rem;
   border-bottom: 1px solid #dcdcdc;
 `;
 
@@ -97,7 +97,7 @@ const InfoIcon = styled(Icon)`
   cursor: pointer;
 `;
 
-const itemsPerPage = 10; // temporary
+const itemsPerPage = 8; // temporary
 
 const JobTable = ({ data }) => {
   const [currentPage, setCurrentPage] = useState(1);

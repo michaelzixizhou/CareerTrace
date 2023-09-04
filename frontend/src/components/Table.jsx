@@ -11,7 +11,7 @@ import { ModalHeader, ModalText } from './MobileTableStyles';
 const MobileMode = styled.span`
   display: none;
 
-  @media (max-width: 800px) {
+  @media (max-width: 1000px) {
     display: flex;
     flex-direction: column;
   }

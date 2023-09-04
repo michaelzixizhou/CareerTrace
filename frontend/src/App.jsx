@@ -6,17 +6,18 @@ import AddJob from './components/Add';
 import TrackCalender from './components/Calender';
 import Stats from './components/Stats';
 import { Icon } from '@iconify/react';
+import GoogleButton from 'react-google-button'
 
 const MobileMode = styled.span`
   display: none;
   
-  @media (max-width: 800px) {
+  @media (max-width: 1000px) {
     display: flex;
     flex-direction: column;
   }
 `
 const DesktopMode = styled.span`
-  @media (max-width: 800px) {
+  @media (max-width: 1000px) {
     display: none;
   }
 `
@@ -97,25 +98,42 @@ const generateSampleData = (count) => {
 const AppContainer = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 20px;
-  padding: 20px;
+  gap: min(2vw, 2rem);
+  justify-content: center;
 
-  @media (max-width: 800px) {
+  @media (max-width: 1000px) {
     flex-direction: column;
     align-items: center;
     text-align: center;
     gap: 0;
     padding: 0;
-    width: 100vw;
+    width: 97vw;
     padding-top: min(10vw, 3rem);
   }
 
   margin: 0 0 1rem 0;
 `;
 
+const AppScreen = styled.section`
+  width: 100vw;
+`
+
+const TopContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  
+  @media (min-width: 1000px) {
+    flex-direction: row; 
+  }
+`;
+
+
 const LeftContainer = styled.div`
   flex: 1;  
-  @media (max-width: 800px) {
+  @media (max-width: 1000px) {
     align-items: center;
     padding: 0;
     margin: 0;    
@@ -126,7 +144,7 @@ const LeftContainer = styled.div`
 const RightContainer = styled.div`
   flex: 1;
   display: flex;
-  @media (max-width: 800px) {
+  @media (max-width: 1000px) {
     width: fit-content;
     margin: 0;
     padding: 0;
@@ -139,7 +157,16 @@ const Title = styled.h1`
   text-align: center;
   font-weight: 1000;
   border-radius: 50%;
+  @media (min-width: 1000px) {
+    margin-left: 10%;
+  }
 `;
+
+const GoogleSignOutButton = styled(GoogleButton)`
+  @media (min-width: 1000px) {
+    margin-right: 10%;
+  }
+`
 
 const App = () => {
   const jobData = generateSampleData(341);
@@ -150,8 +177,14 @@ const App = () => {
   };
 
   return (
-    <>
-      <Title>JobTrackr</Title>
+    <AppScreen>
+      <TopContainer>
+        <Title>CareerTrace</Title>
+        <GoogleSignOutButton
+          onClick={() => { console.log('Google button clicked') }}
+          label='Sign Out of Google'
+        />
+      </TopContainer>
       <AppContainer>
         <MobileMode>    
           {showCalenderStats ? (
@@ -190,7 +223,7 @@ const App = () => {
           </RightContainer>
         </DesktopMode>
       </AppContainer>
-    </>
+    </AppScreen>
   );
 };
 

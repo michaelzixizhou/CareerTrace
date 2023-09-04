@@ -26,6 +26,7 @@ const TableContainer = styled.div`
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   background-color: #fff;
+  max-width: 100%;
 `;
 
 const StyledTable = styled.table`
@@ -209,7 +210,7 @@ const JobTable = ({ data }) => {
               <tr>
                 <TableHeader onClick={() => handleSort('company')} hover={+true}>Company &#9660;</TableHeader>
                 <TableHeader onClick={() => handleSort('role')} hover={+true}>Role &#9660;</TableHeader>
-                <TableHeader onClick={() => handleSort('applicationStage')} hover={+true}>Application Stage &#9660;</TableHeader>
+                <TableHeader onClick={() => handleSort('applicationStage')} hover={+true}>Stage &#9660;</TableHeader>
                 <TableHeader hover={+false}/>
               </tr>
             </thead>

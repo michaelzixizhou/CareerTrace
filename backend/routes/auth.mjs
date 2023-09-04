@@ -22,7 +22,6 @@ router.post(
             if (err) { return next(err); }
             req.session.destroy();
             res.redirect('/');
-
         });
     });
 

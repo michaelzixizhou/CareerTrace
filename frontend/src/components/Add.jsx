@@ -32,8 +32,25 @@ const AddJobModal = ({ onClose }) => {
   ];
 
   const handleSubmit = () => {
-    // TODO: Implement the submission logic
-    onClose();
+      // fetch('https://example.com/api/endpoint', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json', 
+      //   },
+      //   body: JSON.stringify(data), 
+      // }).then((response) => {
+      //   if (!response.ok) {
+      //     throw new Error('Network response was not okay');
+      //   }
+      //   return response.json(); 
+      // })
+      // .then((responseData) => {
+      //   console.log(responseData);
+      //   onClose(); 
+      // })
+      // .catch((error) => {
+      //   console.error('There was a problem with the fetch operation:', error);
+      // });
   };
 
   return (

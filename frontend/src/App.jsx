@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import JobTable from './components/Table';
 import AddJob from './components/Add';
@@ -7,46 +7,6 @@ import TrackCalender from './components/Calender';
 import Stats from './components/Stats';
 import { Icon } from '@iconify/react';
 import GoogleButton from 'react-google-button'
-
-const MobileMode = styled.span`
-  display: none;
-  @media (max-width: 1200px) {
-    display: flex;
-    flex-direction: column;
-  }
-`
-const DesktopMode = styled.span`
-  @media (max-width: 1200px) {
-    display: none;
-  }
-`
-const SemiCircleButton = styled.button`
-  width: 100px;
-  height: 130px;
-  background-color: #777;
-  border-radius: 60%;
-  position: fixed;
-  left: 0%;
-  top: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  border: none;
-  outline: none;
-  transform: translateX(-50%);
-  border: 2px solid #777;
-`;
-
-const LeftRightArrowIcon = styled(Icon)`
-  vertical-align: middle;
-  color: #fff;
-  left: 50%;
-  width: 30px;
-  height: 30px;
-  position: fixed;
-  cursor: pointer;
-`;
 
 const getRandomDate = (start, end) => {
   const startDate = new Date(start);
@@ -113,6 +73,46 @@ const generateSampleData = (count) => {
   }
   return data;
 };
+
+const MobileMode = styled.span`
+  display: none;
+  @media (max-width: 1200px) {
+    display: flex;
+    flex-direction: column;
+  }
+`
+const DesktopMode = styled.span`
+  @media (max-width: 1200px) {
+    display: none;
+  }
+`
+const SemiCircleButton = styled.button`
+  width: 100px;
+  height: 130px;
+  background-color: #777;
+  border-radius: 60%;
+  position: fixed;
+  left: 0%;
+  top: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transform: translateX(-50%);
+  border: 2px solid #777;
+`;
+
+const LeftRightArrowIcon = styled(Icon)`
+  vertical-align: middle;
+  color: #fff;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  position: fixed;
+  cursor: pointer;
+`;
 
 const AppContainer = styled.div`
   display: flex;
@@ -187,12 +187,20 @@ const GoogleSignOutButton = styled(GoogleButton)`
 `
 
 const App = () => {
-  const jobData = generateSampleData(341);
+  const [data, setData] = useState(null);
   const [showCalenderStats, setShowCalenderStats] = useState(false);
-
+  const jobData = generateSampleData(341);
   const toggleLeftContainer = () => {
     setShowCalenderStats(!showCalenderStats);
-  };
+  };  
+
+  useEffect(() => {
+    fetch("http://localhost:5050")
+    .then((res) => {res.json(); console.log(res.json())})
+    .then((data) => setData(data));
+  }, []);
+
+  console.log(data);
 
   return (
     <AppScreen>

@@ -26,8 +26,8 @@ const CalendarContainer = styled.div`
 
 const EventDot = styled.div`
   width: 50%;
-  height: auto;
-  border-radius: 50%;
+  height: 50%;
+  border-radius: 100%;
   background-color: #28a745;
   margin-right: 4px;
   display: flex;

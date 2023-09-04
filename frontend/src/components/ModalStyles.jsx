@@ -13,7 +13,7 @@ export const ModalOverlay = styled.div`
   align-self: center;
   z-index: 100;
   
-  @media (max-width: 800px) {
+  @media (max-width: 1000px) {
     background-color: rgba(0, 0, 0, 0.1);
   }
 `;
@@ -24,7 +24,7 @@ export const ModalContent = styled.div`
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 
-  @media (max-width: 800px) {
+  @media (max-width: 1000px) {
     text-align: left;
   }
 

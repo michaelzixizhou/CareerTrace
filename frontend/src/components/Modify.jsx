@@ -45,14 +45,6 @@ export const ModifyModal = ({ onClose, currentJobData, setShowDeleteConfirmation
             />
           </InputGroup>
           <InputGroup>
-            <Label>Date Applied</Label>
-            <Input
-              type="date"
-              value={currentJobInfo.dateApplied}
-              onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, dateApplied: e.target.value })}
-            />
-          </InputGroup>
-          <InputGroup>
             <Label>Application Stage</Label>
             <Select
               options={applicationStageOptions}
@@ -85,11 +77,34 @@ export const ModifyModal = ({ onClose, currentJobData, setShowDeleteConfirmation
             </CheckboxContainer>
           </InputGroup>
           <InputGroup>
+            <Label>
+              {currentJobInfo.applicationStage && currentJobInfo.applicationStage !== "No Response" 
+                ? "Date of " + currentJobInfo.applicationStage
+                : currentJobInfo.applicationStage
+                  ? "Date Applied"
+                  : "Date of Event"
+              }
+            </Label>
+            <Input
+              type="date"
+              value={currentJobInfo.dateEvent}
+              onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, dateEvent: e.target.value })}
+            />
+          </InputGroup>
+          <InputGroup>
             <Label>Location</Label>
             <Input
               type="text"
               value={currentJobInfo.location}
               onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, location: e.target.value })}
+            />
+          </InputGroup>
+          <InputGroup>
+            <Label>Job Cycle</Label>
+            <Input
+              type="month"
+              value={currentJobInfo.jobCycle}
+              onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, jobCycle: e.target.value })}
             />
           </InputGroup>
           <InputGroup>

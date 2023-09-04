@@ -6,17 +6,18 @@ import AddJob from './components/Add';
 import TrackCalender from './components/Calender';
 import Stats from './components/Stats';
 import { Icon } from '@iconify/react';
+import GoogleButton from 'react-google-button'
 
 const MobileMode = styled.span`
   display: none;
   
-  @media (max-width: 800px) {
+  @media (max-width: 1000px) {
     display: flex;
     flex-direction: column;
   }
 `
 const DesktopMode = styled.span`
-  @media (max-width: 800px) {
+  @media (max-width: 1000px) {
     display: none;
   }
 `
@@ -55,6 +56,26 @@ const getRandomDate = (start, end) => {
   return randomDate.toISOString().split('T')[0];
 };
 
+function getRandomMonth(startDate, endDate) {
+  const startYear = Number(startDate.split('-')[0]);
+  const endYear = Number(endDate.split('-')[0]);
+  const startMonth = Number(startDate.split('-')[1]);
+  const endMonth = Number(endDate.split('-')[1]);
+
+  const randomYear = Math.floor(Math.random() * (endYear - startYear + 1)) + startYear;
+
+  let randomMonth;
+  if (randomYear === startYear) {
+    randomMonth = Math.floor(Math.random() * (12 - startMonth + 1)) + startMonth;
+  } else if (randomYear === endYear) {
+    randomMonth = Math.floor(Math.random() * (endMonth - 1 + 1)) + 1; // Random month from 1 to endMonth
+  } else {
+    randomMonth = Math.floor(Math.random() * 12) + 1; // Random month from 1 to 12
+  }
+
+  return `${randomYear}-${String(randomMonth).padStart(2, '0')}`;
+}
+
 const companies = ['TechCorp', 'InnovateTech', 'CodeGenius', 'DataTech', 'WebSolutions'];
 const roles = ['Frontend Developer', 'Backend Engineer', 'Data Scientist', 'UI/UX Designer', 'Product Manager'];
 const locations = ['New York, NY', 'Chicago, IL', 'San Francisco, CA', 'Los Angeles, CA', 'Seattle, WA'];
@@ -69,14 +90,16 @@ const generateRandomData = () => {
   const randomDuration = durations[Math.floor(Math.random() * durations.length)];
   const randomAnticipatedPay = anticipatedPays[Math.floor(Math.random() * anticipatedPays.length)];
   const randomScheduledInterview = getRandomDate('2023-09-01', '2024-09-30');
-  const dateApplied = getRandomDate('2023-09-01', '2024-09-30');
+  const dateEvent = getRandomDate('2023-09-01', '2024-09-30');
   const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
   const randomrejected = Math.random() < 0.5;
+  const jobCycle = getRandomMonth('2023-09', '2024-09');
 
   return {
     company: randomCompany,
     role: randomRole,
-    dateApplied: dateApplied,
+    dateEvent: dateEvent,
+    jobCycle: jobCycle,
     location: randomLocation,
     duration: randomDuration,
     pay: randomAnticipatedPay,
@@ -97,25 +120,41 @@ const generateSampleData = (count) => {
 const AppContainer = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 20px;
-  padding: 20px;
+  gap: min(2vw, 2rem);
+  justify-content: center;
 
-  @media (max-width: 800px) {
+  @media (max-width: 1000px) {
     flex-direction: column;
     align-items: center;
     text-align: center;
     gap: 0;
     padding: 0;
-    width: 100vw;
+    width: 97vw;
     padding-top: min(10vw, 3rem);
   }
 
   margin: 0 0 1rem 0;
 `;
 
+const AppScreen = styled.section`
+  width: 100vw;
+`
+
+const TopContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  @media (min-width: 1000px) {
+    flex-direction: row; 
+  }
+`;
+
+
 const LeftContainer = styled.div`
   flex: 1;  
-  @media (max-width: 800px) {
+  @media (max-width: 1000px) {
     align-items: center;
     padding: 0;
     margin: 0;    
@@ -126,7 +165,7 @@ const LeftContainer = styled.div`
 const RightContainer = styled.div`
   flex: 1;
   display: flex;
-  @media (max-width: 800px) {
+  @media (max-width: 1000px) {
     width: fit-content;
     margin: 0;
     padding: 0;
@@ -139,7 +178,16 @@ const Title = styled.h1`
   text-align: center;
   font-weight: 1000;
   border-radius: 50%;
+  @media (min-width: 1000px) {
+    margin-left: 10%;
+  }
 `;
+
+const GoogleSignOutButton = styled(GoogleButton)`
+  @media (min-width: 1000px) {
+    margin-right: 10%;
+  }
+`
 
 const App = () => {
   const jobData = generateSampleData(341);
@@ -150,8 +198,14 @@ const App = () => {
   };
 
   return (
-    <>
-      <Title>JobTrackr</Title>
+    <AppScreen>
+      <TopContainer>
+        <Title>CareerTrace</Title>
+        <GoogleSignOutButton
+          onClick={() => { console.log('Google button clicked') }}
+          label='Sign Out of Google'
+        />
+      </TopContainer>
       <AppContainer>
         <MobileMode>    
           {showCalenderStats ? (
@@ -190,7 +244,7 @@ const App = () => {
           </RightContainer>
         </DesktopMode>
       </AppContainer>
-    </>
+    </AppScreen>
   );
 };
 

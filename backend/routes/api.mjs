@@ -65,7 +65,7 @@ router.get('/profile', async (req, res) => {
             name: req.user.name,
             email: req.user.email,
             jobapps: [],
-            jobCounter: -1
+            jobCounter: 0
         }
         collection.insertOne(newUser);
         console.log("New user saved");

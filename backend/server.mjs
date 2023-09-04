@@ -22,14 +22,19 @@ app.use(bodyParser.json());
 
 app.use(cookieParser());
 
+const oneMonth = 1000 * 60 * 60 * 24 * 30
+
 app.use(session({
     secret: "test",
     resave: false,
     saveUninitialized: false,
+    cookie: {maxAge: oneMonth}
 }))
 
 initializePassport(passport);
 // app.use(csrf());
+
+
 app.use(passport.authenticate('session'))
 app.use(function(req, res, next) {
   var msgs = req.session.messages || [];

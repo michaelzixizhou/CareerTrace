@@ -110,7 +110,7 @@ const AppContainer = styled.div`
     padding-top: min(10vw, 3rem);
   }
 
-  margin: 1rem 0;
+  margin: 0 0 1rem 0;
 `;
 
 const LeftContainer = styled.div`
@@ -134,11 +134,11 @@ const RightContainer = styled.div`
   }
 `;
 
-const Title = styled.div`
+const Title = styled.h1`
   font-size: var(--font-size__title);
   text-align: center;
   font-weight: 1000;
-  border-radius:50%;
+  border-radius: 50%;
 `;
 
 const App = () => {
@@ -151,7 +151,7 @@ const App = () => {
 
   return (
     <>
-      <Title>Job Tracker</Title>
+      <Title>JobTrackr</Title>
       <AppContainer>
         <MobileMode>    
           {showCalenderStats ? (

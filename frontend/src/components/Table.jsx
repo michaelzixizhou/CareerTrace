@@ -26,27 +26,28 @@ const TableContainer = styled.div`
   padding: min(2vw, 3rem);
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  background-color: #f9f9f9;
+  background-color: #fff;
 `;
 
 const StyledTable = styled.table`
   width: 100%;
   border-collapse: collapse;
-  border: 1px solid #dcdcdc;
+  border: 1px solid #e4e5f1;
   background-color: #ffffff;
 `;
 
 const TableHeader = styled.th`
   padding: 12px 16px;
-  background-color: #f1f1f1;
+  background-color: #777777;
+  color: #fff;
   border-bottom: 1px solid #dcdcdc;
   font-weight: 800;
   font-size: var(--font-size__header);
   text-align: left;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  cursor: ${props => (props.hover ? 'pointer' : 'default')};
+  transition: background-color 0.5s ease;
   &:hover {
-    background-color: #e0e0e0; 
+    background-color: ${props => (props.hover ? '#2c3e50' : '#777777')};
   }
 `;
 
@@ -169,13 +170,13 @@ const JobTable = ({ data }) => {
         <StyledTable>
           <thead>
             <tr>
-              <TableHeader onClick={() => handleSort('company')}>Company &#9660;</TableHeader>
-              <TableHeader onClick={() => handleSort('role')}>Role &#9660;</TableHeader>
-              <TableHeader onClick={() => handleSort('dateApplied')}>Date Applied &#9660;</TableHeader>
-              <TableHeader onClick={() => handleSort('location')}>Location &#9660;</TableHeader>
-              <TableHeader onClick={() => handleSort('duration')}>Duration &#9660;</TableHeader>
-              <TableHeader onClick={() => handleSort('applicationStage')}>Application Stage &#9660;</TableHeader>
-              <TableHeader/>
+              <TableHeader onClick={() => handleSort('company')} hover={+true}>Company &#9660;</TableHeader>
+              <TableHeader onClick={() => handleSort('role')} hover={+true}>Role &#9660;</TableHeader>
+              <TableHeader onClick={() => handleSort('dateApplied')} hover={+true}>Date Applied &#9660;</TableHeader>
+              <TableHeader onClick={() => handleSort('location')} hover={+true}>Location &#9660;</TableHeader>
+              <TableHeader onClick={() => handleSort('duration')} hover={+true}>Duration &#9660;</TableHeader>
+              <TableHeader onClick={() => handleSort('applicationStage')} hover={+true}>Application Stage &#9660;</TableHeader>
+              <TableHeader hover={+false}/>
             </tr>
           </thead>
           <tbody>
@@ -206,10 +207,10 @@ const JobTable = ({ data }) => {
         <StyledTable>
             <thead>
               <tr>
-                <TableHeader onClick={() => handleSort('company')}>Company &#9660;</TableHeader>
-                <TableHeader onClick={() => handleSort('role')}>Role &#9660;</TableHeader>
-                <TableHeader onClick={() => handleSort('applicationStage')}>Application Stage &#9660;</TableHeader>
-                <TableHeader/>
+                <TableHeader onClick={() => handleSort('company')} hover={+true}>Company &#9660;</TableHeader>
+                <TableHeader onClick={() => handleSort('role')} hover={+true}>Role &#9660;</TableHeader>
+                <TableHeader onClick={() => handleSort('applicationStage')} hover={+true}>Application Stage &#9660;</TableHeader>
+                <TableHeader hover={+false}/>
               </tr>
             </thead>
             <tbody>

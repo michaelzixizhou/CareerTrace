@@ -7,7 +7,7 @@ export const Button = styled.button`
   border-radius: 4px;
   font-size: var(--font-size__button);
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.5s ease;
 
   &:hover {
     background-color: #e0e0e0;
@@ -34,8 +34,8 @@ export const Button = styled.button`
   }
 
   &:hover {
-    background-color: black;
-    color: white;
+    background-color: #2c3e50;
+    color: #fff;
   }
 `;
 
@@ -47,6 +47,8 @@ export const StyledCloseButton = styled.button`
   border: none;
   font-size: var(--font-size__button);
   cursor: pointer;
+  color: #2c3e50;
+  transition: color 0.5s ease;
 
   &:hover {
     color: #777;

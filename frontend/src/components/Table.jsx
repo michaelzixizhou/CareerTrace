@@ -147,7 +147,7 @@ const JobTable = ({ data }) => {
 
   const handleSort = (column) => {
     const sorted = [...sortedData].sort((a, b) => {
-      if (column === 'dateApplied') {
+      if (column === 'jobCycle' || column === 'dateEvent') {
         const dateA = new Date(a[column]);
         const dateB = new Date(b[column]);
         return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
@@ -172,9 +172,10 @@ const JobTable = ({ data }) => {
             <tr>
               <TableHeader onClick={() => handleSort('company')} hover={+true}>Company &#9660;</TableHeader>
               <TableHeader onClick={() => handleSort('role')} hover={+true}>Role &#9660;</TableHeader>
-              <TableHeader onClick={() => handleSort('dateApplied')} hover={+true}>Date Applied &#9660;</TableHeader>
               <TableHeader onClick={() => handleSort('location')} hover={+true}>Location &#9660;</TableHeader>
+              <TableHeader onClick={() => handleSort('jobCycle')} hover={+true}>Job Cycle &#9660;</TableHeader>
               <TableHeader onClick={() => handleSort('duration')} hover={+true}>Duration &#9660;</TableHeader>
+              <TableHeader onClick={() => handleSort('dateEvent')} hover={+true}>Date of Event&#9660;</TableHeader>
               <TableHeader onClick={() => handleSort('applicationStage')} hover={+true}>Application Stage &#9660;</TableHeader>
               <TableHeader hover={+false}/>
             </tr>
@@ -184,9 +185,10 @@ const JobTable = ({ data }) => {
               <TableRow key={index}>
                 <TableCell>{job.company}</TableCell>
                 <TableCell>{job.role}</TableCell>
-                <TableCell>{job.dateApplied}</TableCell>
                 <TableCell>{job.location}</TableCell>
+                <TableCell>{job.jobCycle}</TableCell>
                 <TableCell>{job.duration}</TableCell>
+                <TableCell>{job.dateEvent}</TableCell>
                 <TableCell>
                   <StatusBadge stage={job.applicationStage} rejected={+job.rejected} margin={+false}>
                     {job.applicationStage}
@@ -250,8 +252,8 @@ const JobTable = ({ data }) => {
           <ModalContent onClick={handleOverlayClick}>
             <ModalHeader>Company<ModalText>: {currentJobData.company}</ModalText></ModalHeader>
             <ModalHeader>Role Name<ModalText>: {currentJobData.role}</ModalText></ModalHeader>
-            <ModalHeader>Date Applied<ModalText>: {currentJobData.dateApplied}</ModalText></ModalHeader>
             <ModalHeader>Location<ModalText>: {currentJobData.location}</ModalText></ModalHeader>
+            <ModalHeader>Job Cycle<ModalText>: {currentJobData.jobCycle}</ModalText></ModalHeader>
             <ModalHeader>Duration<ModalText>: {currentJobData.duration}</ModalText></ModalHeader>
             <ModalHeader>
               Application Stage <ModalText>:</ModalText>            
@@ -259,7 +261,14 @@ const JobTable = ({ data }) => {
                   {currentJobData.applicationStage}
               </StatusBadge>
             </ModalHeader>
-            <ModalHeader>Interview Scheduled<ModalText>: {currentJobData.dateApplied}</ModalText></ModalHeader>
+            <ModalHeader>
+              {currentJobData.applicationStage && currentJobData.applicationStage !== "No Response" 
+                ? "Date of " + currentJobData.applicationStage
+                : currentJobData.applicationStage
+                  ? "Date Applied"
+                  : "Date of Event"}
+              <ModalText>: {currentJobData.dateEvent}</ModalText>
+            </ModalHeader>
             <ModalHeader>Anticipated Pay<ModalText>: {currentJobData.pay}</ModalText></ModalHeader>
           </ModalContent>
         </ModalOverlay>

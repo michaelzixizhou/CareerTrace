@@ -56,6 +56,26 @@ const getRandomDate = (start, end) => {
   return randomDate.toISOString().split('T')[0];
 };
 
+function getRandomMonth(startDate, endDate) {
+  const startYear = Number(startDate.split('-')[0]);
+  const endYear = Number(endDate.split('-')[0]);
+  const startMonth = Number(startDate.split('-')[1]);
+  const endMonth = Number(endDate.split('-')[1]);
+
+  const randomYear = Math.floor(Math.random() * (endYear - startYear + 1)) + startYear;
+
+  let randomMonth;
+  if (randomYear === startYear) {
+    randomMonth = Math.floor(Math.random() * (12 - startMonth + 1)) + startMonth;
+  } else if (randomYear === endYear) {
+    randomMonth = Math.floor(Math.random() * (endMonth - 1 + 1)) + 1; // Random month from 1 to endMonth
+  } else {
+    randomMonth = Math.floor(Math.random() * 12) + 1; // Random month from 1 to 12
+  }
+
+  return `${randomYear}-${String(randomMonth).padStart(2, '0')}`;
+}
+
 const companies = ['TechCorp', 'InnovateTech', 'CodeGenius', 'DataTech', 'WebSolutions'];
 const roles = ['Frontend Developer', 'Backend Engineer', 'Data Scientist', 'UI/UX Designer', 'Product Manager'];
 const locations = ['New York, NY', 'Chicago, IL', 'San Francisco, CA', 'Los Angeles, CA', 'Seattle, WA'];
@@ -70,14 +90,16 @@ const generateRandomData = () => {
   const randomDuration = durations[Math.floor(Math.random() * durations.length)];
   const randomAnticipatedPay = anticipatedPays[Math.floor(Math.random() * anticipatedPays.length)];
   const randomScheduledInterview = getRandomDate('2023-09-01', '2024-09-30');
-  const dateApplied = getRandomDate('2023-09-01', '2024-09-30');
+  const dateEvent = getRandomDate('2023-09-01', '2024-09-30');
   const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
   const randomrejected = Math.random() < 0.5;
+  const jobCycle = getRandomMonth('2023-09', '2024-09');
 
   return {
     company: randomCompany,
     role: randomRole,
-    dateApplied: dateApplied,
+    dateEvent: dateEvent,
+    jobCycle: jobCycle,
     location: randomLocation,
     duration: randomDuration,
     pay: randomAnticipatedPay,

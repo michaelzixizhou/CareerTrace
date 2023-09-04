@@ -90,7 +90,7 @@ export const InterviewApplicationModal = ({ interviewData, applicationData, onCl
               {currentDataType === 'interview' ? (
                 <p>Interview Date: {currentData[currentPage].scheduledInterview}</p>
               ) : (
-                <p>Date Applied: {currentData[currentPage].dateApplied}</p>
+                <p>Date Applied: {currentData[currentPage].jobCycle}</p>
               )}
             </div>
             <div>
@@ -147,7 +147,7 @@ const TrackCalender = ({ data, selectedDate, handleDateChange }) => {
   
     const applicationsOnSelectedDate = data.filter(
       item =>
-        new Date(item.dateApplied).toDateString() === formattedDate
+        new Date(item.jobCycle).toDateString() === formattedDate
     );
 
     return (
@@ -173,7 +173,7 @@ const TrackCalender = ({ data, selectedDate, handleDateChange }) => {
   
     const applicationsOnSelectedDate = data.filter(
       item =>
-        new Date(item.dateApplied).toDateString() === formattedDate
+        new Date(item.jobCycle).toDateString() === formattedDate
     );
 
     if (interviewsOnSelectedDate && interviewsOnSelectedDate.length > 0){

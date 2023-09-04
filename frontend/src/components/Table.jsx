@@ -11,26 +11,24 @@ import { ModalHeader, ModalText } from './MobileTableStyles';
 const MobileMode = styled.span`
   display: none;
 
-  @media (max-width: 1000px) {
+  @media (max-width: 1200px) {
     display: flex;
     flex-direction: column;
   }
 `
 const DesktopMode = styled.span`
-  @media (max-width: 800px) {
+  @media (max-width: 1200px) {
     display: none;
   }
 `
 const TableContainer = styled.div`
-  margin: 0;
-  padding: min(2vw, 3rem);
+  padding: min(1vw, 1.5rem);
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   background-color: #fff;
 `;
 
 const StyledTable = styled.table`
-  width: 100%;
   border-collapse: collapse;
   border: 1px solid #e4e5f1;
   background-color: #ffffff;

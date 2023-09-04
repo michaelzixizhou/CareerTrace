@@ -19,7 +19,7 @@ const CalendarContainer = styled.div`
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   background-color: #f9f9f9;
 
-  @media (max-width: 1000px) {
+  @media (max-width: 1200px) {
     align-items: center;
   }
 `;

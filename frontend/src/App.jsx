@@ -10,14 +10,13 @@ import GoogleButton from 'react-google-button'
 
 const MobileMode = styled.span`
   display: none;
-  
-  @media (max-width: 1000px) {
+  @media (max-width: 1200px) {
     display: flex;
     flex-direction: column;
   }
 `
 const DesktopMode = styled.span`
-  @media (max-width: 1000px) {
+  @media (max-width: 1200px) {
     display: none;
   }
 `
@@ -89,7 +88,6 @@ const generateRandomData = () => {
   const randomLocation = locations[Math.floor(Math.random() * locations.length)];
   const randomDuration = durations[Math.floor(Math.random() * durations.length)];
   const randomAnticipatedPay = anticipatedPays[Math.floor(Math.random() * anticipatedPays.length)];
-  const randomScheduledInterview = getRandomDate('2023-09-01', '2024-09-30');
   const dateEvent = getRandomDate('2023-09-01', '2024-09-30');
   const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
   const randomrejected = Math.random() < 0.5;
@@ -103,7 +101,6 @@ const generateRandomData = () => {
     location: randomLocation,
     duration: randomDuration,
     pay: randomAnticipatedPay,
-    scheduledInterview: randomScheduledInterview,
     applicationStage: randomStatus,
     rejected: randomStatus === "Offer" ? false : randomrejected,
   };
@@ -120,24 +117,25 @@ const generateSampleData = (count) => {
 const AppContainer = styled.div`
   display: flex;
   flex-direction: row;
-  gap: min(2vw, 2rem);
+  gap: min(0.5vw, 2rem);
   justify-content: center;
+  margin: 0 0 1rem 0;
 
-  @media (max-width: 1000px) {
+  @media (max-width: 1200px) {
     flex-direction: column;
     align-items: center;
     text-align: center;
     gap: 0;
     padding: 0;
-    width: 97vw;
+    width: 100vw;
     padding-top: min(10vw, 3rem);
   }
-
-  margin: 0 0 1rem 0;
 `;
 
 const AppScreen = styled.section`
-  width: 100vw;
+  width: 100vw;    
+  align-items: center;
+  text-align: center;
 `
 
 const TopContainer = styled.div`
@@ -146,15 +144,14 @@ const TopContainer = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  @media (min-width: 1000px) {
+  @media (min-width: 1200px) {
     flex-direction: row; 
   }
 `;
 
-
 const LeftContainer = styled.div`
   flex: 1;  
-  @media (max-width: 1000px) {
+  @media (max-width: 1200px) {
     align-items: center;
     padding: 0;
     margin: 0;    
@@ -165,7 +162,7 @@ const LeftContainer = styled.div`
 const RightContainer = styled.div`
   flex: 1;
   display: flex;
-  @media (max-width: 1000px) {
+  @media (max-width: 1200px) {
     width: fit-content;
     margin: 0;
     padding: 0;
@@ -178,13 +175,13 @@ const Title = styled.h1`
   text-align: center;
   font-weight: 1000;
   border-radius: 50%;
-  @media (min-width: 1000px) {
+  @media (min-width: 1200px) {
     margin-left: 10%;
   }
 `;
 
 const GoogleSignOutButton = styled(GoogleButton)`
-  @media (min-width: 1000px) {
+  @media (min-width: 1200px) {
     margin-right: 10%;
   }
 `

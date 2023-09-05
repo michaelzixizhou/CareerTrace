@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { ModalContent, ModalOverlay } from './ModalStyles';
-import { PageNumber, PaginationContainer, PageNavigationButton } from './PageStyles';
-import { Button } from './ButtonStyles';
+import { InfoModalContent, ModalOverlay } from '../styles/ModalStyles';
+import { PageNumber, PaginationContainer, PageNavigationButton } from '../styles/PageStyles';
+import { Button } from '../styles/ButtonStyles';
 import { Icon } from '@iconify/react';
 import { ModifyModal } from './Modify';
 import { DeleteConfirmationModal } from './Delete';
-import { ModalHeader, ModalText } from './MobileTableStyles';
+import { ModalHeader, ModalText } from '../styles/MobileTableStyles';
 
 const MobileMode = styled.span`
   display: none;
@@ -268,7 +268,7 @@ const JobTable = ({ userData, setUserData }) => {
       </PaginationContainer>
       {showInformationModal && (
         <ModalOverlay onClick={() => setShowInformationModal(false)}>
-          <ModalContent onClick={handleOverlayClick}>
+          <InfoModalContent onClick={handleOverlayClick}>
             <ModalHeader>Company<ModalText>: {currentJobData.company}</ModalText></ModalHeader>
             <ModalHeader>Role Name<ModalText>: {currentJobData.role}</ModalText></ModalHeader>
             <ModalHeader>Location<ModalText>: {currentJobData.location}</ModalText></ModalHeader>
@@ -289,7 +289,7 @@ const JobTable = ({ userData, setUserData }) => {
               <ModalText>: {currentJobData.dateEvent}</ModalText>
             </ModalHeader>
             <ModalHeader>Anticipated Pay<ModalText>: {currentJobData.pay}</ModalText></ModalHeader>
-          </ModalContent>
+          </InfoModalContent>
         </ModalOverlay>
       )}
       {showModifyModal && (

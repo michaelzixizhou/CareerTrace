@@ -170,7 +170,7 @@ const App = () => {
       setUserData(null);
       setBriefUserInfo(null);
     });
-  }, [briefUserInfo]);
+  }, []);
 
   useEffect(() => {
     if (briefUserInfo !== null) {

@@ -157,14 +157,18 @@ const App = () => {
   useEffect(() => {
     fetch("/api/profile")
     .then((res) => res.json())
-    .then((data) => {{
+    .then((data) => {
       if (data){
         localStorage.setItem('briefUserInfo', JSON.stringify(data));
         setBriefUserInfo(data);
       }
-    }})
+    })
     .catch((err) => {
       console.error('Not logged in:', err);
+      localStorage.removeItem('briefUserInfo');
+      localStorage.removeItem('userData');
+      setUserData(null);
+      setBriefUserInfo(null);
     });
   }, []);
 
@@ -172,17 +176,17 @@ const App = () => {
     if (briefUserInfo !== null) {
       fetch(`/api/${briefUserInfo.id}`)
         .then((res) => res.json())
-        .then((data) => {{
+        .then((data) => {
           if (data){
             localStorage.setItem('userData', JSON.stringify(data));
             setUserData(data);
           }
-        }})
+        })
         .catch((err) => {
           console.error('Error fetching user jobs:', err);
         });
     }
-  }, []);
+  }, [briefUserInfo]);
   
   const toggleLeftContainer = () => {
     setShowCalenderStats(!showCalenderStats);
@@ -203,8 +207,8 @@ const App = () => {
             <MobileMode>
               {showCalenderStats ? (
                 <LeftContainer>
-                  <TrackCalender data={userData.jobapps} />
-                  <Stats data={userData.jobapps} />
+                  <TrackCalender data={userData} />
+                  <Stats data={userData} />
                   <AddJob userData={userData} setUserData={setUserData} />
                 </LeftContainer>
               ) : (
@@ -215,8 +219,8 @@ const App = () => {
             </MobileMode>
             <DesktopMode>
               <LeftContainer>
-                <TrackCalender data={userData.jobapps} />
-                <Stats data={userData.jobapps} />
+                <TrackCalender data={userData} />
+                <Stats data={userData} />
                 <AddJob userData={userData} setUserData={setUserData} />
               </LeftContainer>
             </DesktopMode>
@@ -227,13 +231,13 @@ const App = () => {
                 </SemiCircleButton>
               ) : (
                 <RightContainer>
-                  <JobTable data={userData.jobapps} />
+                  <JobTable data={userData} />
                 </RightContainer>
               )}
             </MobileMode>
             <DesktopMode>
               <RightContainer>
-                <JobTable data={userData.jobapps} />
+                <JobTable data={userData} />
               </RightContainer>
             </DesktopMode>
           </AppContainer>

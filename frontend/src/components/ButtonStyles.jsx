@@ -40,9 +40,9 @@ export const Button = styled.button`
 `;
 
 export const StyledCloseButton = styled.button`
-  position: absolute;
-  top: 10px;
-  right: 10px;
+  position: fixed;
+  top: 15%;
+  right: 10%;
   background: none;
   border: none;
   font-size: var(--font-size__button);

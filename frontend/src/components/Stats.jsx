@@ -23,11 +23,11 @@ const StatItem = styled.div`
 `;
 
 const Stats = ({ data }) => {
-  const totalApplications = data.length;
-  const totalInterviewsAndOffers = data.filter(
+  const totalApplications = data.jobapps.length;
+  const totalInterviewsAndOffers = data.jobapps.filter(
     (item) => item.applicationStage === 'Interview' || item.applicationStage === 'Offer'
   ).length;
-  const totalOffers = data.filter((item) => item.applicationStage === 'Offer').length;
+  const totalOffers = data.jobapps.filter((item) => item.applicationStage === 'Offer').length;
 
   const interviewRate = totalApplications === 0 ? 0 : (totalInterviewsAndOffers / totalApplications) * 100;
   const offerRate = totalApplications === 0 ? 0 : (totalOffers / totalApplications) * 100;

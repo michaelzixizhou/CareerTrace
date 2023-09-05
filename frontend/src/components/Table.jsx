@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ModalContent, ModalOverlay } from './ModalStyles';
 import { PageNumber, PaginationContainer, PageNavigationButton } from './PageStyles';
@@ -109,12 +109,11 @@ const JobTable = ({ data }) => {
   const [currentJobData, setCurrentJobData] = useState(null);
   const [showModifyModal, setShowModifyModal] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const [sortedData, setSortedData] = useState([...data]);
+  const [sortedData, setSortedData] = useState([...data.jobapps]);
   const [sortOrder, setSortOrder] = useState('asc');
 
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const totalPages = Math.ceil(data.jobapps.length / itemsPerPage);
   const visibleData = sortedData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-  
   const pagesPerGroup = 5;
   const currentGroup = Math.ceil(currentPage / pagesPerGroup);
   const firstPageInGroup = (currentGroup - 1) * pagesPerGroup + 1;
@@ -168,6 +167,10 @@ const JobTable = ({ data }) => {
     setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
   };
 
+  useEffect(() => {
+    setSortedData(data.jobapps);
+  }, [data]);
+  
   return (
     <TableContainer>
       <DesktopMode>

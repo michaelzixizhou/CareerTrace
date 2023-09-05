@@ -1,5 +1,4 @@
 import GoogleStrategy from "passport-google-oidc";
-import db from "./db/conn.mjs";
 
 
 function initializePassport(passport) {
@@ -14,19 +13,15 @@ function initializePassport(passport) {
             ,
             function verify(issuer, profile, done) {
                 try {
-                    console.log(profile);
-
                     let newUser = {
                         id: profile.id,
                         name: profile.displayName,
                         email: profile.emails[0].value,
                     }
             
-                    console.log("user is logged");
                     // users.insertOne(newUser);
                     return done(null, newUser);
                 } catch (error) {
-                    console.log("Error with Google sign-in");
                 }
             }
         )

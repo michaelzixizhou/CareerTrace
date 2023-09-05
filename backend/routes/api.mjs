@@ -26,7 +26,6 @@ router.delete("/", async (req, res) => {
     let collection = db.collection("users");
     let result = await collection.deleteMany({});
 
-    console.log("deleted all")
     res.send(result).status(200);
 });
 
@@ -56,7 +55,6 @@ router.get('/profile', async (req, res) => {
     let user = await collection.findOne(query);
 
     if (user) {
-        console.log("User found");
     } else {
         console.log(JSON.stringify(req.user));
         let newUser = {
@@ -67,7 +65,6 @@ router.get('/profile', async (req, res) => {
             jobCounter: 0
         }
         collection.insertOne(newUser);
-        console.log("New user saved");
     }
 
     res.send(req.user).status(200);
@@ -108,11 +105,6 @@ router.post("/:id/jobs", async (req, res) => {
             }
         }
     );
-
-    console.log(newJob);
-    console.log(currUserID);
-    console.log(JSON.stringify(req.body));
-    console.log(result);
     res.send(result).status(204);
 });
 
@@ -149,7 +141,6 @@ router.post("/jobs", async (req, res) => {
             }
         }
     );
-    console.log(JSON.stringify(req.body));
     res.send(result).status(204);
 });
 
@@ -162,7 +153,6 @@ router.get("/:id", async (req, res) => {
 });
 
 router.get("/", (req, res) => {
-    console.log("API Home Page");
     res.send("API Home Page")
 });
 

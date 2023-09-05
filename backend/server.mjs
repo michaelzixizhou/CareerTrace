@@ -31,7 +31,7 @@ app.use(cookieParser());
 const oneMonth = 1000 * 60 * 60 * 24 * 30
 
 app.use(session({
-    secret: "test",
+    secret: "VerySecureKey9090",
     resave: false,
     saveUninitialized: false,
     cookie: {maxAge: oneMonth}
@@ -42,13 +42,6 @@ initializePassport(passport);
 
 
 app.use(passport.authenticate('session'))
-app.use(function(req, res, next) {
-  var msgs = req.session.messages || [];
-  res.locals.messages = msgs;
-  res.locals.hasMessages = !! msgs.length;
-  req.session.messages = [];
-  next();
-});
 // app.use(function(req, res, next) {
 //   res.locals.csrfToken = req.csrfToken();
 //   next();

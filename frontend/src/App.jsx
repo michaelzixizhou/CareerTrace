@@ -194,11 +194,14 @@ const App = () => {
     setShowCalenderStats(!showCalenderStats);
   };  
 
-  // useEffect(() => {
-  //   fetch("http://localhost:5050")
-  //   .then((res) => {res.json(); console.log(res.json())})
-  //   .then((data) => setData(data));
-  // }, []);
+  useEffect(() => {
+    fetch("http://localhost:5050/api/userdata")
+    .then((res) => res.json())
+    .then((data) => { setData(data) })
+    .catch((error) => {
+      console.error('Error fetching data:', error);
+    });
+  }, []);
 
   console.log(data);
 

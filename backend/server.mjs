@@ -9,10 +9,16 @@ import session from "express-session";
 import initializePassport from "./strategy.mjs";
 // import csrf from "csurf";
 import cookieParser from "cookie-parser";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+import path from "path";
 
 const PORT = process.env.PORT || 5050;
 const app = express();
-
 
 app.use(cors());
 app.use(express.json());
@@ -51,7 +57,19 @@ app.use(function(req, res, next) {
 app.use("/api", api);
 app.use("/auth", auth);
 
+// Serve the static files from the React app
+// app.use(express.static(path.join(__dirname, '../frontend/build')));
+
+// // Handles any requests that don't match the ones above
+// app.get('*', (req, res) => { 
+//      res.sendFile(path.join(__dirname + '../frontend/build'));
+// });
+app.use(express.static(path.join(__dirname, '../frontend/build')));
+app.get('*', (req, res) => { 
+  res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
+});
+
 app.listen(PORT, () => {
     console.log(`Server is running on port: ${PORT}`);
-    console.log(`http://localhost:${PORT}/`)
+    console.log(`http://localhost:${PORT}`)
 })

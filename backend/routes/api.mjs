@@ -71,7 +71,7 @@ router.get('/profile', async (req, res) => {
         console.log("New user saved");
     }
 
-    res.send(`Welcome ${req.user.name}`);
+    res.send(req.user.id).status(200);
 });
 
 router.get("/jobs", async (req, res) => {

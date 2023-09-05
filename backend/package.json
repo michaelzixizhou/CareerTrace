@@ -20,7 +20,9 @@
     "http-errors": "^2.0.0",
     "mongodb": "^6.0.0",
     "passport": "^0.6.0",
-    "passport-google-oidc": "^0.1.0"
+    "passport-google-oidc": "^0.1.0",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0"
   },
   "devDependencies": {
     "jest": "^29.6.4",

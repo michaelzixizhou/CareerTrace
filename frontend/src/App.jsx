@@ -130,16 +130,12 @@ const GoogleSignButton = styled(GoogleButton)`
 `
 
 const App = () => {
-  const [userInfo, setUserInfo] = useState(null);
-  const [userData, setUserData] = useState(null);
   const [showCalenderStats, setShowCalenderStats] = useState(false);
-  const [signedIn, setSignedIn] = useState(false);
   const [jobModified, setJobModified] = useState(false);
-
-  const toggleLeftContainer = () => {
-    setShowCalenderStats(!showCalenderStats);
-  };  
-
+  const [loggedInScreen, setLoggedInScreen] = useState(localStorage.getItem('loggedIn') === 'true');
+  const userData = JSON.parse(localStorage.getItem('userData') || 'null');
+  const briefUserInfo = JSON.parse(localStorage.getItem('briefUserInfo') || 'null');
+  
   const signOut = () => {
     const requestOptions = {
       method: 'POST',
@@ -148,13 +144,15 @@ const App = () => {
       },
     };
   
-    fetch("/logout", requestOptions)
+    fetch("/auth/logout", requestOptions)
       .then((res) => {
         if (!res.ok) {
           throw new Error('Logout failed'); 
         }
-        console.log('Logged out successfully');
-        setSignedIn(false);
+        localStorage.removeItem('loggedIn');
+        localStorage.removeItem('briefUserInfo');
+        localStorage.removeItem('userData');
+        window.location.reload();
       })
       .catch((err) => {
         console.error('Error logging out:', err);
@@ -164,36 +162,45 @@ const App = () => {
   useEffect(() => {
     fetch("/api/profile")
     .then((res) => res.json())
-    .then((data) => setUserInfo(data))
+    .then((data) => {{
+      if (data){
+        localStorage.setItem('briefUserInfo', JSON.stringify(data));
+      }
+    }})
     .catch((err) => {
-      console.error('Error fetching ID:', err);
-      setSignedIn(false);
+      console.error('Not logged in:', err);
     });
   }, []);
 
   useEffect(() => {
-    if (userInfo !== null) {
-      fetch(`/api/${userInfo.id}`)
+    if (briefUserInfo !== null) {
+      fetch(`/api/${briefUserInfo.id}`)
         .then((res) => res.json())
         .then((data) => {{
-          setUserData(data);
           if (data){
-            setSignedIn(true);
+            localStorage.setItem('userData', JSON.stringify(data));
+            localStorage.setItem('loggedIn', 'true');
           }
-          setJobModified(false);
         }})
         .catch((err) => {
           console.error('Error fetching user jobs:', err);
-          setSignedIn(false);
         });
     }
-  }, [userInfo, jobModified]);
+  }, [briefUserInfo, jobModified]);
 
-  console.log(userInfo, userData, String(signedIn));
+  useEffect(() => {
+    setLoggedInScreen(localStorage.getItem('loggedIn') === 'true');
+  }, [localStorage.getItem('loggedIn')]);
+  
+  console.log(briefUserInfo, userData, String(localStorage.getItem('loggedIn') === 'true'));
+  
+  const toggleLeftContainer = () => {
+    setShowCalenderStats(!showCalenderStats);
+  };  
 
   return (
     <>
-      {signedIn ? (
+      {loggedInScreen ? (
         <AppScreen>
           <TopContainer>
             <Title>CareerTrace</Title>
@@ -208,7 +215,7 @@ const App = () => {
                 <LeftContainer>
                   <TrackCalender data={userData.jobapps} />
                   <Stats data={userData.jobapps} />
-                  <AddJob userid={userInfo.id} setJobModified={setJobModified}/>
+                  <AddJob userid={briefUserInfo.id} setJobModified={setJobModified}/>
                 </LeftContainer>
               ) : (
                 <SemiCircleButton onClick={toggleLeftContainer}>
@@ -220,7 +227,7 @@ const App = () => {
               <LeftContainer>
                 <TrackCalender data={userData.jobapps} />
                 <Stats data={userData.jobapps} />
-                <AddJob userid={userInfo.id} setJobModified={setJobModified}/>
+                <AddJob userid={briefUserInfo.id} setJobModified={setJobModified}/>
               </LeftContainer>
             </DesktopMode>
             <MobileMode>

@@ -129,9 +129,8 @@ const GoogleSignButton = styled(GoogleButton)`
 const App = () => {
   const [showCalenderStats, setShowCalenderStats] = useState(false);
   const [jobModified, setJobModified] = useState(false);
-  const [loggedInScreen, setLoggedInScreen] = useState(localStorage.getItem('loggedIn') === 'true');
-  const userData = JSON.parse(localStorage.getItem('userData') || 'null');
-  const briefUserInfo = JSON.parse(localStorage.getItem('briefUserInfo') || 'null');
+  const [userData, setUserData] = useState(JSON.parse(localStorage.getItem('userData') || 'null'));
+  const [briefUserInfo, setBriefUserInfo] = useState(JSON.parse(localStorage.getItem('briefUserInfo') || 'null'));
   
   const signOut = () => {
     const requestOptions = {
@@ -146,10 +145,10 @@ const App = () => {
         if (!res.ok) {
           throw new Error('Logout failed'); 
         }
-        localStorage.removeItem('loggedIn');
         localStorage.removeItem('briefUserInfo');
         localStorage.removeItem('userData');
-        window.location.reload();
+        setUserData(null);
+        setBriefUserInfo(null);
       })
       .catch((err) => {
         console.error('Error logging out:', err);
@@ -162,6 +161,7 @@ const App = () => {
     .then((data) => {{
       if (data){
         localStorage.setItem('briefUserInfo', JSON.stringify(data));
+        setBriefUserInfo(data);
       }
     }})
     .catch((err) => {
@@ -176,7 +176,7 @@ const App = () => {
         .then((data) => {{
           if (data){
             localStorage.setItem('userData', JSON.stringify(data));
-            localStorage.setItem('loggedIn', 'true');
+            setUserData(data);
           }
         }})
         .catch((err) => {
@@ -184,12 +184,6 @@ const App = () => {
         });
     }
   }, [briefUserInfo, jobModified]);
-
-  useEffect(() => {
-    setLoggedInScreen(localStorage.getItem('loggedIn') === 'true');
-  }, [localStorage.getItem('loggedIn')]);
-  
-  console.log(briefUserInfo, userData, String(localStorage.getItem('loggedIn') === 'true'));
   
   const toggleLeftContainer = () => {
     setShowCalenderStats(!showCalenderStats);
@@ -197,7 +191,7 @@ const App = () => {
 
   return (
     <>
-      {loggedInScreen ? (
+      {userData ? (
         <AppScreen>
           <TopContainer>
             <Title>CareerTrace</Title>
@@ -249,7 +243,9 @@ const App = () => {
         <AppScreen>
           <SignedOutScreen>
             <Title>CareerTrace</Title>
-            <GoogleSignButton onClick={() => window.location.href='/auth/google'}/>
+            <GoogleSignButton onClick={() => {
+              window.location.href = '/auth/google';
+            }}/>
           </SignedOutScreen>
         </AppScreen>
       )}

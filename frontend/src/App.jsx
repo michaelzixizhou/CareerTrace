@@ -143,6 +143,7 @@ const TopContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 
   @media (min-width: 1200px) {
     flex-direction: row; 

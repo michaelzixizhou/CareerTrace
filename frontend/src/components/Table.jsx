@@ -33,6 +33,7 @@ const StyledTable = styled.table`
   border-collapse: collapse;
   border: 1px solid #e4e5f1;
   background-color: #ffffff;
+  margin-bottom: min(5vw, 1rem);
 `;
 
 const TableHeader = styled.th`
@@ -48,6 +49,7 @@ const TableHeader = styled.th`
   &:hover {
     background-color: ${props => (props.hover ? '#2c3e50' : '#777777')};
   }
+  word-break: break-all;
 `;
 
 const TableRow = styled.tr`
@@ -60,6 +62,7 @@ const TableCell = styled.td`
   padding: 0.8rem;
   font-size: var(--font-size__text);
   border-bottom: 1px solid #dcdcdc;
+  word-break: break-all;
 `;
 
 const StatusBadge = styled.span`

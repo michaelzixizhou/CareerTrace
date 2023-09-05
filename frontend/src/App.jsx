@@ -134,8 +134,9 @@ const AppContainer = styled.div`
 
 const AppScreen = styled.section`
   width: 100vw;    
+  height: 100vh;
   align-items: center;
-  text-align: center;
+  text-align: center; 
 `
 
 const TopContainer = styled.div`
@@ -144,10 +145,23 @@ const TopContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  margin: 0;
 
   @media (min-width: 1200px) {
     flex-direction: row; 
+    width: 100%; 
+    width: 80%;
+    margin: 0 10%;
   }
+`;
+
+const SignedOutScreen = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  justify-content: center; 
+  flex-direction: column;
 `;
 
 const LeftContainer = styled.div`
@@ -176,15 +190,9 @@ const Title = styled.h1`
   text-align: center;
   font-weight: 1000;
   border-radius: 50%;
-  @media (min-width: 1200px) {
-    margin-left: 10%;
-  }
 `;
 
-const GoogleSignOutButton = styled(GoogleButton)`
-  @media (min-width: 1200px) {
-    margin-right: 10%;
-  }
+const GoogleSignButton = styled(GoogleButton)`
 `
 
 const App = () => {
@@ -201,9 +209,15 @@ const App = () => {
   useEffect(() => {
     fetch("/api/profile")
     .then((res) => res.json())
-    .then((data) => { setUserInfo(data) })
+    .then((data) => {{
+      setUserInfo(data);
+      if (data) {
+        setSignedIn(true);
+      }
+    }})
     .catch((error) => {
       console.error('Error fetching ID:', error);
+      setSignedIn(false);
     });
   }, []);
 
@@ -218,56 +232,67 @@ const App = () => {
     }
   }, [userInfo]);
 
-  console.log(userInfo);
-  console.log(data);
   return (
-    <AppScreen>
-      <TopContainer>
-        <Title>CareerTrace</Title>
-        <GoogleSignOutButton
-          onClick={() => { console.log('Google button clicked') }}
-          label='Sign Out of Google'
-        />
-      </TopContainer>
-      <AppContainer>
-        <MobileMode>    
-          {showCalenderStats ? (
-            <LeftContainer>
-              <TrackCalender data={jobData} />
-              <Stats data={jobData} />
-              <AddJob />
-            </LeftContainer>
-          ) : (
-            <SemiCircleButton onClick={toggleLeftContainer}>
-              <LeftRightArrowIcon icon="teenyicons:left-outline" />
-            </SemiCircleButton>
-          )}
-        </MobileMode>
-        <DesktopMode>
-          <LeftContainer>
-            <TrackCalender data={jobData} />
-            <Stats data={jobData} />
-            <AddJob />
-          </LeftContainer>
-        </DesktopMode>
-        <MobileMode>   
-        {showCalenderStats ? (
-            <SemiCircleButton onClick={toggleLeftContainer}>
-              <LeftRightArrowIcon icon="teenyicons:right-outline" />
-            </SemiCircleButton>
-          ) : (        
-            <RightContainer>
-              <JobTable data={jobData} />
-            </RightContainer>
-        )}
-        </MobileMode>
-        <DesktopMode>
-          <RightContainer>
-            <JobTable data={jobData} />
-          </RightContainer>
-        </DesktopMode>
-      </AppContainer>
-    </AppScreen>
+    <>
+      {signedIn ? (
+        <AppScreen>
+          <TopContainer>
+            <Title>CareerTrace</Title>
+            <GoogleSignButton
+              onClick={() => {
+                console.log('Google button clicked');
+              }}
+              label='Sign Out of Google'
+            />
+          </TopContainer>
+          <AppContainer>
+            <MobileMode>
+              {showCalenderStats ? (
+                <LeftContainer>
+                  <TrackCalender data={jobData} />
+                  <Stats data={jobData} />
+                  <AddJob />
+                </LeftContainer>
+              ) : (
+                <SemiCircleButton onClick={toggleLeftContainer}>
+                  <LeftRightArrowIcon icon="teenyicons:left-outline" />
+                </SemiCircleButton>
+              )}
+            </MobileMode>
+            <DesktopMode>
+              <LeftContainer>
+                <TrackCalender data={jobData} />
+                <Stats data={jobData} />
+                <AddJob />
+              </LeftContainer>
+            </DesktopMode>
+            <MobileMode>
+              {showCalenderStats ? (
+                <SemiCircleButton onClick={toggleLeftContainer}>
+                  <LeftRightArrowIcon icon="teenyicons:right-outline" />
+                </SemiCircleButton>
+              ) : (
+                <RightContainer>
+                  <JobTable data={jobData} />
+                </RightContainer>
+              )}
+            </MobileMode>
+            <DesktopMode>
+              <RightContainer>
+                <JobTable data={jobData} />
+              </RightContainer>
+            </DesktopMode>
+          </AppContainer>
+        </AppScreen>
+      ) : (
+        <AppScreen>
+          <SignedOutScreen>
+            <Title>CareerTrace</Title>
+            <GoogleSignButton onClick={() => window.location.href='/auth/google'}/>
+          </SignedOutScreen>
+        </AppScreen>
+      )}
+    </>
   );
 };
 

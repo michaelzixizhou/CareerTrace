@@ -51,13 +51,6 @@ const AddJobModal = ({ onClose, userData, setUserData }) => {
         return fetch(`/api/${userData._id}`);
       })
       .then((res) => res.json())
-      .then((data) => {
-        if (data) {
-          localStorage.setItem('userData', JSON.stringify(data));
-          setUserData(data);
-          console.log(data);
-        }
-      })
       .catch((err) => {
         console.error('Error: ', err);
       });

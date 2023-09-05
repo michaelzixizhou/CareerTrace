@@ -1,8 +1,10 @@
+import { useEffect } from "react";
 import { ModalOverlay, ModalContent } from "./ModalStyles";
 import { Button } from "./ButtonStyles";
 
 export const DeleteConfirmationModal = ({ onClose, userData, setUserData, currentJobData, setShowModifyModal }) => {
     const handleDelete = () => {
+      if (userData !== null && currentJobData !== null) {
         fetch (`api/${userData._id}/jobs/${currentJobData.jobid}`, {
             method: 'DELETE',
             headers: {
@@ -17,7 +19,6 @@ export const DeleteConfirmationModal = ({ onClose, userData, setUserData, curren
           })
           .then((data) => {
             console.log('Deleted successfully', data);
-            setUserData(userData);
           })
           .catch((err) => {
             console.error('Error:', err);
@@ -25,7 +26,24 @@ export const DeleteConfirmationModal = ({ onClose, userData, setUserData, curren
 
         setShowModifyModal(false);
         onClose();
+      }
     };
+
+    useEffect(() => {
+      if (userData !== null) {
+        fetch(`/api/${userData._id}`)
+          .then((res) => res.json())
+          .then((data) => {
+            if (data){
+              localStorage.setItem('userData', JSON.stringify(data));
+              setUserData(data);
+            }
+          })
+          .catch((err) => {
+            console.error('Error fetching user jobs:', err);
+          });
+      }
+    }, [onClose]);
 
     return (
       <ModalOverlay>

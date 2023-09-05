@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ModalContent, ModalOverlay } from './ModalStyles';
 import { Button, StyledCloseButton } from './ButtonStyles';
 import Select from 'react-select';
@@ -9,28 +9,46 @@ export const ModifyModal = ({ onClose, currentJobData, setShowDeleteConfirmation
   const [currentJobInfo, setCurrentJobInfo] = useState(currentJobData);
 
   const handleUpdate = () => {
+    if (userData !== null && currentJobData !== null){
       fetch(`api/${userData._id}/jobs/${currentJobData.jobid}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json', 
-        },
-        body: JSON.stringify(currentJobInfo), 
-      })
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error('Patch request failed');
-          }
-          return res.json();
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json', 
+          },
+          body: JSON.stringify(currentJobInfo), 
         })
+          .then((res) => {
+            if (!res.ok) {
+              throw new Error('Patch request failed');
+            }
+            return res.json();
+          })
+          .then((data) => {
+            console.log('Updated successfully', data);
+            setUserData(userData);
+          })
+          .catch((err) => {
+            console.error('Error:', err); 
+          });
+      onClose();
+    }
+  };
+
+  useEffect(() => {
+    if (userData !== null) {
+      fetch(`/api/${userData._id}`)
+        .then((res) => res.json())
         .then((data) => {
-          console.log('Updated successfully', data);
-          setUserData(userData);
+          if (data){
+            localStorage.setItem('userData', JSON.stringify(data));
+            setUserData(data);
+          }
         })
         .catch((err) => {
-          console.error('Error:', err); 
+          console.error('Error fetching user jobs:', err);
         });
-    onClose();
-  };
+    }
+  }, [onClose]);
 
   const applicationStageOptions = [
     { value: 'No Response', label: 'No Response' },

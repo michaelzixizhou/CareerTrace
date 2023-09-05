@@ -170,7 +170,7 @@ const App = () => {
       setUserData(null);
       setBriefUserInfo(null);
     });
-  }, []);
+  }, [briefUserInfo]);
 
   useEffect(() => {
     if (briefUserInfo !== null) {
@@ -194,7 +194,7 @@ const App = () => {
 
   return (
     <>
-      {userData ? (
+      {userData && briefUserInfo ? (
         <AppScreen>
           <TopContainer>
             <Title>CareerTrace</Title>

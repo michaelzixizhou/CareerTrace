@@ -188,9 +188,11 @@ const GoogleSignOutButton = styled(GoogleButton)`
 `
 
 const App = () => {
-  const [id, setId] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
   const [data, setUserData] = useState(null);
   const [showCalenderStats, setShowCalenderStats] = useState(false);
+  const [signedIn, setSignedIn] = useState(false);
+
   const jobData = generateSampleData(341);
   const toggleLeftContainer = () => {
     setShowCalenderStats(!showCalenderStats);
@@ -199,22 +201,25 @@ const App = () => {
   useEffect(() => {
     fetch("/api/profile")
     .then((res) => res.json())
-    .then((id) => { setId(id) })
+    .then((data) => { setUserInfo(data) })
     .catch((error) => {
       console.error('Error fetching ID:', error);
     });
   }, []);
 
   useEffect(() => {
-    fetch(`/api/${id}`)
-      .then((res) => res.json())
-      .then((data) => { setUserData(data) })
-      .catch((error) => {
-        console.error('Error fetching user jobs:', error);
-      });
-  }, [id]);
+    if (userInfo) {
+      fetch(`/api/${userInfo.id}`)
+        .then((res) => res.json())
+        .then((data) => { setUserData(data) })
+        .catch((error) => {
+          console.error('Error fetching user jobs:', error);
+        });
+    }
+  }, [userInfo]);
 
-  console.log(setUserData);
+  console.log(userInfo);
+  console.log(data);
   return (
     <AppScreen>
       <TopContainer>

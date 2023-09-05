@@ -71,7 +71,7 @@ router.get('/profile', async (req, res) => {
         console.log("New user saved");
     }
 
-    res.send(req.user.id).status(200);
+    res.send(req.user).status(200);
 });
 
 router.get("/jobs", async (req, res) => {
@@ -150,13 +150,11 @@ router.post("/jobs", async (req, res) => {
     res.send(result).status(204);
 });
 
-
 // Get data based on user ID 
 router.get("/:id", async (req, res) => {
     let collection = db.collection("users");
     let query = { _id: req.params.id };
     let result = await collection.findOne(query);
-
     res.send(result);
 });
 

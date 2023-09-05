@@ -51,9 +51,8 @@ const LeftRightArrowIcon = styled(Icon)`
 const AppContainer = styled.div`
   display: flex;
   flex-direction: row;
-  gap: min(0.5vw, 2rem);
+  gap: 3rem;
   justify-content: center;
-  margin: 0 0 1rem 0;
 
   @media (max-width: 1200px) {
     flex-direction: column;
@@ -78,12 +77,10 @@ const TopContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
   margin: 0;
 
   @media (min-width: 1200px) {
     flex-direction: row; 
-    width: 100%; 
     width: 80%;
     margin: 0 10%;
   }

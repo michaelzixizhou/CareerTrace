@@ -36,7 +36,7 @@
 @media (max-width: 576px) {
   :root {
     --font-size__title: 1.5rem;
-    --font-size__header: 1.2rem;
+    --font-size__header: 1.3rem;
     --font-size__text: 0.8rem;
     --font-size__icon: 1.4rem;
     --font-size__button: 1rem;

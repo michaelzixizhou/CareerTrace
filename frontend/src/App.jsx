@@ -128,7 +128,6 @@ const GoogleSignButton = styled(GoogleButton)`
 
 const App = () => {
   const [showCalenderStats, setShowCalenderStats] = useState(false);
-  const [jobModified, setJobModified] = useState(false);
   const [userData, setUserData] = useState(JSON.parse(localStorage.getItem('userData') || 'null'));
   const [briefUserInfo, setBriefUserInfo] = useState(JSON.parse(localStorage.getItem('briefUserInfo') || 'null'));
   
@@ -183,7 +182,7 @@ const App = () => {
           console.error('Error fetching user jobs:', err);
         });
     }
-  }, [briefUserInfo, jobModified]);
+  }, []);
   
   const toggleLeftContainer = () => {
     setShowCalenderStats(!showCalenderStats);
@@ -206,7 +205,7 @@ const App = () => {
                 <LeftContainer>
                   <TrackCalender data={userData.jobapps} />
                   <Stats data={userData.jobapps} />
-                  <AddJob userid={briefUserInfo.id} setJobModified={setJobModified}/>
+                  <AddJob userData={userData} setUserData={setUserData} />
                 </LeftContainer>
               ) : (
                 <SemiCircleButton onClick={toggleLeftContainer}>
@@ -218,7 +217,7 @@ const App = () => {
               <LeftContainer>
                 <TrackCalender data={userData.jobapps} />
                 <Stats data={userData.jobapps} />
-                <AddJob userid={briefUserInfo.id} setJobModified={setJobModified}/>
+                <AddJob userData={userData} setUserData={setUserData} />
               </LeftContainer>
             </DesktopMode>
             <MobileMode>

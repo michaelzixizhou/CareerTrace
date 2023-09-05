@@ -11,7 +11,7 @@ const AddJobButtonContainer = styled.div`
   margin-bottom: 20px;
 `;
 
-const AddJobModal = ({ onClose, userId, setJobModified }) => {
+const AddJobModal = ({ onClose, userData, setUserData }) => {
   const [currentJobInfo, setCurrentJobInfo] = useState({
     company: '',
     role: '',
@@ -19,10 +19,11 @@ const AddJobModal = ({ onClose, userId, setJobModified }) => {
     location: '',
     duration: '',
     pay: '',
-    applicationStage: '',
+    applicationStage: 'No Response',
     rejected: false,
   });
 
+  console.log(userData)
   const applicationStageOptions = [
     { value: 'No Response', label: 'No Response' },
     { value: 'Phone Screen', label: 'Phone Screen' },
@@ -39,17 +40,26 @@ const AddJobModal = ({ onClose, userId, setJobModified }) => {
       },
       body: JSON.stringify(currentJobInfo),
     };
-    
-    fetch(`/api/${userId}/jobs`, requestOptions)
+  
+    fetch(`/api/${userData._id}/jobs`, requestOptions)
       .then((response) => {
         if (!response.ok) {
           throw new Error('Error posting data to the server');
         }
         console.log('Data posted successfully');
-        setJobModified(true);
+  
+        return fetch(`/api/${userData._id}`);
       })
-      .catch((error) => {
-        console.error('Error:', error);
+      .then((res) => res.json())
+      .then((data) => {
+        if (data) {
+          localStorage.setItem('userData', JSON.stringify(data));
+          setUserData(data);
+          console.log(data);
+        }
+      })
+      .catch((err) => {
+        console.error('Error: ', err);
       });
   };
 
@@ -80,7 +90,7 @@ const AddJobModal = ({ onClose, userId, setJobModified }) => {
             <Label>Application Stage</Label>
             <Select
               options={applicationStageOptions}
-              value={applicationStageOptions.find((option) => option.value === currentJobInfo.applicationStage)}
+              value={ applicationStageOptions.find((option) => option.value === currentJobInfo.applicationStage)}
               onChange={(selectedOption) => {
                 setCurrentJobInfo({ 
                   ...currentJobInfo, 
@@ -164,7 +174,7 @@ const AddJobModal = ({ onClose, userId, setJobModified }) => {
   );
 };
 
-const AddJob = ({ userId, setJobModified }) => {
+const AddJob = ({ userData, setUserData }) => {
   const [showModal, setShowModal] = useState(false);
 
   const handleOpenModal = () => {
@@ -178,7 +188,7 @@ const AddJob = ({ userId, setJobModified }) => {
   return (
     <AddJobButtonContainer>
       <Button className='blue' onClick={handleOpenModal}>Add Job</Button>
-      {showModal && <AddJobModal onClose={handleCloseModal} userId={userId} setJobModified={setJobModified} />}
+      {showModal && <AddJobModal onClose={handleCloseModal} userData={userData} setUserData={setUserData} />}
     </AddJobButtonContainer>
   );
 };

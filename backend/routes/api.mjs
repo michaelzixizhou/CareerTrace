@@ -108,7 +108,11 @@ router.post("/:id/jobs", async (req, res) => {
             }
         }
     );
+
+    console.log(newJob);
+    console.log(currUserID);
     console.log(JSON.stringify(req.body));
+    console.log(result);
     res.send(result).status(204);
 });
 

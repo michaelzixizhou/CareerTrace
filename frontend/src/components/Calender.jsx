@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Calendar from 'react-calendar';
-import { ModalContent, ModalOverlay } from './ModalStyles';
-import { Button } from './ButtonStyles';
+import { ModalContent, ModalOverlay } from '../styles/ModalStyles';
+import { Button } from '../styles/ButtonStyles';
 import 'react-calendar/dist/Calendar.css';
 
 const CalendarContainer = styled.div`

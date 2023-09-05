@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { ModalContent, ModalOverlay } from './ModalStyles';
-import { Button, StyledCloseButton } from './ButtonStyles';
-import { StyledForm, InputGroup, Label, Input } from './InputStyles';
-import { CheckboxContainer, StyledCheckbox } from './CheckBoxStyles';
+import { ModalContent, ModalOverlay } from '../styles/ModalStyles';
+import { Button, StyledCloseButton } from '../styles/ButtonStyles';
+import { StyledForm, InputGroup, Label, Input } from '../styles/InputStyles';
+import { CheckboxContainer, StyledCheckbox } from '../styles/CheckBoxStyles';
 import Select from 'react-select';
 
 const AddJobButtonContainer = styled.div`

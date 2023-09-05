@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { ModalContent, ModalOverlay } from './ModalStyles';
-import { Button, StyledCloseButton } from './ButtonStyles';
+import { ModalContent, ModalOverlay } from '../styles/ModalStyles';
+import { Button, StyledCloseButton } from '../styles/ButtonStyles';
 import Select from 'react-select';
-import { StyledForm, InputGroup, Label, Input } from './InputStyles';
-import { StyledCheckbox, CheckboxContainer } from './CheckBoxStyles';
+import { StyledForm, InputGroup, Label, Input } from '../styles/InputStyles';
+import { StyledCheckbox, CheckboxContainer } from '../styles/CheckBoxStyles';
 
 export const ModifyModal = ({ onClose, currentJobData, setShowDeleteConfirmation, userData, setUserData }) => {
   const [currentJobInfo, setCurrentJobInfo] = useState(currentJobData);

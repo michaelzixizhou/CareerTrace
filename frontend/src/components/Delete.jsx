@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { ModalOverlay, ModalContent } from "./ModalStyles";
-import { Button } from "./ButtonStyles";
+import { ModalOverlay, ModalContent } from "../styles/ModalStyles";
+import { Button } from "../styles/ButtonStyles";
 
 export const DeleteConfirmationModal = ({ onClose, userData, setUserData, currentJobData, setShowModifyModal }) => {
     const handleDelete = () => {

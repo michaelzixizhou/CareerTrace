@@ -13,7 +13,7 @@ router.get('/userdata', async (req, res) => {
 
 // Debugging, removes given user based on ID from the database
 router.delete("/:id", async (req, res) => {
-    let query = { _id: new ObjectId(req.params.id) };
+    let query = { _id: req.params.id };
     let collection = db.collection("users");
 
     let result = await collection.deleteOne(query);
@@ -40,7 +40,6 @@ async function getNextJobId(userId) {
         { upsert: true, returnOriginal: false }
     );
 
-    console.log(result.jobCounter)
     return parseInt(JSON.parse(result.jobCounter));
 };
 
@@ -50,7 +49,7 @@ router.get('/profile', async (req, res) => {
         return res.redirect('/');
     }
 
-    let collection = await db.collection("users");
+    let collection = db.collection("users");
     let userid = req.user.id;
     let query = { _id: userid };
 
@@ -120,7 +119,7 @@ router.post("/jobs", async (req, res) => {
     };
 
     let currUserID = req.user.id;
-    let collection = await db.collection("users");
+    let collection = db.collection("users");
 
 
     let newJobID = await getNextJobId(currUserID)
@@ -192,7 +191,7 @@ router.patch("/:id/jobs/:jobid", async (req, res) => {
     let setUpdates = {
         "$set": updates
     }
-    let collection = await db.collection("users");
+    let collection = db.collection("users");
     let result = await collection.updateOne(query, setUpdates);
 
     res.send(result).status(200);

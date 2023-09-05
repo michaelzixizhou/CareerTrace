@@ -17,9 +17,6 @@ export const DeleteConfirmationModal = ({ onClose, userData, setUserData, curren
             }
             return res.json();
           })
-          .then((data) => {
-            console.log('Deleted successfully', data);
-          })
           .catch((err) => {
             console.error('Error:', err);
           });

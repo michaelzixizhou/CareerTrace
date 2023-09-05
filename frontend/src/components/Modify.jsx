@@ -20,12 +20,9 @@ export const ModifyModal = ({ onClose, currentJobData, setShowDeleteConfirmation
           .then((res) => {
             if (!res.ok) {
               throw new Error('Patch request failed');
-            }
-            return res.json();
-          })
-          .then((data) => {
-            console.log('Updated successfully', data);
+            } 
             setUserData(userData);
+            return res.json();
           })
           .catch((err) => {
             console.error('Error:', err); 

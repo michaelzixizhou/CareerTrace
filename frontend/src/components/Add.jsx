@@ -23,7 +23,6 @@ const AddJobModal = ({ onClose, userData, setUserData }) => {
     rejected: false,
   });
 
-  console.log(userData)
   const applicationStageOptions = [
     { value: 'No Response', label: 'No Response' },
     { value: 'Phone Screen', label: 'Phone Screen' },
@@ -46,8 +45,7 @@ const AddJobModal = ({ onClose, userData, setUserData }) => {
         if (!response.ok) {
           throw new Error('Error posting data to the server');
         }
-        console.log('Data posted successfully');
-  
+
         return fetch(`/api/${userData._id}`);
       })
       .then((res) => res.json())

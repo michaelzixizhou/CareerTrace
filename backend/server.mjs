@@ -7,7 +7,7 @@ import bodyParser from "body-parser";
 import passport from "passport";
 import session from "express-session";
 import initializePassport from "./strategy.mjs";
-import csrf from "csurf";
+// import csrf from "csurf";
 import cookieParser from "cookie-parser";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -38,7 +38,7 @@ app.use(session({
 }))
 
 initializePassport(passport);
-app.use(csrf());
+// app.use(csrf());
 
 
 app.use(passport.authenticate('session'))
@@ -49,10 +49,10 @@ app.use(function(req, res, next) {
   req.session.messages = [];
   next();
 });
-app.use(function(req, res, next) {
-  res.locals.csrfToken = req.csrfToken();
-  next();
-});
+// app.use(function(req, res, next) {
+//   res.locals.csrfToken = req.csrfToken();
+//   next();
+// });
 
 app.use("/api", api);
 app.use("/auth", auth);

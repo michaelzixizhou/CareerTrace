@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { ModalContent, ModalOverlay } from '../styles/ModalStyles';
 import { Button, StyledCloseButton } from '../styles/ButtonStyles';
-import { StyledForm, InputGroup, Label, Input } from '../styles/InputStyles';
+import { StyledForm, InputGroup, Label, Input, FormContainer, Column } from '../styles/InputStyles';
 import { CheckboxContainer, StyledCheckbox } from '../styles/CheckBoxStyles';
 import Select from 'react-select';
 
@@ -63,104 +63,110 @@ const AddJobModal = ({ onClose, userData, setUserData }) => {
           <InputGroup>
             <StyledCloseButton onClick={onClose}>X</StyledCloseButton>
           </InputGroup>
-          <InputGroup>
-            <Label>Company</Label>
-            <Input
-              type="text"
-              value={currentJobInfo.company}
-              onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, company: e.target.value })}
-            />
-          </InputGroup>
-          <InputGroup>
-            <Label>Role</Label>
-            <Input
-              type="text"
-              value={currentJobInfo.role}
-              onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, role: e.target.value })}
-            />
-          </InputGroup>
-          <InputGroup>
-            <Label>Application Stage</Label>
-            <Select
-              options={applicationStageOptions}
-              value={ applicationStageOptions.find((option) => option.value === currentJobInfo.applicationStage)}
-              onChange={(selectedOption) => {
-                setCurrentJobInfo({ 
-                  ...currentJobInfo, 
-                  applicationStage: selectedOption.value, 
-                  rejected: selectedOption.value === 'Offer' ? false : currentJobInfo.rejected
-                });
-              }}
-            />
-          </InputGroup>
-          <InputGroup>
-            <Label>Rejected in the Above Stage?</Label>
-            <CheckboxContainer>
-              <StyledCheckbox
-                type="checkbox"
-                id="rejectedCheckbox"
-                checked={currentJobInfo.rejected}
-                onChange={(e) => {
-                  if (currentJobInfo.applicationStage === 'Offer') {               
-                    e.preventDefault();
-                  } else {
-                    setCurrentJobInfo({ ...currentJobInfo, rejected: e.target.checked });
+          <FormContainer>
+            <Column>
+              <InputGroup>
+                <Label>Company</Label>
+                <Input
+                  type="text"
+                  value={currentJobInfo.company}
+                  onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, company: e.target.value })}
+                />
+              </InputGroup>
+              <InputGroup>
+                <Label>Role</Label>
+                <Input
+                  type="text"
+                  value={currentJobInfo.role}
+                  onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, role: e.target.value })}
+                />
+              </InputGroup>
+              <InputGroup>
+                <Label>Application Stage</Label>
+                <Select
+                  options={applicationStageOptions}
+                  value={ applicationStageOptions.find((option) => option.value === currentJobInfo.applicationStage)}
+                  onChange={(selectedOption) => {
+                    setCurrentJobInfo({ 
+                      ...currentJobInfo, 
+                      applicationStage: selectedOption.value, 
+                      rejected: selectedOption.value === 'Offer' ? false : currentJobInfo.rejected
+                    });
+                  }}
+                />
+              </InputGroup>
+              <InputGroup>
+                <Label>Rejected in the Above Stage?</Label>
+                <CheckboxContainer>
+                  <StyledCheckbox
+                    type="checkbox"
+                    id="rejectedCheckbox"
+                    checked={currentJobInfo.rejected}
+                    onChange={(e) => {
+                      if (currentJobInfo.applicationStage === 'Offer') {               
+                        e.preventDefault();
+                      } else {
+                        setCurrentJobInfo({ ...currentJobInfo, rejected: e.target.checked });
+                      }
+                    }}
+                    disabled={currentJobInfo.applicationStage === 'Offer'}
+                  />
+                </CheckboxContainer>
+              </InputGroup>
+              <InputGroup>
+                <Label>
+                  {currentJobInfo.applicationStage && currentJobInfo.applicationStage !== "No Response" 
+                    ? "Date of " + currentJobInfo.applicationStage
+                    : currentJobInfo.applicationStage
+                      ? "Date Applied"
+                      : "Date of Event"
                   }
-                }}
-                disabled={currentJobInfo.applicationStage === 'Offer'}
-              />
-            </CheckboxContainer>
-          </InputGroup>
-          <InputGroup>
-            <Label>
-              {currentJobInfo.applicationStage && currentJobInfo.applicationStage !== "No Response" 
-                ? "Date of " + currentJobInfo.applicationStage
-                : currentJobInfo.applicationStage
-                  ? "Date Applied"
-                  : "Date of Event"
-              }
-            </Label>
-            <Input
-              type="date"
-              value={currentJobInfo.dateEvent}
-              onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, dateEvent: e.target.value })}
-            />
-          </InputGroup>
-          <InputGroup>
-            <Label>Location</Label>
-            <Input
-              type="text"
-              value={currentJobInfo.location}
-              onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, location: e.target.value })}
-            />
-          </InputGroup>
-          <InputGroup>
-            <Label>Job Cycle</Label>
-            <Input
-              type="month"
-              value={currentJobInfo.jobCycle}
-              onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, jobCycle: e.target.value })}
-            />
-          </InputGroup>
-          <InputGroup>
-            <Label>Duration</Label>
-            <Input
-              type="text"
-              value={currentJobInfo.duration}
-              onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, duration: e.target.value })}
-            />
-          </InputGroup>
-          <InputGroup>
-            <Label>Anticipated Pay</Label>
-            <Input
-              type="text"
-              value={currentJobInfo.pay}
-              onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, pay: e.target.value })}
-            />
-          </InputGroup>
-          <InputGroup>
-            <Button className='green' onClick={handleSubmit}>Submit</Button>
-          </InputGroup>
+                </Label>
+                <Input
+                  type="date"
+                  value={currentJobInfo.dateEvent}
+                  onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, dateEvent: e.target.value })}
+                />
+              </InputGroup>
+            </Column>
+            <Column>
+              <InputGroup>
+                <Label>Location</Label>
+                <Input
+                  type="text"
+                  value={currentJobInfo.location}
+                  onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, location: e.target.value })}
+                />
+              </InputGroup>
+              <InputGroup>
+                <Label>Job Cycle</Label>
+                <Input
+                  type="month"
+                  value={currentJobInfo.jobCycle}
+                  onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, jobCycle: e.target.value })}
+                />
+              </InputGroup>
+              <InputGroup>
+                <Label>Duration</Label>
+                <Input
+                  type="text"
+                  value={currentJobInfo.duration}
+                  onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, duration: e.target.value })}
+                />
+              </InputGroup>
+              <InputGroup>
+                <Label>Anticipated Pay</Label>
+                <Input
+                  type="text"
+                  value={currentJobInfo.pay}
+                  onChange={(e) => setCurrentJobInfo({ ...currentJobInfo, pay: e.target.value })}
+                />
+              </InputGroup>
+              <InputGroup>
+                <Button className='green' onClick={handleSubmit}>Submit</Button>
+              </InputGroup>
+            </Column>
+          </FormContainer>
         </StyledForm>
       </ModalContent>
     </ModalOverlay>

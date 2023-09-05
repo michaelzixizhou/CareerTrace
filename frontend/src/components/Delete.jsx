@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { ModalOverlay, ModalContent } from "../styles/ModalStyles";
+import { ModalOverlay, InfoModalContent } from "../styles/ModalStyles";
 import { Button } from "../styles/ButtonStyles";
 
 export const DeleteConfirmationModal = ({ onClose, userData, setUserData, currentJobData, setShowModifyModal }) => {
@@ -47,11 +47,11 @@ export const DeleteConfirmationModal = ({ onClose, userData, setUserData, curren
 
     return (
       <ModalOverlay>
-        <ModalContent>
+        <InfoModalContent>
           <p>Are you sure you want to delete this job?</p>
           <Button className="red" type="button" onClick={handleDelete}>Yes</Button>
           <Button className="gray" type="button" onClick={onClose}>No</Button>
-        </ModalContent>
+        </InfoModalContent>
       </ModalOverlay>
     );
 };

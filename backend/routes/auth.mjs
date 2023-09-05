@@ -21,6 +21,7 @@ router.post(
         req.logout(function(err) {
             if (err) { return next(err); }
             req.session.destroy();
+            console.log("user logged out");
             res.redirect('/');
         });
     });

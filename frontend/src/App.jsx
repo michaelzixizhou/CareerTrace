@@ -8,72 +8,6 @@ import Stats from './components/Stats';
 import { Icon } from '@iconify/react';
 import GoogleButton from 'react-google-button'
 
-const getRandomDate = (start, end) => {
-  const startDate = new Date(start);
-  const endDate = new Date(end);
-  const randomDate = new Date(startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime()));
-  return randomDate.toISOString().split('T')[0];
-};
-
-function getRandomMonth(startDate, endDate) {
-  const startYear = Number(startDate.split('-')[0]);
-  const endYear = Number(endDate.split('-')[0]);
-  const startMonth = Number(startDate.split('-')[1]);
-  const endMonth = Number(endDate.split('-')[1]);
-
-  const randomYear = Math.floor(Math.random() * (endYear - startYear + 1)) + startYear;
-
-  let randomMonth;
-  if (randomYear === startYear) {
-    randomMonth = Math.floor(Math.random() * (12 - startMonth + 1)) + startMonth;
-  } else if (randomYear === endYear) {
-    randomMonth = Math.floor(Math.random() * (endMonth - 1 + 1)) + 1; // Random month from 1 to endMonth
-  } else {
-    randomMonth = Math.floor(Math.random() * 12) + 1; // Random month from 1 to 12
-  }
-
-  return `${randomYear}-${String(randomMonth).padStart(2, '0')}`;
-}
-
-const companies = ['TechCorp', 'InnovateTech', 'CodeGenius', 'DataTech', 'WebSolutions'];
-const roles = ['Frontend Developer', 'Backend Engineer', 'Data Scientist', 'UI/UX Designer', 'Product Manager'];
-const locations = ['New York, NY', 'Chicago, IL', 'San Francisco, CA', 'Los Angeles, CA', 'Seattle, WA'];
-const durations = ['4-month', '8-month', '12-month'];
-const anticipatedPays = ['$75,000', '$90,000', '$110,000', '$120,000', '$150,000'];
-const statuses = ['Interview', 'Phone Screen', 'Online Assessment', 'Offer', 'No Response'];
-
-const generateRandomData = () => {
-  const randomCompany = companies[Math.floor(Math.random() * companies.length)];
-  const randomRole = roles[Math.floor(Math.random() * roles.length)];
-  const randomLocation = locations[Math.floor(Math.random() * locations.length)];
-  const randomDuration = durations[Math.floor(Math.random() * durations.length)];
-  const randomAnticipatedPay = anticipatedPays[Math.floor(Math.random() * anticipatedPays.length)];
-  const dateEvent = getRandomDate('2023-09-01', '2024-09-30');
-  const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
-  const randomrejected = Math.random() < 0.5;
-  const jobCycle = getRandomMonth('2023-09', '2024-09');
-
-  return {
-    company: randomCompany,
-    role: randomRole,
-    dateEvent: dateEvent,
-    jobCycle: jobCycle,
-    location: randomLocation,
-    duration: randomDuration,
-    pay: randomAnticipatedPay,
-    applicationStage: randomStatus,
-    rejected: randomStatus === "Offer" ? false : randomrejected,
-  };
-};
-
-const generateSampleData = (count) => {
-  const data = [];
-  for (let i = 0; i < count; i++) {
-    data.push(generateRandomData());
-  }
-  return data;
-};
-
 const MobileMode = styled.span`
   display: none;
   @media (max-width: 1200px) {
@@ -197,40 +131,65 @@ const GoogleSignButton = styled(GoogleButton)`
 
 const App = () => {
   const [userInfo, setUserInfo] = useState(null);
-  const [data, setUserData] = useState(null);
+  const [userData, setUserData] = useState(null);
   const [showCalenderStats, setShowCalenderStats] = useState(false);
   const [signedIn, setSignedIn] = useState(false);
+  const [jobModified, setJobModified] = useState(false);
 
-  const jobData = generateSampleData(341);
   const toggleLeftContainer = () => {
     setShowCalenderStats(!showCalenderStats);
   };  
 
+  const signOut = () => {
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+  
+    fetch("/logout", requestOptions)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('Logout failed'); 
+        }
+        console.log('Logged out successfully');
+        setSignedIn(false);
+      })
+      .catch((err) => {
+        console.error('Error logging out:', err);
+      });
+  };
+
   useEffect(() => {
     fetch("/api/profile")
     .then((res) => res.json())
-    .then((data) => {{
-      setUserInfo(data);
-      if (data) {
-        setSignedIn(true);
-      }
-    }})
-    .catch((error) => {
-      console.error('Error fetching ID:', error);
+    .then((data) => setUserInfo(data))
+    .catch((err) => {
+      console.error('Error fetching ID:', err);
       setSignedIn(false);
     });
   }, []);
 
   useEffect(() => {
-    if (userInfo) {
+    if (userInfo !== null) {
       fetch(`/api/${userInfo.id}`)
         .then((res) => res.json())
-        .then((data) => { setUserData(data) })
-        .catch((error) => {
-          console.error('Error fetching user jobs:', error);
+        .then((data) => {{
+          setUserData(data);
+          if (data){
+            setSignedIn(true);
+          }
+          setJobModified(false);
+        }})
+        .catch((err) => {
+          console.error('Error fetching user jobs:', err);
+          setSignedIn(false);
         });
     }
-  }, [userInfo]);
+  }, [userInfo, jobModified]);
+
+  console.log(userInfo, userData, String(signedIn));
 
   return (
     <>
@@ -239,9 +198,7 @@ const App = () => {
           <TopContainer>
             <Title>CareerTrace</Title>
             <GoogleSignButton
-              onClick={() => {
-                console.log('Google button clicked');
-              }}
+              onClick={signOut}
               label='Sign Out of Google'
             />
           </TopContainer>
@@ -249,9 +206,9 @@ const App = () => {
             <MobileMode>
               {showCalenderStats ? (
                 <LeftContainer>
-                  <TrackCalender data={jobData} />
-                  <Stats data={jobData} />
-                  <AddJob />
+                  <TrackCalender data={userData.jobapps} />
+                  <Stats data={userData.jobapps} />
+                  <AddJob userid={userInfo.id} setJobModified={setJobModified}/>
                 </LeftContainer>
               ) : (
                 <SemiCircleButton onClick={toggleLeftContainer}>
@@ -261,9 +218,9 @@ const App = () => {
             </MobileMode>
             <DesktopMode>
               <LeftContainer>
-                <TrackCalender data={jobData} />
-                <Stats data={jobData} />
-                <AddJob />
+                <TrackCalender data={userData.jobapps} />
+                <Stats data={userData.jobapps} />
+                <AddJob userid={userInfo.id} setJobModified={setJobModified}/>
               </LeftContainer>
             </DesktopMode>
             <MobileMode>
@@ -273,13 +230,13 @@ const App = () => {
                 </SemiCircleButton>
               ) : (
                 <RightContainer>
-                  <JobTable data={jobData} />
+                  <JobTable data={userData.jobapps} />
                 </RightContainer>
               )}
             </MobileMode>
             <DesktopMode>
               <RightContainer>
-                <JobTable data={jobData} />
+                <JobTable data={userData.jobapps} />
               </RightContainer>
             </DesktopMode>
           </AppContainer>

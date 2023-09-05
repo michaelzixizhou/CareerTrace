@@ -185,27 +185,33 @@ const JobTable = ({ data }) => {
             </tr>
           </thead>
           <tbody>
-            {visibleData.map((job, index) => (
-              <TableRow key={index}>
-                <TableCell>{job.company}</TableCell>
-                <TableCell>{job.role}</TableCell>
-                <TableCell>{job.location}</TableCell>
-                <TableCell>{job.jobCycle}</TableCell>
-                <TableCell>{job.duration}</TableCell>
-                <TableCell>{job.dateEvent}</TableCell>
-                <TableCell>
-                  <StatusBadge stage={job.applicationStage} rejected={+job.rejected} margin={+false}>
-                    {job.applicationStage}
-                  </StatusBadge>
-                  <InfoIcon icon="clarity:info-solid" onClick={() => handleInfoClick(job)}/>
-                </TableCell>
-                <TableCell>
-                  <Button className='gray' type="button" onClick={() => handleModifyClick(job)}>
-                    <Icon icon="streamline:interface-edit-write-2-change-document-edit-modify-paper-pencil-write-writing" />
-                  </Button>
-                </TableCell>
+            {visibleData.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan="8">No available data</TableCell>
               </TableRow>
-            ))}
+            ) : (
+              visibleData.map((job, index) => (
+                <TableRow key={index}>
+                  <TableCell>{job.company}</TableCell>
+                  <TableCell>{job.role}</TableCell>
+                  <TableCell>{job.location}</TableCell>
+                  <TableCell>{job.jobCycle}</TableCell>
+                  <TableCell>{job.duration}</TableCell>
+                  <TableCell>{job.dateEvent}</TableCell>
+                  <TableCell>
+                    <StatusBadge stage={job.applicationStage} rejected={+job.rejected} margin={+false}>
+                      {job.applicationStage}
+                    </StatusBadge>
+                    <InfoIcon icon="clarity:info-solid" onClick={() => handleInfoClick(job)}/>
+                  </TableCell>
+                  <TableCell>
+                    <Button className='gray' type="button" onClick={() => handleModifyClick(job)}>
+                      <Icon icon="streamline:interface-edit-write-2-change-document-edit-modify-paper-pencil-write-writing" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </tbody>
         </StyledTable>
       </DesktopMode>   
@@ -219,24 +225,30 @@ const JobTable = ({ data }) => {
                 <TableHeader hover={+false}/>
               </tr>
             </thead>
-            <tbody>
-              {visibleData.map((job, index) => (
-                <TableRow key={index}>
-                  <TableCell>{job.company}</TableCell>
-                  <TableCell>{job.role}</TableCell>
-                  <TableCell>
-                    <StatusBadge stage={job.applicationStage} rejected={+job.rejected} margin={+false}>
-                      {job.applicationStage}
-                    </StatusBadge>
-                    <InfoIcon icon="clarity:info-solid" onClick={() => handleInfoClick(job)}/>
-                  </TableCell>
-                  <TableCell>
-                    <Button className='gray' type="button" onClick={() => handleModifyClick(job)}>
-                      <Icon icon="streamline:interface-edit-write-2-change-document-edit-modify-paper-pencil-write-writing" />
-                    </Button>
-                  </TableCell>
+              <tbody>
+              {visibleData.length === 0 ? ( 
+                <TableRow>
+                  <TableCell colSpan="8">No available data</TableCell>
                 </TableRow>
-              ))}
+              ) : (
+                visibleData.map((job, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{job.company}</TableCell>
+                    <TableCell>{job.role}</TableCell>
+                    <TableCell>
+                      <StatusBadge stage={job.applicationStage} rejected={+job.rejected} margin={+false}>
+                        {job.applicationStage}
+                      </StatusBadge>
+                      <InfoIcon icon="clarity:info-solid" onClick={() => handleInfoClick(job)}/>
+                    </TableCell>
+                    <TableCell>
+                      <Button className='gray' type="button" onClick={() => handleModifyClick(job)}>
+                        <Icon icon="streamline:interface-edit-write-2-change-document-edit-modify-paper-pencil-write-writing" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
             </tbody>
           </StyledTable>
       </MobileMode>

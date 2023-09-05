@@ -11,7 +11,7 @@ const AddJobButtonContainer = styled.div`
   margin-bottom: 20px;
 `;
 
-const AddJobModal = ({ onClose }) => {
+const AddJobModal = ({ onClose, userId, setJobModified }) => {
   const [currentJobInfo, setCurrentJobInfo] = useState({
     company: '',
     role: '',
@@ -32,25 +32,25 @@ const AddJobModal = ({ onClose }) => {
   ];
 
   const handleSubmit = () => {
-      // fetch('https://example.com/api/endpoint', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json', 
-      //   },
-      //   body: JSON.stringify(data), 
-      // }).then((response) => {
-      //   if (!response.ok) {
-      //     throw new Error('Network response was not okay');
-      //   }
-      //   return response.json(); 
-      // })
-      // .then((responseData) => {
-      //   console.log(responseData);
-      //   onClose(); 
-      // })
-      // .catch((error) => {
-      //   console.error('There was a problem with the fetch operation:', error);
-      // });
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(currentJobInfo),
+    };
+    
+    fetch(`/api/${userId}/jobs`, requestOptions)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Error posting data to the server');
+        }
+        console.log('Data posted successfully');
+        setJobModified(true);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
   };
 
   return (
@@ -164,7 +164,7 @@ const AddJobModal = ({ onClose }) => {
   );
 };
 
-const AddJob = () => {
+const AddJob = ({ userId, setJobModified }) => {
   const [showModal, setShowModal] = useState(false);
 
   const handleOpenModal = () => {
@@ -178,7 +178,7 @@ const AddJob = () => {
   return (
     <AddJobButtonContainer>
       <Button className='blue' onClick={handleOpenModal}>Add Job</Button>
-      {showModal && <AddJobModal onClose={handleCloseModal} />}
+      {showModal && <AddJobModal onClose={handleCloseModal} userId={userId} setJobModified={setJobModified} />}
     </AddJobButtonContainer>
   );
 };

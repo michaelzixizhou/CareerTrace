@@ -153,7 +153,7 @@ const TrackCalender = ({ data, selectedDate, handleDateChange }) => {
   return (
     <>
       <CalendarContainer>
-        <CalendarHeader>Event Tracking Calendar</CalendarHeader>
+        <CalendarHeader>{data.name}'s Event Tracking Calendar</CalendarHeader>
         <Calendar 
           onChange={handleDateChange} 
           value={selectedDate} 

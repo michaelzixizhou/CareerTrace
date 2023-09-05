@@ -5,11 +5,30 @@ import Select from 'react-select';
 import { StyledForm, InputGroup, Label, Input } from './InputStyles';
 import { StyledCheckbox, CheckboxContainer } from './CheckBoxStyles';
 
-export const ModifyModal = ({ onClose, currentJobData, setShowDeleteConfirmation }) => {
+export const ModifyModal = ({ onClose, currentJobData, setShowDeleteConfirmation, userData, setUserData }) => {
   const [currentJobInfo, setCurrentJobInfo] = useState(currentJobData);
 
   const handleUpdate = () => {
-    // TODO: Implement the submission logic
+      fetch(`api/${userData._id}/jobs/${currentJobData.jobid}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json', 
+        },
+        body: JSON.stringify(currentJobInfo), 
+      })
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error('Patch request failed');
+          }
+          return res.json();
+        })
+        .then((data) => {
+          console.log('Updated successfully', data);
+          setUserData(userData);
+        })
+        .catch((err) => {
+          console.error('Error:', err); 
+        });
     onClose();
   };
 

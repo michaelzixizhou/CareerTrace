@@ -202,7 +202,7 @@ router.patch("/:id/jobs/:jobid", async (req, res) => {
 });
 
 router.delete("/:id/jobs/:jobid", async (req, res) => {
-    let currJobID = parseInt(req.params.jobid)
+    let currJobID = parseInt(req.params.jobid);
     let query = { _id: req.params.id, "jobapps.jobid": currJobID }
     let updates = {
         "$pull": {
@@ -214,7 +214,6 @@ router.delete("/:id/jobs/:jobid", async (req, res) => {
 
     let collection = db.collection("users");
     let result = await collection.updateOne(query, updates);
-
     res.send(result).status(200);
 })
 

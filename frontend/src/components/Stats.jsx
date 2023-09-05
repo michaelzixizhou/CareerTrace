@@ -34,7 +34,7 @@ const Stats = ({ data }) => {
 
   return (
     <StatsContainer>
-      <Header>Application Statistics</Header>
+      <Header>{data.name}'s Application Statistics</Header>
       <StatItem>Total Applications: {totalApplications}</StatItem>
       <StatItem>
         Total Interviews: {totalInterviewsAndOffers} ({interviewRate.toFixed(2)}%)

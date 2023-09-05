@@ -103,16 +103,16 @@ const InfoIcon = styled(Icon)`
 
 const itemsPerPage = 8; // temporary
 
-const JobTable = ({ data }) => {
+const JobTable = ({ userData, setUserData }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [showInformationModal, setShowInformationModal] = useState(false);
   const [currentJobData, setCurrentJobData] = useState(null);
   const [showModifyModal, setShowModifyModal] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const [sortedData, setSortedData] = useState([...data.jobapps]);
+  const [sortedData, setSortedData] = useState([...userData.jobapps]);
   const [sortOrder, setSortOrder] = useState('asc');
 
-  const totalPages = Math.ceil(data.jobapps.length / itemsPerPage);
+  const totalPages = Math.ceil(userData.jobapps.length / itemsPerPage);
   const visibleData = sortedData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
   const pagesPerGroup = 5;
   const currentGroup = Math.ceil(currentPage / pagesPerGroup);
@@ -168,8 +168,8 @@ const JobTable = ({ data }) => {
   };
 
   useEffect(() => {
-    setSortedData(data.jobapps);
-  }, [data]);
+    setSortedData(userData.jobapps);
+  }, [userData]);
   
   return (
     <TableContainer>
@@ -297,11 +297,16 @@ const JobTable = ({ data }) => {
           onClose={() => setShowModifyModal(false)}
           currentJobData={currentJobData}
           setShowDeleteConfirmation={setShowDeleteConfirmation}
+          userData={userData}
+          setUserData={setUserData}
         />
       )}
       {showDeleteConfirmation && (
         <DeleteConfirmationModal
           onClose={() => setShowDeleteConfirmation(false)}
+          userData={userData}
+          setUserData={setUserData}
+          currentJobData={currentJobData}
           setShowModifyModal={setShowModifyModal}
         />
       )}

@@ -8,6 +8,7 @@ import Stats from './components/Stats';
 import { Icon } from '@iconify/react';
 import GoogleButton from 'react-google-button'
 import Logo from './assets/logo.svg';
+import Footer from './components/Footer';
 
 const MobileMode = styled.span`
   display: none;
@@ -244,6 +245,7 @@ const App = () => {
               </RightContainer>
             </DesktopMode>
           </AppContainer>
+          <Footer/>
         </AppScreen>
       ) : (
         <AppScreen>
@@ -253,6 +255,7 @@ const App = () => {
               window.location.href = '/auth/google';
             }}/>
           </SignedOutScreen>
+          <Footer/>
         </AppScreen>
       )}
     </>

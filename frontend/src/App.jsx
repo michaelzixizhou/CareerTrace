@@ -7,6 +7,7 @@ import TrackCalender from './components/Calender';
 import Stats from './components/Stats';
 import { Icon } from '@iconify/react';
 import GoogleButton from 'react-google-button'
+import Logo from './assets/logo.svg';
 
 const MobileMode = styled.span`
   display: none;
@@ -116,14 +117,16 @@ const RightContainer = styled.div`
   }
 `;
 
-const Title = styled.h1`
-  font-size: var(--font-size__title);
-  text-align: center;
-  font-weight: 1000;
+const Image = styled.img`
+  width: 20rem;
+  max-width: 95vw;
   border-radius: 50%;
+  pointer-events: none;
 `;
 
 const GoogleSignButton = styled(GoogleButton)`
+  width: 20rem;
+  max-width: 95vw;
 `
 
 const App = () => {
@@ -197,7 +200,7 @@ const App = () => {
       {userData && briefUserInfo ? (
         <AppScreen>
           <TopContainer>
-            <Title>CareerTrace</Title>
+            <Image src={Logo} alt="CareerTrace" />
             <GoogleSignButton
               onClick={signOut}
               label='Sign Out of Google'
@@ -209,7 +212,7 @@ const App = () => {
                 <LeftContainer>
                   <TrackCalender data={userData} />
                   <Stats data={userData} />
-                  <AddJob userData={userData} setUserData={setUserData} />
+                  <AddJob userData={userData} />
                 </LeftContainer>
               ) : (
                 <SemiCircleButton onClick={toggleLeftContainer}>
@@ -220,8 +223,8 @@ const App = () => {
             <DesktopMode>
               <LeftContainer>
                 <TrackCalender data={userData} />
-                <Stats data={userData} s={setUserData} />
-                <AddJob userData={userData} setUserData={setUserData} />
+                <Stats data={userData} />
+                <AddJob userData={userData} />
               </LeftContainer>
             </DesktopMode>
             <MobileMode>
@@ -245,7 +248,7 @@ const App = () => {
       ) : (
         <AppScreen>
           <SignedOutScreen>
-            <Title>CareerTrace</Title>
+            <Image src={Logo} alt="CareerTrace" />
             <GoogleSignButton onClick={() => {
               window.location.href = '/auth/google';
             }}/>

@@ -40,7 +40,7 @@ export const DeleteConfirmationModal = ({ onClose, userData, setUserData, curren
             console.error('Error fetching user jobs:', err);
           });
       }
-    }, [onClose]);
+    }, [onClose, userData, setUserData]);
 
     return (
       <ModalOverlay>

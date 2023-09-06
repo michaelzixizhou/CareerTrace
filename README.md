@@ -1,6 +1,6 @@
 # CareerTrace
 
-CareerTrace is a powerful platform designed to streamline and enhance your job application process. 
+[CareerTrace](https://careertrace.ca/) is a powerful platform designed to streamline and enhance your job application process. 
 With CareerTrace, you can effortlessly track your job applications, monitor application stages, and keep a record of important interview dates. 
 It empowers you to make data-driven decisions by providing valuable insights into your application success rates.
 

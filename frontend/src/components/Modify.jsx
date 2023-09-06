@@ -45,7 +45,7 @@ export const ModifyModal = ({ onClose, currentJobData, setShowDeleteConfirmation
           console.error('Error fetching user jobs:', err);
         });
     }
-  }, [onClose]);
+  }, [onClose, userData, setUserData]);
 
   const applicationStageOptions = [
     { value: 'No Response', label: 'No Response' },

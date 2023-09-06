@@ -212,7 +212,7 @@ const App = () => {
                 <LeftContainer>
                   <TrackCalender data={userData} />
                   <Stats data={userData} />
-                  <AddJob userData={userData} setUserData={setUserData} />
+                  <AddJob userData={userData} />
                 </LeftContainer>
               ) : (
                 <SemiCircleButton onClick={toggleLeftContainer}>
@@ -223,8 +223,8 @@ const App = () => {
             <DesktopMode>
               <LeftContainer>
                 <TrackCalender data={userData} />
-                <Stats data={userData} s={setUserData} />
-                <AddJob userData={userData} setUserData={setUserData} />
+                <Stats data={userData} />
+                <AddJob userData={userData} />
               </LeftContainer>
             </DesktopMode>
             <MobileMode>

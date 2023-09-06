@@ -11,13 +11,12 @@
     "react-calendar": "^4.6.0",
     "react-dom": "^18.2.0",
     "react-google-button": "^0.7.2",
-    "react-scripts": "5.0.1",
     "react-select": "^5.7.4",
     "styled-components": "^6.0.7",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "PORT=5050 react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -42,6 +41,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@iconify/react": "^4.1.1"
+    "@iconify/react": "^4.1.1",
+    "react-scripts": "5.0.1"
   }
 }

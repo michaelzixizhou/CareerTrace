@@ -11,6 +11,8 @@ import initializePassport from "./strategy.mjs";
 import cookieParser from "cookie-parser";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import fs from "fs";
+import https from "https";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -23,7 +25,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(cookieParser());
@@ -34,7 +36,7 @@ app.use(session({
     secret: "VerySecureKey9090",
     resave: false,
     saveUninitialized: false,
-    cookie: {maxAge: oneMonth}
+    cookie: { maxAge: oneMonth }
 }))
 
 initializePassport(passport);
@@ -58,11 +60,26 @@ app.use("/auth", auth);
 //      res.sendFile(path.join(__dirname + '../frontend/build'));
 // });
 app.use(express.static(path.join(__dirname, '../frontend/build')));
-app.get('*', (req, res) => { 
-  res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port: ${PORT}`);
-    console.log(`http://localhost:${PORT}`)
-})
+// app.listen(PORT, () => {
+//     console.log(`Server is running on port: ${PORT}`);
+//     console.log(`http://localhost:${PORT}`)
+// })
+
+https
+    .createServer(
+        // Provide the private and public key to the server by reading each
+        // file's content with the readFileSync() method.
+        {
+            key: fs.readFileSync("key.pem"),
+            cert: fs.readFileSync("cert.pem"),
+        },
+        app
+    )
+    .listen(PORT, () => {
+        console.log(`Server is running on port: ${PORT}`);
+        console.log(`https://localhost:${PORT}`)
+    });

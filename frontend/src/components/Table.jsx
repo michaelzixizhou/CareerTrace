@@ -49,7 +49,6 @@ const TableHeader = styled.th`
   &:hover {
     background-color: ${props => (props.hover ? '#2c3e50' : '#777777')};
   }
-  word-break: break-all;
 `;
 
 const TableRow = styled.tr`
@@ -62,7 +61,6 @@ const TableCell = styled.td`
   padding: 0.8rem;
   font-size: var(--font-size__text);
   border-bottom: 1px solid #dcdcdc;
-  word-break: break-all;
 `;
 
 const StatusBadge = styled.span`

@@ -26,7 +26,7 @@ CareerTrace is built using the classic MERN stack, which includes:
 - **Express.js:** To build the backend server.
 - **React and styled-components:** To create a dynamic and user-friendly front-end.
 - **Node.js:** To power the server-side logic.
-- **Google Auth 2.0:** To enhance the security and convenience of the platform.
+- **Google OAuth 2.0:** To enhance the security and convenience of the platform.
 - **AWS:** To deploy CareerTrace.
   
 ## License
